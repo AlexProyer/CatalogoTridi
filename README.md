@@ -54,24 +54,34 @@ posición aparece en la lista de categorías; usá números salteados como 10, 2
 ## Por qué no se agregaron dependencias al sitio
 
 El panel (Decap CMS) vive en una página aparte (`/admin/`) que carga su propio
-script desde un CDN solo cuando alguien visita esa URL. **No se agregó nada al
-`package.json`** ni al catálogo que ven los clientes — el tiempo de carga del
-catálogo público es idéntico a antes.
+script desde un CDN solo cuando alguien visita esa URL — no agrega nada al
+catálogo que ven los clientes, el tiempo de carga es idéntico a antes. La única
+dependencia nueva en `package.json` es `wrangler` (la herramienta de línea de
+comandos de Cloudflare) — se usa solo durante el build/deploy, nunca se envía
+al navegador.
 
 ## Infraestructura necesaria (una sola vez)
 
 Este panel necesita que el sitio esté en un repositorio de GitHub y se publique
-con Cloudflare Pages (en vez del deploy propio de Figma Make). El repo ya está
-creado: [github.com/AlexProyer/CatalogoTridi](https://github.com/AlexProyer/CatalogoTridi),
-y [public/admin/config.yml](public/admin/config.yml) ya apunta ahí. Faltan 2
-pasos, cada uno requiere tu cuenta:
+en Cloudflare (en vez del deploy propio de Figma Make). El repo ya está creado:
+[github.com/AlexProyer/CatalogoTridi](https://github.com/AlexProyer/CatalogoTridi),
+y [public/admin/config.yml](public/admin/config.yml) ya apunta ahí.
 
-1. **Cloudflare Pages** → crear un proyecto nuevo conectado a ese repo.
-   Comando de build: `pnpm build` — carpeta de salida: `dist`.
+Nota: Cloudflare está retirando "Pages" en favor de **Workers con Static
+Assets** para proyectos nuevos — es el mismo resultado (sitio estático,
+redeploy automático en cada push), solo cambió el nombre y el asistente del
+dashboard. Ya dejamos listo [wrangler.jsonc](wrangler.jsonc) para ese camino.
+
+Faltan 2 pasos, cada uno requiere tu cuenta:
+
+1. **Cloudflare → Workers & Pages → Create application → Import a repository**
+   → conectar `AlexProyer/CatalogoTridi`. Build command: `pnpm run build` —
+   Deploy command: `npm run deploy` (dejalo en blanco y usa el default
+   `npx wrangler deploy` si no aparece ese campo).
 2. **GitHub → Settings → Developer settings → OAuth Apps** → crear una OAuth
-   App nueva. *Homepage URL*: la URL de tu sitio en Cloudflare Pages.
+   App nueva. *Homepage URL*: la URL `*.workers.dev` que te da Cloudflare.
    *Authorization callback URL*: esa misma URL + `/admin/`.
 
 El editor de Figma Make se puede seguir usando para retocar el diseño cuando
 haga falta — lo único que cambia es que **publicar** pasa a ser "guardar en
-GitHub → Cloudflare Pages construye solo", en vez de `figma make deploy`.
+GitHub → Cloudflare construye y despliega solo", en vez de `figma make deploy`.
