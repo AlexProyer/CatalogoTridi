@@ -1,7 +1,6 @@
 backend:
   name: github
-  # TODO: reemplazar por "usuario/nombre-del-repo" una vez creado el repo en GitHub.
-  repo: TU_USUARIO/TU_REPO
+  repo: AlexProyer/CatalogoTridi
   branch: main
   auth_type: pkce
 

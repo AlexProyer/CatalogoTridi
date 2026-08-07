@@ -61,26 +61,16 @@ catálogo público es idéntico a antes.
 ## Infraestructura necesaria (una sola vez)
 
 Este panel necesita que el sitio esté en un repositorio de GitHub y se publique
-con Cloudflare Pages (en vez del deploy propio de Figma Make). Son 3 pasos,
-cada uno requiere tu cuenta:
+con Cloudflare Pages (en vez del deploy propio de Figma Make). El repo ya está
+creado: [github.com/AlexProyer/CatalogoTridi](https://github.com/AlexProyer/CatalogoTridi),
+y [public/admin/config.yml](public/admin/config.yml) ya apunta ahí. Faltan 2
+pasos, cada uno requiere tu cuenta:
 
-1. **Crear el repositorio en GitHub** y subir este código.
-2. **Cloudflare Pages** → crear un proyecto nuevo conectado a ese repo.
+1. **Cloudflare Pages** → crear un proyecto nuevo conectado a ese repo.
    Comando de build: `pnpm build` — carpeta de salida: `dist`.
-3. **GitHub → Settings → Developer settings → OAuth Apps** → crear una OAuth
+2. **GitHub → Settings → Developer settings → OAuth Apps** → crear una OAuth
    App nueva. *Homepage URL*: la URL de tu sitio en Cloudflare Pages.
    *Authorization callback URL*: esa misma URL + `/admin/`.
-
-Después de esos 3 pasos, hay que completar dos líneas en
-[public/admin/config.yml](public/admin/config.yml):
-
-```yaml
-backend:
-  name: github
-  repo: TU_USUARIO/TU_REPO   # <- reemplazar
-  branch: main
-  auth_type: pkce
-```
 
 El editor de Figma Make se puede seguir usando para retocar el diseño cuando
 haga falta — lo único que cambia es que **publicar** pasa a ser "guardar en
