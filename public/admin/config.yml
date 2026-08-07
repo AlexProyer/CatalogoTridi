@@ -1,0 +1,73 @@
+backend:
+  name: github
+  # TODO: reemplazar por "usuario/nombre-del-repo" una vez creado el repo en GitHub.
+  repo: TU_USUARIO/TU_REPO
+  branch: main
+  auth_type: pkce
+
+# Cloudflare Pages construye el sitio automáticamente con cada commit que
+# guarda este panel — no hace falta hacer nada más para publicar.
+publish_mode: simple
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+locale: es
+
+collections:
+  - name: categories
+    label: Categorías
+    label_singular: Categoría
+    folder: content/categories
+    extension: json
+    format: json
+    create: true
+    delete: true
+    identifier_field: name
+    fields:
+      - { label: Nombre, name: name, widget: string }
+      - { label: 'Página (texto, ej: "Pág. 04")', name: pag, widget: string }
+      - { label: Imagen de portada, name: img, widget: image }
+      - { label: Color de acento, name: accent, widget: color }
+      - { label: Orden de aparición, name: order, widget: number, value_type: int }
+      - label: Productos
+        name: products
+        widget: list
+        summary: '{{name}} — {{price}}'
+        fields:
+          - { label: Código, name: code, widget: string, required: false }
+          - { label: Nombre, name: name, widget: string }
+          - { label: 'Tamaño (ej: "15 cm")', name: size, widget: string }
+          - { label: 'Precio (ej: "$35,000")', name: price, widget: string }
+          - { label: Foto, name: img, widget: image }
+          - { label: Descripción, name: desc, widget: text, required: false }
+
+  - name: settings
+    label: Configuración del sitio
+    files:
+      - name: company
+        label: Datos de la empresa
+        file: content/settings/company.json
+        fields:
+          - { label: Nombre, name: name, widget: string }
+          - { label: Subtítulo, name: sub, widget: string }
+          - { label: Teléfono, name: phone, widget: string }
+          - { label: Instagram, name: instagram, widget: string }
+          - { label: Sitio web, name: website, widget: string }
+          - { label: Año del catálogo, name: year, widget: string }
+
+      - name: featured
+        label: Producto destacado (página de detalle)
+        file: content/settings/featured.json
+        fields:
+          - { label: Peso estimado, name: weight, widget: string }
+          - { label: Material, name: material, widget: string }
+          - { label: Tiempo de entrega, name: delivery, widget: string }
+          - label: Colores disponibles
+            name: colorSwatches
+            widget: list
+            field: { label: Color, name: color, widget: color }
+          - label: Fotos adicionales
+            name: extraImgs
+            widget: list
+            field: { label: Foto, name: img, widget: image }

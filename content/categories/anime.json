@@ -1,0 +1,25 @@
+{
+  "name": "Anime",
+  "pag": "Pág. 12",
+  "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=200&h=160&fit=crop&auto=format",
+  "accent": "#E05252",
+  "order": 2,
+  "products": [
+    {
+      "code": "#AN001 #100001",
+      "name": "GOKU",
+      "size": "20 cm",
+      "price": "$42,000",
+      "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    },
+    {
+      "code": "#AN001 #100002",
+      "name": "NARUTO",
+      "size": "18 cm",
+      "price": "$38,000",
+      "img": "https://images.unsplash.com/photo-1776426270359-0277f3595496?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    }
+  ]
+}

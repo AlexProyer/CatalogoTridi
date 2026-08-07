@@ -1,0 +1,73 @@
+{
+  "name": "Pokémon",
+  "pag": "Pág. 04",
+  "img": "https://images.unsplash.com/photo-1610081574260-e61e93e6e1aa?w=200&h=160&fit=crop&auto=format",
+  "accent": "#F6C632",
+  "order": 1,
+  "products": [
+    {
+      "code": "#3C4E7B #342785",
+      "name": "PIKACHU",
+      "size": "15 cm",
+      "price": "$35,000",
+      "img": "https://images.unsplash.com/photo-1610081574260-e61e93e6e1aa?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    },
+    {
+      "code": "#3C4E7B #342786",
+      "name": "CHARMANDER",
+      "size": "12 cm",
+      "price": "$28,000",
+      "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    },
+    {
+      "code": "#3C4E7B #342787",
+      "name": "SQUIRTLE",
+      "size": "10 cm",
+      "price": "$26,000",
+      "img": "https://images.unsplash.com/photo-1780997533310-3c6ccae69f8f?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    },
+    {
+      "code": "#3C4E7B #342788",
+      "name": "BULBASAUR",
+      "size": "10 cm",
+      "price": "$26,000",
+      "img": "https://images.unsplash.com/photo-1693786229415-8c4b2260a925?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    },
+    {
+      "code": "#3C4E7B #342789",
+      "name": "GENGAR",
+      "size": "18 cm",
+      "price": "$40,000",
+      "img": "https://images.unsplash.com/photo-1776426270359-0277f3595496?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    },
+    {
+      "code": "#3C4E7B #342790",
+      "name": "EEVEE",
+      "size": "12 cm",
+      "price": "$30,000",
+      "img": "https://images.unsplash.com/photo-1772121034472-de4d2977bdbb?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    },
+    {
+      "code": "#3C4E7B #342791",
+      "name": "SNORLAX",
+      "size": "20 cm",
+      "price": "$45,000",
+      "img": "https://images.unsplash.com/photo-1610081574260-e61e93e6e1aa?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    },
+    {
+      "code": "#3C4E7B #342792",
+      "name": "MEW",
+      "size": "12 cm",
+      "price": "$28,000",
+      "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    }
+  ]
+}

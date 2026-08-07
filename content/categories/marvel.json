@@ -1,0 +1,25 @@
+{
+  "name": "Marvel",
+  "pag": "Pág. 20",
+  "img": "https://images.unsplash.com/photo-1780997533310-3c6ccae69f8f?w=200&h=160&fit=crop&auto=format",
+  "accent": "#C0392B",
+  "order": 3,
+  "products": [
+    {
+      "code": "#MV001 #200001",
+      "name": "IRON MAN",
+      "size": "22 cm",
+      "price": "$48,000",
+      "img": "https://images.unsplash.com/photo-1780997533310-3c6ccae69f8f?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    },
+    {
+      "code": "#MV001 #200002",
+      "name": "SPIDER-MAN",
+      "size": "18 cm",
+      "price": "$40,000",
+      "img": "https://images.unsplash.com/photo-1693786229415-8c4b2260a925?w=280&h=280&fit=crop&auto=format",
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "title": "tridicatalogo",
+  "description": "Create and manage a customizable 3D printing catalog that showcases products, allowing users to easily browse and order prints tailored to their needs.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
