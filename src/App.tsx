@@ -460,12 +460,10 @@ export default function App() {
                             <ProductDetailPage catIndex={catIndex} productIndex={productIndex} />
   )
 
-  const currentIdx = NAV.findIndex(n => n.id === page)
-
   return (
-    <div style={{ minHeight: '100vh', background: '#080A14', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: mobile ? '12px 8px' : '20px 16px' }}>
+    <div style={{ height: '100vh', background: '#080A14', display: 'flex', flexDirection: 'column' }}>
       {/* Nav tabs */}
-      <div style={{ display: 'flex', gap: 3, marginBottom: 14, background: 'rgba(255,255,255,0.04)', borderRadius: 8, padding: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', gap: 3, padding: mobile ? '8px 12px' : '10px 18px', background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(139,48,214,0.15)', flexWrap: 'wrap', justifyContent: 'center', flexShrink: 0 }}>
         {NAV.map(n => (
           <button
             key={n.id}
@@ -484,37 +482,9 @@ export default function App() {
         ))}
       </div>
 
-      {/* Catalog viewport */}
-      <div style={{
-        width: '100%',
-        maxWidth: page === 'detail' ? 860 : 800,
-        height: mobile ? 'calc(100vh - 120px)' : 580,
-        borderRadius: 10,
-        overflow: 'hidden',
-        boxShadow: '0 28px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(139,48,214,0.2)',
-      }}>
+      {/* Catalog content */}
+      <div style={{ flex: 1, minHeight: 0 }}>
         {catalog}
-      </div>
-
-      {/* Prev / Next */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 14 }}>
-        <button
-          onClick={() => currentIdx > 0 && setPage(NAV[currentIdx - 1].id)}
-          disabled={currentIdx === 0}
-          style={{ width: 34, height: 34, borderRadius: '50%', border: '1px solid rgba(139,48,214,0.35)', background: currentIdx === 0 ? 'rgba(255,255,255,0.03)' : 'rgba(139,48,214,0.15)', color: currentIdx === 0 ? 'rgba(255,255,255,0.15)' : '#fff', cursor: currentIdx === 0 ? 'default' : 'pointer', display: 'grid', placeItems: 'center', transition: 'all 0.15s' }}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8L10 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        </button>
-        <div style={{ fontFamily: 'Barlow Condensed', fontSize: 10, color: 'rgba(255,255,255,0.3)', letterSpacing: 2 }}>
-          {currentIdx + 1} / {NAV.length}
-        </div>
-        <button
-          onClick={() => currentIdx < NAV.length - 1 && setPage(NAV[currentIdx + 1].id)}
-          disabled={currentIdx === NAV.length - 1}
-          style={{ width: 34, height: 34, borderRadius: '50%', border: '1px solid rgba(139,48,214,0.35)', background: currentIdx === NAV.length - 1 ? 'rgba(255,255,255,0.03)' : 'rgba(139,48,214,0.15)', color: currentIdx === NAV.length - 1 ? 'rgba(255,255,255,0.15)' : '#fff', cursor: currentIdx === NAV.length - 1 ? 'default' : 'pointer', display: 'grid', placeItems: 'center', transition: 'all 0.15s' }}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3L10 8L6 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        </button>
       </div>
     </div>
   )
