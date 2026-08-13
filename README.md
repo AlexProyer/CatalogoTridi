@@ -59,11 +59,21 @@ al navegador.
 
 ## Infraestructura
 
-Ya está todo conectado:
-
 - **Repo**: [github.com/AlexProyer/CatalogoTridi](https://github.com/AlexProyer/CatalogoTridi)
 - **Sitio (Cloudflare Workers)**: [catalogo-tridi.alexbuitrago156.workers.dev](https://catalogo-tridi.alexbuitrago156.workers.dev)
-- **Panel**: [catalogo-tridi.alexbuitrago156.workers.dev/admin/](https://catalogo-tridi.alexbuitrago156.workers.dev/admin/) — login vía GitHub (OAuth App configurada en [public/admin/config.yml](public/admin/config.yml))
+- **Panel**: [catalogo-tridi.alexbuitrago156.workers.dev/admin/](https://catalogo-tridi.alexbuitrago156.workers.dev/admin/)
+
+El login del panel usa GitHub como backend, que necesita un pequeño servidor
+intermediario para el intercambio OAuth (GitHub no permite hacerlo 100% desde
+el navegador). Ese intermediario es otro Worker aparte,
+[tridi-decap-proxy](https://tridi-decap-proxy.alexbuitrago156.workers.dev)
+(código en `~/Documents/decap-proxy`, clonado de
+[sterlingwes/decap-proxy](https://github.com/sterlingwes/decap-proxy)), con
+la OAuth App de GitHub "Panel Tridi" configurada para hablar con él. Si el
+login del panel deja de funcionar algún día, revisar primero que ese Worker
+esté desplegado y con sus secrets (`GITHUB_OAUTH_ID`, `GITHUB_OAUTH_SECRET`)
+cargados en Cloudflare → Workers & Pages → `tridi-decap-proxy` → Settings →
+Variables and Secrets.
 
 Cada `git push` a `main` reconstruye y redeploya el sitio automáticamente. El
 editor de Figma Make se puede seguir usando para retocar el diseño cuando haga
