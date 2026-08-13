@@ -337,7 +337,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
     product.colors.length > 0 && (
       <div>
         <div style={{ fontFamily: 'Barlow Condensed', fontSize: mobile ? 9 : 8, color: 'rgba(255,255,255,0.35)', letterSpacing: 2, marginBottom: 6 }}>COLORES DISPONIBLES</div>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: mobile ? 9 : 6, flexWrap: 'wrap' }}>
           {product.colors.map((c, i) => (
             <button
               key={c.name}
@@ -382,7 +382,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
 
           {specsLeft}
 
-          {colorPicker(20)}
+          {colorPicker(30)}
 
           {/* Thumbnails */}
           {allImgs.length > 1 && (
