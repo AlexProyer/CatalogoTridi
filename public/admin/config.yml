@@ -3,6 +3,7 @@ backend:
   repo: AlexProyer/CatalogoTridi
   branch: main
   auth_type: pkce
+  app_id: Ov23lifkamINMXTFc2a4
 
 # Cloudflare Pages construye el sitio automáticamente con cada commit que
 # guarda este panel — no hace falta hacer nada más para publicar.

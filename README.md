@@ -1,13 +1,10 @@
 # Catálogo Tridi — cómo editar productos sin tocar código
 
-El catálogo ahora se administra desde un panel web en **`/admin/`** (por ejemplo
-`https://tu-sitio.pages.dev/admin/`). Desde ahí podés agregar, editar o borrar
-categorías y productos, y subir fotos directo desde el celular o la compu — no
-hace falta abrir ningún archivo de código.
-
-> Nota de configuración inicial: hasta que se complete el setup de infraestructura
-> (repo de GitHub + Cloudflare Pages + OAuth App, ver más abajo), el panel no va a
-> poder guardar cambios reales — solo funciona una vez conectado a un repo real.
+El catálogo ahora se administra desde un panel web en
+**[catalogo-tridi.alexbuitrago156.workers.dev/admin/](https://catalogo-tridi.alexbuitrago156.workers.dev/admin/)**.
+Desde ahí podés agregar, editar o borrar categorías y productos, y subir fotos
+directo desde el celular o la compu — no hace falta abrir ningún archivo de
+código.
 
 ## Cómo agregar un producto nuevo
 
@@ -60,28 +57,15 @@ dependencia nueva en `package.json` es `wrangler` (la herramienta de línea de
 comandos de Cloudflare) — se usa solo durante el build/deploy, nunca se envía
 al navegador.
 
-## Infraestructura necesaria (una sola vez)
+## Infraestructura
 
-Este panel necesita que el sitio esté en un repositorio de GitHub y se publique
-en Cloudflare (en vez del deploy propio de Figma Make). El repo ya está creado:
-[github.com/AlexProyer/CatalogoTridi](https://github.com/AlexProyer/CatalogoTridi),
-y [public/admin/config.yml](public/admin/config.yml) ya apunta ahí.
+Ya está todo conectado:
 
-Nota: Cloudflare está retirando "Pages" en favor de **Workers con Static
-Assets** para proyectos nuevos — es el mismo resultado (sitio estático,
-redeploy automático en cada push), solo cambió el nombre y el asistente del
-dashboard. Ya dejamos listo [wrangler.jsonc](wrangler.jsonc) para ese camino.
+- **Repo**: [github.com/AlexProyer/CatalogoTridi](https://github.com/AlexProyer/CatalogoTridi)
+- **Sitio (Cloudflare Workers)**: [catalogo-tridi.alexbuitrago156.workers.dev](https://catalogo-tridi.alexbuitrago156.workers.dev)
+- **Panel**: [catalogo-tridi.alexbuitrago156.workers.dev/admin/](https://catalogo-tridi.alexbuitrago156.workers.dev/admin/) — login vía GitHub (OAuth App configurada en [public/admin/config.yml](public/admin/config.yml))
 
-Faltan 2 pasos, cada uno requiere tu cuenta:
-
-1. **Cloudflare → Workers & Pages → Create application → Import a repository**
-   → conectar `AlexProyer/CatalogoTridi`. Build command: `pnpm run build` —
-   Deploy command: `npm run deploy` (dejalo en blanco y usa el default
-   `npx wrangler deploy` si no aparece ese campo).
-2. **GitHub → Settings → Developer settings → OAuth Apps** → crear una OAuth
-   App nueva. *Homepage URL*: la URL `*.workers.dev` que te da Cloudflare.
-   *Authorization callback URL*: esa misma URL + `/admin/`.
-
-El editor de Figma Make se puede seguir usando para retocar el diseño cuando
-haga falta — lo único que cambia es que **publicar** pasa a ser "guardar en
-GitHub → Cloudflare construye y despliega solo", en vez de `figma make deploy`.
+Cada `git push` a `main` reconstruye y redeploya el sitio automáticamente. El
+editor de Figma Make se puede seguir usando para retocar el diseño cuando haga
+falta — lo único que cambia es que **publicar** pasa a ser "guardar en GitHub
+→ Cloudflare construye y despliega solo", en vez de `figma make deploy`.
