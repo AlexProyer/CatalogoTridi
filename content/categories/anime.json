@@ -1,6 +1,5 @@
 {
   "name": "Anime",
-  "pag": "Pág. 12",
   "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=200&h=160&fit=crop&auto=format",
   "accent": "#E05252",
   "order": 2,
@@ -10,7 +9,15 @@
       "name": "GOKU",
       "size": "20 cm",
       "price": "$42,000",
+      "weight": "180 g",
+      "material": "PLA Premium",
       "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=280&h=280&fit=crop&auto=format",
+      "extraImgs": [],
+      "colors": [
+        { "name": "Naranja", "hex": "#E05252" },
+        { "name": "Azul", "hex": "#2C5BE8" },
+        { "name": "Negro", "hex": "#1A1A1A" }
+      ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
     },
     {
@@ -18,7 +25,14 @@
       "name": "NARUTO",
       "size": "18 cm",
       "price": "$38,000",
+      "weight": "150 g",
+      "material": "PLA Premium",
       "img": "https://images.unsplash.com/photo-1776426270359-0277f3595496?w=280&h=280&fit=crop&auto=format",
+      "extraImgs": [],
+      "colors": [
+        { "name": "Naranja", "hex": "#E05252" },
+        { "name": "Azul", "hex": "#2C5BE8" }
+      ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
     }
   ]

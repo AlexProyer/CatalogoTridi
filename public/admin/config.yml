@@ -5,7 +5,7 @@ backend:
   base_url: https://tridi-decap-proxy.alexbuitrago156.workers.dev
   auth_endpoint: /auth
 
-# Cloudflare Pages construye el sitio automáticamente con cada commit que
+# Cloudflare construye el sitio automáticamente con cada commit que
 # guarda este panel — no hace falta hacer nada más para publicar.
 publish_mode: simple
 
@@ -26,7 +26,6 @@ collections:
     identifier_field: name
     fields:
       - { label: Nombre, name: name, widget: string }
-      - { label: 'Página (texto, ej: "Pág. 04")', name: pag, widget: string }
       - { label: Imagen de portada, name: img, widget: image }
       - { label: Color de acento, name: accent, widget: color }
       - { label: Orden de aparición, name: order, widget: number, value_type: int }
@@ -39,7 +38,22 @@ collections:
           - { label: Nombre, name: name, widget: string }
           - { label: 'Tamaño (ej: "15 cm")', name: size, widget: string }
           - { label: 'Precio (ej: "$35,000")', name: price, widget: string }
-          - { label: Foto, name: img, widget: image }
+          - { label: 'Peso (ej: "120 g")', name: weight, widget: string }
+          - { label: Material, name: material, widget: string }
+          - { label: Foto principal, name: img, widget: image }
+          - label: Fotos adicionales
+            name: extraImgs
+            widget: list
+            required: false
+            field: { label: Foto, name: img, widget: image }
+          - label: Colores disponibles
+            name: colors
+            widget: list
+            required: false
+            summary: '{{name}}'
+            fields:
+              - { label: Nombre del color, name: name, widget: string }
+              - { label: Color, name: hex, widget: color }
           - { label: Descripción, name: desc, widget: text, required: false }
 
   - name: settings
@@ -55,19 +69,4 @@ collections:
           - { label: Instagram, name: instagram, widget: string }
           - { label: Sitio web, name: website, widget: string }
           - { label: Año del catálogo, name: year, widget: string }
-
-      - name: featured
-        label: Producto destacado (página de detalle)
-        file: content/settings/featured.json
-        fields:
-          - { label: Peso estimado, name: weight, widget: string }
-          - { label: Material, name: material, widget: string }
-          - { label: Tiempo de entrega, name: delivery, widget: string }
-          - label: Colores disponibles
-            name: colorSwatches
-            widget: list
-            field: { label: Color, name: color, widget: color }
-          - label: Fotos adicionales
-            name: extraImgs
-            widget: list
-            field: { label: Foto, name: img, widget: image }
+          - { label: 'Tiempo de entrega (ej: "3 – 5 días hábiles")', name: delivery, widget: string }

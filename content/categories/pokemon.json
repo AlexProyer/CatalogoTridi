@@ -1,6 +1,5 @@
 {
   "name": "Pokémon",
-  "pag": "Pág. 04",
   "img": "https://images.unsplash.com/photo-1610081574260-e61e93e6e1aa?w=200&h=160&fit=crop&auto=format",
   "accent": "#F6C632",
   "order": 1,
@@ -10,7 +9,15 @@
       "name": "PIKACHU",
       "size": "15 cm",
       "price": "$35,000",
+      "weight": "120 g",
+      "material": "PLA Premium",
       "img": "https://images.unsplash.com/photo-1610081574260-e61e93e6e1aa?w=280&h=280&fit=crop&auto=format",
+      "extraImgs": [],
+      "colors": [
+        { "name": "Amarillo", "hex": "#F6C632" },
+        { "name": "Negro", "hex": "#1A1A1A" },
+        { "name": "Blanco", "hex": "#F5F5FA" }
+      ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
     },
     {
@@ -18,7 +25,15 @@
       "name": "CHARMANDER",
       "size": "12 cm",
       "price": "$28,000",
+      "weight": "90 g",
+      "material": "PLA Premium",
       "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=280&h=280&fit=crop&auto=format",
+      "extraImgs": [],
+      "colors": [
+        { "name": "Naranja", "hex": "#E05252" },
+        { "name": "Negro", "hex": "#1A1A1A" },
+        { "name": "Blanco", "hex": "#F5F5FA" }
+      ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
     },
     {
@@ -26,7 +41,14 @@
       "name": "SQUIRTLE",
       "size": "10 cm",
       "price": "$26,000",
+      "weight": "70 g",
+      "material": "PLA Premium",
       "img": "https://images.unsplash.com/photo-1780997533310-3c6ccae69f8f?w=280&h=280&fit=crop&auto=format",
+      "extraImgs": [],
+      "colors": [
+        { "name": "Azul", "hex": "#2C5BE8" },
+        { "name": "Blanco", "hex": "#F5F5FA" }
+      ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
     },
     {
@@ -34,7 +56,14 @@
       "name": "BULBASAUR",
       "size": "10 cm",
       "price": "$26,000",
+      "weight": "70 g",
+      "material": "PLA Premium",
       "img": "https://images.unsplash.com/photo-1693786229415-8c4b2260a925?w=280&h=280&fit=crop&auto=format",
+      "extraImgs": [],
+      "colors": [
+        { "name": "Verde", "hex": "#1DB96A" },
+        { "name": "Blanco", "hex": "#F5F5FA" }
+      ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
     },
     {
@@ -42,7 +71,14 @@
       "name": "GENGAR",
       "size": "18 cm",
       "price": "$40,000",
+      "weight": "150 g",
+      "material": "PLA Premium",
       "img": "https://images.unsplash.com/photo-1776426270359-0277f3595496?w=280&h=280&fit=crop&auto=format",
+      "extraImgs": [],
+      "colors": [
+        { "name": "Morado", "hex": "#8B30D6" },
+        { "name": "Negro", "hex": "#1A1A1A" }
+      ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
     },
     {
@@ -50,7 +86,14 @@
       "name": "EEVEE",
       "size": "12 cm",
       "price": "$30,000",
+      "weight": "90 g",
+      "material": "PLA Premium",
       "img": "https://images.unsplash.com/photo-1772121034472-de4d2977bdbb?w=280&h=280&fit=crop&auto=format",
+      "extraImgs": [],
+      "colors": [
+        { "name": "Marrón", "hex": "#C0392B" },
+        { "name": "Blanco", "hex": "#F5F5FA" }
+      ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
     },
     {
@@ -58,7 +101,14 @@
       "name": "SNORLAX",
       "size": "20 cm",
       "price": "$45,000",
+      "weight": "190 g",
+      "material": "PLA Premium",
       "img": "https://images.unsplash.com/photo-1610081574260-e61e93e6e1aa?w=280&h=280&fit=crop&auto=format",
+      "extraImgs": [],
+      "colors": [
+        { "name": "Azul", "hex": "#2C5BE8" },
+        { "name": "Blanco", "hex": "#F5F5FA" }
+      ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
     },
     {
@@ -66,7 +116,14 @@
       "name": "MEW",
       "size": "12 cm",
       "price": "$28,000",
+      "weight": "85 g",
+      "material": "PLA Premium",
       "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=280&h=280&fit=crop&auto=format",
+      "extraImgs": [],
+      "colors": [
+        { "name": "Rosa", "hex": "#E05252" },
+        { "name": "Blanco", "hex": "#F5F5FA" }
+      ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
     }
   ]

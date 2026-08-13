@@ -3,21 +3,29 @@
 // No edites este archivo para cambiar productos — usa el panel o los JSON en content/.
 // ─────────────────────────────────────────────────────────────────────────────
 
+export interface ProductColor {
+  name: string // Nombre del color (ej: "Morado")
+  hex: string  // Color en hex (ej: "#8B30D6")
+}
+
 export interface Product {
-  code: string   // Código SKU del producto
-  name: string   // Nombre del producto
-  size: string   // Tamaño (ej: "15 cm")
-  price: string  // Precio (ej: "$35,000")
-  img: string    // URL de la imagen (Unsplash, local, etc.)
-  desc: string   // Descripción corta del producto
+  code: string          // Código SKU del producto
+  name: string           // Nombre del producto
+  size: string            // Tamaño (ej: "15 cm")
+  price: string            // Precio (ej: "$35,000")
+  weight: string            // Peso estimado (ej: "120 g")
+  material: string           // Material de impresión (ej: "PLA Premium")
+  img: string                 // URL de la imagen principal
+  extraImgs: string[]          // URLs de fotos adicionales (puede ir vacío)
+  colors: ProductColor[]        // Colores disponibles para este producto
+  desc: string                   // Descripción corta del producto
 }
 
 export interface Category {
-  name: string   // Nombre de la categoría
-  pag: string    // Número de página en el catálogo
-  img: string    // URL de imagen de portada
-  accent: string // Color de acento en hex
-  order: number  // Orden de aparición
+  name: string    // Nombre de la categoría
+  img: string     // URL de imagen de portada
+  accent: string  // Color de acento en hex
+  order: number   // Orden de aparición
   products: Product[]
 }
 
@@ -28,33 +36,14 @@ interface CompanySettings {
   instagram: string
   website: string
   year: string
-}
-
-interface FeaturedSettings {
-  weight: string
-  material: string
-  delivery: string
-  colorSwatches: string[]
-  extraImgs: string[]
+  delivery: string // Tiempo de entrega general (ej: "3 – 5 días hábiles")
 }
 
 const categoryModules = import.meta.glob<{ default: Category }>('/content/categories/*.json', { eager: true })
-const companySettings = (import.meta.glob<{ default: CompanySettings }>('/content/settings/company.json', { eager: true }))
-const featuredSettings = (import.meta.glob<{ default: FeaturedSettings }>('/content/settings/featured.json', { eager: true }))
+const companySettings = import.meta.glob<{ default: CompanySettings }>('/content/settings/company.json', { eager: true })
 
 export const categories: Category[] = Object.values(categoryModules)
   .map(m => m.default)
   .sort((a, b) => a.order - b.order)
 
 export const company: CompanySettings = Object.values(companySettings)[0].default
-
-const featured: FeaturedSettings = Object.values(featuredSettings)[0].default
-
-// ─── Producto estrella para la página de detalle ──────────────────────────
-export const featuredProduct = {
-  weight: featured.weight,
-  material: featured.material,
-  delivery: featured.delivery,
-  colorSwatches: featured.colorSwatches,
-  extraImgs: featured.extraImgs,
-}

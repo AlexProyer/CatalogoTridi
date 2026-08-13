@@ -13,19 +13,28 @@ código.
    (ej: "Pokémon").
 3. Bajá hasta **Productos** y hacé clic en **"Add"** (agregar).
 4. Completá: código (opcional), nombre, tamaño (ej: `15 cm`), precio (ej:
-   `$35,000`), descripción corta, y subí la foto tocando el campo **Foto**.
-5. Hacé clic en **"Publish"** (arriba a la derecha). El sitio se reconstruye
+   `$35,000`), peso (ej: `120 g`), material (ej: `PLA Premium`), descripción
+   corta, y subí la **foto principal**.
+5. Si tenés más fotos del mismo producto, agregalas en **"Fotos adicionales"**
+   — si no cargás ninguna, el detalle del producto solo muestra la foto
+   principal (sin miniaturas). Si querés ofrecer varios colores, agregalos en
+   **"Colores disponibles"** (nombre + color) — el cliente va a poder elegir
+   cuál quiere ver en la página de detalle.
+6. Hacé clic en **"Publish"** (arriba a la derecha). El sitio se reconstruye
    solo — el cambio queda visible en 1-2 minutos.
+
+Cada producto tiene sus propios datos — cambiar el peso, material, fotos o
+colores de un producto no afecta a ningún otro.
 
 Para editar o borrar un producto existente, es el mismo camino: entrá a la
 categoría, buscá el producto en la lista y editá los campos o usá el ícono de
 basura para eliminarlo.
 
 Para agregar una **categoría nueva**, usá "Add categoría" desde la pantalla
-principal de la colección — necesita nombre, texto de página (ej: `Pág. 04`),
-imagen de portada, color de acento, y un número de **orden** (define en qué
-posición aparece en la lista de categorías; usá números salteados como 10, 20,
-30 para poder insertar categorías en el medio después).
+principal de la colección — necesita nombre, imagen de portada, color de
+acento, y un número de **orden** (define en qué posición aparece en la lista
+de categorías; usá números salteados como 10, 20, 30 para poder insertar
+categorías en el medio después).
 
 ## Fotos: formato y tamaño recomendado
 
@@ -42,11 +51,13 @@ posición aparece en la lista de categorías; usá números salteados como 10, 2
 | Campo | Dónde se ve |
 |---|---|
 | Nombre / Precio / Tamaño / Código | Tarjeta del producto y página de detalle |
-| Foto | Tarjeta del producto y foto principal del detalle |
+| Peso / Material | Fila de especificaciones en la página de detalle de ese producto |
+| Foto principal | Tarjeta del producto y foto grande del detalle |
+| Fotos adicionales | Miniaturas debajo de la foto principal en el detalle (si hay al menos una) |
+| Colores disponibles | Círculos seleccionables en el detalle — el cliente puede tocarlos para ver cuál eligió |
 | Descripción | Texto corto debajo del precio en la página de detalle |
-| Categoría → Color de acento | Color de la etiqueta "Pág. XX" en la portada de categorías |
-| Configuración → Datos de la empresa | Teléfono, Instagram, sitio web y año que aparecen en el pie de cada página |
-| Configuración → Producto destacado | Peso, material, tiempo de entrega y colores disponibles que se muestran en toda página de detalle |
+| Categoría → Color de acento | Franja de color en las tarjetas de categoría |
+| Configuración → Datos de la empresa | Teléfono, Instagram, sitio web, año y tiempo de entrega que aparecen en el pie de cada página y en el detalle de todos los productos |
 
 ## Por qué no se agregaron dependencias al sitio
 

@@ -1,5 +1,19 @@
 import { useState, useEffect } from 'react'
-import { categories, featuredProduct, company } from './data/products'
+import { categories, company } from './data/products'
+
+// ── Contact link helpers ────────────────────────────────────────────────────
+
+function telHref(phone: string) {
+  return `tel:${phone.replace(/[^\d+]/g, '')}`
+}
+
+function instagramHref(handle: string) {
+  return `https://instagram.com/${handle.replace(/^@/, '')}`
+}
+
+function websiteHref(url: string) {
+  return /^https?:\/\//.test(url) ? url : `https://${url}`
+}
 
 // ── Responsive hook ───────────────────────────────────────────────────────
 
@@ -46,10 +60,10 @@ function StarBadge() {
   )
 }
 
-function BottomBar({ dark = false, pageNum }: { dark?: boolean; pageNum?: number }) {
+function BottomBar({ dark = false }: { dark?: boolean }) {
   const bg = dark ? '#1A0A36' : '#8B30D6'
   return (
-    <div style={{ background: bg, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '7px 16px', flexShrink: 0 }}>
+    <div style={{ background: bg, display: 'flex', alignItems: 'center', padding: '7px 16px', flexShrink: 0 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
         {[
           { icon: '🖨️', label: 'IMPRESIÓN 3D' },
@@ -62,16 +76,11 @@ function BottomBar({ dark = false, pageNum }: { dark?: boolean; pageNum?: number
           </div>
         ))}
       </div>
-      {pageNum !== undefined && (
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 10, color: 'rgba(255,255,255,0.7)', letterSpacing: 2, flexShrink: 0 }}>
-          Pág. {String(pageNum).padStart(2, '0')}
-        </div>
-      )}
     </div>
   )
 }
 
-function CatalogHeader({ light = false, pageLabel }: { light?: boolean; pageLabel?: string }) {
+function CatalogHeader({ light = false }: { light?: boolean }) {
   const w = useWidth()
   const small = w < 500
   return (
@@ -86,9 +95,6 @@ function CatalogHeader({ light = false, pageLabel }: { light?: boolean; pageLabe
         CATÁLOGO TRIDI {company.year}
       </div>
       <TridiLogo light={light} small={small} />
-      {pageLabel && (
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 9, color: '#8B30D6', letterSpacing: 1 }}>{pageLabel}</div>
-      )}
     </div>
   )
 }
@@ -158,10 +164,10 @@ function CoverPage() {
       {/* Social footer */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: `8px ${mobile ? 14 : 22}px`, background: 'rgba(139,48,214,0.08)', borderTop: '1px solid rgba(139,48,214,0.18)', position: 'relative', zIndex: 2, flexWrap: 'wrap', gap: 6 }}>
         <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-          <span style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.45)', letterSpacing: 1 }}>📷 {company.instagram}</span>
-          <span style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.45)', letterSpacing: 1 }}>📞 {company.phone}</span>
+          <a href={instagramHref(company.instagram)} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.45)', letterSpacing: 1, textDecoration: 'none' }}>📷 {company.instagram}</a>
+          <a href={telHref(company.phone)} style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.45)', letterSpacing: 1, textDecoration: 'none' }}>📞 {company.phone}</a>
         </div>
-        <span style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.3)', letterSpacing: 1 }}>🌐 {company.website}</span>
+        <a href={websiteHref(company.website)} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.3)', letterSpacing: 1, textDecoration: 'none' }}>🌐 {company.website}</a>
       </div>
     </div>
   )
@@ -183,10 +189,14 @@ function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
 
         <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 8 }}>
           {categories.map((cat, i) => (
-            <div
+            <button
               key={cat.name}
+              type="button"
               onClick={() => onSelect(i)}
-              style={{ background: '#0B0D1A', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', border: '1px solid rgba(139,48,214,0.2)', transition: 'transform 0.15s' }}
+              style={{
+                all: 'unset', boxSizing: 'border-box', display: 'block', width: '100%',
+                background: '#0B0D1A', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', border: '1px solid rgba(139,48,214,0.2)', transition: 'transform 0.15s',
+              }}
               onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
               onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
             >
@@ -194,16 +204,15 @@ function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
                 <img src={cat.img} alt={cat.name} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.65 }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(8,10,20,0.85))' }} />
               </div>
-              <div style={{ padding: '7px 9px 9px' }}>
+              <div style={{ padding: '7px 9px 9px', textAlign: 'left' }}>
                 <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 13, color: '#fff', letterSpacing: 0.5 }}>{cat.name}</div>
-                <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: cat.accent, letterSpacing: 1, marginTop: 1 }}>{cat.pag}</div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
 
-      <BottomBar pageNum={2} />
+      <BottomBar />
     </div>
   )
 }
@@ -229,7 +238,7 @@ function ProductCard({ p }: { p: typeof categories[number]['products'][number] }
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 2, marginTop: 1 }}>
           <StarBadge />
-          <span style={{ fontFamily: 'Barlow', fontSize: 8, color: '#8B30D6', fontWeight: 600 }}>PLA Premium</span>
+          <span style={{ fontFamily: 'Barlow', fontSize: 8, color: '#8B30D6', fontWeight: 600 }}>{p.material}</span>
         </div>
         <div style={{ marginTop: 'auto', paddingTop: 6, borderTop: '1px solid #F0F0F5' }}>
           <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 15, color: '#0B0D1A' }}>{p.price}</div>
@@ -259,20 +268,25 @@ function ProductGridPage({ catIndex, onDetail }: { catIndex: number; onDetail: (
 
         {cat.products.length === 0 ? (
           <div style={{ textAlign: 'center', paddingTop: 40, fontFamily: 'Barlow Condensed', color: '#bbb', fontSize: 14 }}>
-            Próximamente — agrega productos en <code>src/data/products.ts</code>
+            Próximamente. Estamos preparando nuevos productos para esta categoría.
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 8 }}>
             {cat.products.map((p, i) => (
-              <div key={p.name} onClick={() => onDetail(i)} style={{ cursor: 'pointer' }}>
+              <button
+                key={p.name}
+                type="button"
+                onClick={() => onDetail(i)}
+                style={{ all: 'unset', boxSizing: 'border-box', display: 'block', width: '100%', cursor: 'pointer' }}
+              >
                 <ProductCard p={p} />
-              </div>
+              </button>
             ))}
           </div>
         )}
       </div>
 
-      <BottomBar pageNum={4} />
+      <BottomBar />
     </div>
   )
 }
@@ -284,10 +298,18 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
   const mobile = w < 580
   const cat = categories[catIndex]
   const product = cat.products[productIndex] ?? cat.products[0]
-  const fd = featuredProduct
 
-  const allImgs = [product.img, ...fd.extraImgs]
+  const allImgs = [product.img, ...product.extraImgs]
   const [activeImg, setActiveImg] = useState(0)
+  const [activeColor, setActiveColor] = useState(0)
+
+  // Un producto distinto puede tener menos fotos/colores que el anterior —
+  // sin este reset, un índice guardado del producto previo podría apuntar
+  // a una foto o color que no existe en el nuevo producto.
+  useEffect(() => {
+    setActiveImg(0)
+    setActiveColor(0)
+  }, [product.code])
 
   if (!product) return null
 
@@ -295,10 +317,10 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
     <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
       {[
         { icon: '📏', label: product.size, sub: 'Altura aproximada' },
-        { icon: '⚖️', label: fd.weight, sub: 'Peso estimado' },
-        { icon: '⭐', label: fd.material, sub: 'Material de impresión' },
-        { icon: '🎨', label: '6+ Colores disponibles', sub: '' },
-        { icon: '🚚', label: fd.delivery, sub: 'Tiempo de entrega' },
+        { icon: '⚖️', label: product.weight, sub: 'Peso estimado' },
+        { icon: '⭐', label: product.material, sub: 'Material de impresión' },
+        { icon: '🎨', label: `${product.colors.length} color${product.colors.length === 1 ? '' : 'es'} disponible${product.colors.length === 1 ? '' : 's'}`, sub: '' },
+        { icon: '🚚', label: company.delivery, sub: 'Tiempo de entrega' },
       ].map((s, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ width: 24, height: 24, borderRadius: 6, background: 'rgba(139,48,214,0.15)', display: 'grid', placeItems: 'center', fontSize: 11, flexShrink: 0 }}>{s.icon}</div>
@@ -309,6 +331,35 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
         </div>
       ))}
     </div>
+  )
+
+  const colorPicker = (swatchSize: number) => (
+    product.colors.length > 0 && (
+      <div>
+        <div style={{ fontFamily: 'Barlow Condensed', fontSize: mobile ? 9 : 8, color: 'rgba(255,255,255,0.35)', letterSpacing: 2, marginBottom: 6 }}>COLORES DISPONIBLES</div>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {product.colors.map((c, i) => (
+            <button
+              key={c.name}
+              type="button"
+              onClick={() => setActiveColor(i)}
+              aria-pressed={activeColor === i}
+              aria-label={c.name}
+              title={c.name}
+              style={{
+                all: 'unset', boxSizing: 'border-box', cursor: 'pointer',
+                width: swatchSize, height: swatchSize, borderRadius: '50%', background: c.hex,
+                border: activeColor === i ? '2px solid #fff' : '2px solid rgba(255,255,255,0.15)',
+                boxShadow: activeColor === i ? '0 0 0 2px #8B30D6' : 'none',
+              }}
+            />
+          ))}
+        </div>
+        <div style={{ fontFamily: 'Barlow', fontSize: 9, color: 'rgba(255,255,255,0.45)', marginTop: 6 }}>
+          Color seleccionado: <span style={{ color: '#fff', fontWeight: 600 }}>{product.colors[activeColor]?.name}</span>
+        </div>
+      </div>
+    )
   )
 
   if (mobile) {
@@ -331,30 +382,24 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
 
           {specsLeft}
 
-          {/* Color swatches */}
-          <div>
-            <div style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.35)', letterSpacing: 2, marginBottom: 6 }}>COLORES DISPONIBLES</div>
-            <div style={{ display: 'flex', gap: 6 }}>
-              {fd.colorSwatches.map((c, i) => (
-                <div key={i} style={{ width: 20, height: 20, borderRadius: '50%', background: c, border: '2px solid rgba(255,255,255,0.15)' }} />
-              ))}
-            </div>
-          </div>
+          {colorPicker(20)}
 
           {/* Thumbnails */}
-          <div style={{ display: 'flex', gap: 6 }}>
-            {allImgs.map((img, i) => (
-              <button key={i} onClick={() => setActiveImg(i)} style={{ flex: 1, height: 56, borderRadius: 6, overflow: 'hidden', border: i === activeImg ? '2px solid #8B30D6' : '2px solid transparent', cursor: 'pointer', padding: 0, background: '#1a1c30' }}>
-                <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </button>
-            ))}
-          </div>
+          {allImgs.length > 1 && (
+            <div style={{ display: 'flex', gap: 6 }}>
+              {allImgs.map((img, i) => (
+                <button key={i} type="button" onClick={() => setActiveImg(i)} aria-pressed={i === activeImg} aria-label={`Foto ${i + 1} de ${product.name}`} style={{ flex: 1, height: 56, borderRadius: 6, overflow: 'hidden', border: i === activeImg ? '2px solid #8B30D6' : '2px solid transparent', cursor: 'pointer', padding: 0, background: '#1a1c30' }}>
+                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* CTA */}
           <div style={{ background: 'rgba(139,48,214,0.12)', border: '1px solid rgba(139,48,214,0.3)', borderRadius: 6, padding: '10px 12px' }}>
             <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 11, color: '#8B30D6', letterSpacing: 1 }}>¿QUIERES ALGO PERSONALIZADO?</div>
             <div style={{ fontFamily: 'Barlow', fontSize: 9, color: 'rgba(255,255,255,0.45)', marginTop: 2 }}>Pedidos a medida y colores especiales disponibles.</div>
-            <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 10, color: '#fff', marginTop: 4 }}>📞 {company.phone}</div>
+            <a href={telHref(company.phone)} style={{ display: 'block', fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 10, color: '#fff', marginTop: 4, textDecoration: 'none' }}>📞 {company.phone}</a>
           </div>
         </div>
       </div>
@@ -374,22 +419,14 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
 
         <div style={{ marginTop: 12 }}>{specsLeft}</div>
 
-        {/* Color swatches */}
-        <div style={{ marginTop: 12 }}>
-          <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: 'rgba(255,255,255,0.32)', letterSpacing: 2, marginBottom: 6 }}>COLORES DISPONIBLES</div>
-          <div style={{ display: 'flex', gap: 6 }}>
-            {fd.colorSwatches.map((c, i) => (
-              <div key={i} style={{ width: 18, height: 18, borderRadius: '50%', background: c, border: '2px solid rgba(255,255,255,0.12)' }} />
-            ))}
-          </div>
-        </div>
+        <div style={{ marginTop: 12 }}>{colorPicker(18)}</div>
 
         {/* CTA */}
         <div style={{ marginTop: 'auto', paddingTop: 12, borderTop: '1px solid rgba(139,48,214,0.18)' }}>
           <div style={{ background: 'rgba(139,48,214,0.1)', border: '1px solid rgba(139,48,214,0.28)', borderRadius: 6, padding: '8px 10px' }}>
             <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 10, color: '#8B30D6', letterSpacing: 1 }}>¿QUIERES ALGO PERSONALIZADO?</div>
             <div style={{ fontFamily: 'Barlow', fontSize: 8, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>Pedidos a medida y colores especiales disponibles.</div>
-            <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 10, color: '#fff', marginTop: 4 }}>📞 {company.phone}</div>
+            <a href={telHref(company.phone)} style={{ display: 'block', fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 10, color: '#fff', marginTop: 4, textDecoration: 'none' }}>📞 {company.phone}</a>
           </div>
         </div>
       </div>
@@ -398,7 +435,6 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
       <div style={{ flex: 1, background: '#fff', display: 'flex', flexDirection: 'column' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 14px', borderBottom: '1px solid #eee', flexShrink: 0 }}>
           <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: '#bbb', letterSpacing: 2 }}>CATÁLOGO TRIDI {company.year}</div>
-          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 9, color: '#8B30D6', letterSpacing: 1 }}>Pág. 06</div>
         </div>
 
         <div style={{ flex: 1, padding: '10px 14px 8px', display: 'flex', flexDirection: 'column', gap: 8, overflow: 'hidden' }}>
@@ -406,13 +442,15 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
             <img src={allImgs[activeImg]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
 
-          <div style={{ display: 'flex', gap: 6 }}>
-            {allImgs.map((img, i) => (
-              <button key={i} onClick={() => setActiveImg(i)} style={{ flex: 1, height: 58, borderRadius: 6, overflow: 'hidden', border: i === activeImg ? '2px solid #8B30D6' : '2px solid transparent', cursor: 'pointer', padding: 0, background: '#F5F5FA' }}>
-                <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </button>
-            ))}
-          </div>
+          {allImgs.length > 1 && (
+            <div style={{ display: 'flex', gap: 6 }}>
+              {allImgs.map((img, i) => (
+                <button key={i} type="button" onClick={() => setActiveImg(i)} aria-pressed={i === activeImg} aria-label={`Foto ${i + 1} de ${product.name}`} style={{ flex: 1, height: 58, borderRadius: 6, overflow: 'hidden', border: i === activeImg ? '2px solid #8B30D6' : '2px solid transparent', cursor: 'pointer', padding: 0, background: '#F5F5FA' }}>
+                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </button>
+              ))}
+            </div>
+          )}
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 6, borderTop: '1px solid #F0F0F5' }}>
             {['🖨️ Impresión 3D', '🌈 Alta calidad', '⚡ Entrega rápida'].map(f => (
@@ -434,13 +472,15 @@ export default function App() {
   const mobile = w < 500
   const [page, setPage] = useState<PageId>('cover')
   const [catIndex, setCatIndex] = useState(0)
-  const [productIndex, setProductIndex] = useState(0)
+  // null hasta que el usuario elige un producto — así "DETALLE" no aparece
+  // en la navegación como si fuera una sección propia sin contexto.
+  const [selected, setSelected] = useState<{ cat: number; product: number } | null>(null)
 
   const NAV: { id: PageId; label: string }[] = [
     { id: 'cover', label: 'PORTADA' },
     { id: 'categories', label: 'CATEGORÍAS' },
     { id: 'grid', label: 'PRODUCTOS' },
-    { id: 'detail', label: 'DETALLE' },
+    ...(selected ? [{ id: 'detail' as PageId, label: 'DETALLE' }] : []),
   ]
 
   const goCategory = (i: number) => {
@@ -449,7 +489,7 @@ export default function App() {
   }
 
   const goDetail = (pi: number) => {
-    setProductIndex(pi)
+    setSelected({ cat: catIndex, product: pi })
     setPage('detail')
   }
 
@@ -457,7 +497,8 @@ export default function App() {
     page === 'cover'      ? <CoverPage /> :
     page === 'categories' ? <CategoriesPage onSelect={goCategory} /> :
     page === 'grid'       ? <ProductGridPage catIndex={catIndex} onDetail={goDetail} /> :
-                            <ProductDetailPage catIndex={catIndex} productIndex={productIndex} />
+    selected              ? <ProductDetailPage catIndex={selected.cat} productIndex={selected.product} /> :
+                            <CategoriesPage onSelect={goCategory} />
   )
 
   return (
@@ -467,13 +508,14 @@ export default function App() {
         {NAV.map(n => (
           <button
             key={n.id}
+            type="button"
             onClick={() => setPage(n.id)}
             style={{
               fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: mobile ? 9 : 10, letterSpacing: 1,
               color: n.id === page ? '#fff' : 'rgba(255,255,255,0.35)',
               background: n.id === page ? '#8B30D6' : 'transparent',
               border: 'none', borderRadius: 5,
-              padding: mobile ? '5px 10px' : '5px 13px',
+              padding: mobile ? '10px 12px' : '5px 13px',
               cursor: 'pointer', transition: 'all 0.15s',
             }}
           >
