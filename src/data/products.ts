@@ -37,6 +37,7 @@ interface CompanySettings {
   website: string
   year: string
   delivery: string // Tiempo de entrega general (ej: "3 – 5 días hábiles")
+  whatsapp: string // Número de WhatsApp en formato internacional sin signos (ej: "573174271275")
 }
 
 const categoryModules = import.meta.glob<{ default: Category }>('/content/categories/*.json', { eager: true })

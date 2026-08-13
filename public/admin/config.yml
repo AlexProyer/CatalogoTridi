@@ -70,3 +70,4 @@ collections:
           - { label: Sitio web, name: website, widget: string }
           - { label: Año del catálogo, name: year, widget: string }
           - { label: 'Tiempo de entrega (ej: "3 – 5 días hábiles")', name: delivery, widget: string }
+          - { label: 'WhatsApp (solo números, con código de país, ej: "573174271275")', name: whatsapp, widget: string, pattern: ['^\d{10,15}$', 'Solo números, con código de país, sin +, espacios ni guiones'] }

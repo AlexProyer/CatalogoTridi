@@ -57,7 +57,23 @@ categorías en el medio después).
 | Colores disponibles | Círculos seleccionables en el detalle — el cliente puede tocarlos para ver cuál eligió |
 | Descripción | Texto corto debajo del precio en la página de detalle |
 | Categoría → Color de acento | Franja de color en las tarjetas de categoría |
-| Configuración → Datos de la empresa | Teléfono, Instagram, sitio web, año y tiempo de entrega que aparecen en el pie de cada página y en el detalle de todos los productos |
+| Configuración → Datos de la empresa | Teléfono, Instagram, sitio web, año, tiempo de entrega y **WhatsApp** (botón "ME INTERESA" del detalle y botón flotante de todo el sitio) |
+
+## Botones de WhatsApp
+
+Hay dos, con propósitos distintos:
+
+- **"💬 ME INTERESA"** — en la página de detalle de cada producto, cerca del
+  precio. Abre WhatsApp con un mensaje ya armado que incluye nombre, código,
+  precio y el color que el cliente tenga seleccionado en ese momento (si el
+  producto tiene un solo color, o ninguno, esa línea no aparece).
+- **Botón flotante (💬 morado, esquina inferior)** — visible en las 4
+  pantallas, para cuando el cliente todavía no está viendo un producto
+  puntual. Abre WhatsApp con un mensaje genérico de contacto.
+
+Ambos usan el mismo número, definido una sola vez en **Configuración → Datos
+de la empresa → WhatsApp** (formato: solo números con código de país, ej.
+`573174271275`, sin `+` ni espacios).
 
 ## Por qué no se agregaron dependencias al sitio
 

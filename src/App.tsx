@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { categories, company } from './data/products'
+import { categories, company, type Product } from './data/products'
 
 // ── Contact link helpers ────────────────────────────────────────────────────
 
@@ -13,6 +13,27 @@ function instagramHref(handle: string) {
 
 function websiteHref(url: string) {
   return /^https?:\/\//.test(url) ? url : `https://${url}`
+}
+
+function whatsappHref(phoneDigits: string, message: string) {
+  return `https://wa.me/${phoneDigits}?text=${encodeURIComponent(message)}`
+}
+
+const WHATSAPP_GENERAL_MESSAGE = 'Hola, quisiera obtener información sobre sus productos.'
+
+function whatsappProductMessage(product: Product, selectedColorName: string | null) {
+  const lines = [`Hola, me interesa el producto ${product.name} (Código: ${product.code}).`]
+  if (selectedColorName) lines.push(`Color: ${selectedColorName}.`)
+  lines.push(`Precio: ${product.price}.`)
+  lines.push('¿Me pueden confirmar disponibilidad y cómo realizar la compra?')
+  return lines.join('\n')
+}
+
+// ── Analytics (sin proveedor todavía) ───────────────────────────────────────
+// Punto único para enganchar un proveedor real (GA4, Meta Pixel, etc.) más
+// adelante sin tocar los componentes que ya llaman a trackEvent.
+function trackEvent(name: string, data?: Record<string, unknown>) {
+  if (import.meta.env.DEV) console.log('[track]', name, data)
 }
 
 // ── Responsive hook ───────────────────────────────────────────────────────
@@ -77,6 +98,38 @@ function BottomBar({ dark = false }: { dark?: boolean }) {
         ))}
       </div>
     </div>
+  )
+}
+
+function WhatsappFloatButton() {
+  const w = useWidth()
+  // En mobile, las 4 pantallas terminan con contenido pegado al borde
+  // inferior (pie de portada, BottomBar, caja "¿personalizado?" del
+  // detalle). Esa caja no se estira con el alto del viewport, así que en
+  // teléfonos altos queda más lejos del borde — 180px cubre el caso real
+  // medido (hasta ~159px en un viewport de 896px) con margen, sin tener
+  // que conocer el layout de cada página individualmente.
+  const base = w < 500 ? 180 : 14
+  return (
+    <a
+      href={whatsappHref(company.whatsapp, WHATSAPP_GENERAL_MESSAGE)}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => trackEvent('whatsapp_float_click')}
+      aria-label="Contactar por WhatsApp"
+      title="Contactar por WhatsApp"
+      style={{
+        position: 'fixed',
+        right: 'calc(14px + env(safe-area-inset-right))',
+        bottom: `calc(${base}px + env(safe-area-inset-bottom))`,
+        width: 52, height: 52, borderRadius: '50%',
+        background: '#8B30D6', boxShadow: '0 6px 20px rgba(139,48,214,0.5)',
+        display: 'grid', placeItems: 'center',
+        textDecoration: 'none', zIndex: 1000,
+      }}
+    >
+      <span style={{ fontSize: 24, lineHeight: 1 }} aria-hidden="true">💬</span>
+    </a>
   )
 }
 
@@ -313,6 +366,33 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
 
   if (!product) return null
 
+  // Un solo color no es una elección real del cliente — no vale la pena
+  // mencionarlo en el mensaje de WhatsApp.
+  const selectedColorName = product.colors.length > 1 ? (product.colors[activeColor]?.name ?? null) : null
+  const interestedHref = whatsappHref(company.whatsapp, whatsappProductMessage(product, selectedColorName))
+  const trackInterested = () => trackEvent('cta_me_interesa_click', { code: product.code, color: selectedColorName })
+
+  const interesaButton = (size: 'sm' | 'lg') => (
+    <a
+      href={interestedHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={trackInterested}
+      aria-label={`Me interesa ${product.name} — contactar por WhatsApp`}
+      style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+        background: '#8B30D6', color: '#fff', textDecoration: 'none',
+        fontFamily: 'Barlow Condensed', fontWeight: 800, letterSpacing: 1,
+        fontSize: size === 'lg' ? 14 : 12,
+        padding: size === 'lg' ? '13px 16px' : '10px 14px',
+        borderRadius: 8, marginTop: size === 'lg' ? 10 : 8,
+        boxShadow: '0 4px 14px rgba(139,48,214,0.35)',
+      }}
+    >
+      <span aria-hidden="true">💬</span> ME INTERESA
+    </a>
+  )
+
   const specsLeft = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
       {[
@@ -377,6 +457,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
             <div style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: '#8B30D6', letterSpacing: 2 }}>{product.code}</div>
             <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 32, color: '#fff', lineHeight: 0.9 }}>{product.name}</div>
             <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 24, color: '#8B30D6', marginTop: 4 }}>{product.price}</div>
+            {interesaButton('lg')}
             <div style={{ fontFamily: 'Barlow', fontSize: 10, color: 'rgba(255,255,255,0.5)', marginTop: 7, lineHeight: 1.5 }}>{product.desc}</div>
           </div>
 
@@ -415,6 +496,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
         <div style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: '#8B30D6', letterSpacing: 2, marginTop: 8, marginBottom: 2 }}>{product.code}</div>
         <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 34, color: '#fff', lineHeight: 0.88, letterSpacing: -1 }}>{product.name}</div>
         <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 26, color: '#8B30D6', marginTop: 6 }}>{product.price}</div>
+        <div style={{ maxWidth: 210 }}>{interesaButton('sm')}</div>
         <div style={{ fontFamily: 'Barlow', fontSize: 10, color: 'rgba(255,255,255,0.5)', marginTop: 7, lineHeight: 1.5, maxWidth: 210 }}>{product.desc}</div>
 
         <div style={{ marginTop: 12 }}>{specsLeft}</div>
@@ -528,6 +610,8 @@ export default function App() {
       <div style={{ flex: 1, minHeight: 0 }}>
         {catalog}
       </div>
+
+      <WhatsappFloatButton />
     </div>
   )
 }
