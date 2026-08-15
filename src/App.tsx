@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { categories, company, type Product } from './data/products'
+import { categories, company, type Product, type Category } from './data/products'
 
 // ── Contact link helpers ────────────────────────────────────────────────────
 
@@ -27,6 +27,44 @@ function whatsappProductMessage(product: Product, selectedColorName: string | nu
   lines.push(`Precio: ${product.price}.`)
   lines.push('¿Me pueden confirmar disponibilidad y cómo realizar la compra?')
   return lines.join('\n')
+}
+
+// ── Rutas por producto (sin librería de routing) ────────────────────────────
+// El slug se calcula al vuelo a partir del nombre — no se guarda en ningún
+// lado — así que un producto o categoría nuevo agregado desde /admin/ ya
+// tiene una URL propia apenas se publica, sin tocar código.
+
+function slugify(text: string) {
+  return text
+    .normalize('NFD').replace(new RegExp('[̀-ͯ]', 'g'), '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+function productPath(cat: Category, product: Product) {
+  return `/producto/${slugify(cat.name)}/${slugify(product.name)}`
+}
+
+type RouteMatch = { cat: number; product: number } | 'not-found' | null
+
+function matchProductPath(pathname: string): RouteMatch {
+  const m = pathname.match(/^\/producto\/([^/]+)\/([^/]+)\/?$/)
+  if (!m) return null
+  const catSlug = decodeURIComponent(m[1])
+  const productSlug = decodeURIComponent(m[2])
+  const catIndex = categories.findIndex(c => slugify(c.name) === catSlug)
+  if (catIndex === -1) return 'not-found'
+  const productIndex = categories[catIndex].products.findIndex(p => slugify(p.name) === productSlug)
+  if (productIndex === -1) return 'not-found'
+  return { cat: catIndex, product: productIndex }
+}
+
+function computeInitialRoute() {
+  const match = matchProductPath(window.location.pathname)
+  if (match === 'not-found') return { page: 'not-found' as PageId, catIndex: 0, selected: null }
+  if (match) return { page: 'detail' as PageId, catIndex: match.cat, selected: match }
+  return { page: 'cover' as PageId, catIndex: 0, selected: null }
 }
 
 // ── Analytics (sin proveedor todavía) ───────────────────────────────────────
@@ -545,21 +583,73 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
   )
 }
 
+// ── Página 404 ───────────────────────────────────────────────────────────
+
+function NotFoundPage({ onBack }: { onBack: () => void }) {
+  return (
+    <div style={{ background: '#0D0F22', display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <CatalogHeader light />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, padding: 24, textAlign: 'center' }}>
+        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 64, color: '#8B30D6', lineHeight: 1 }}>404</div>
+        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 20, color: '#fff' }}>Producto no encontrado</div>
+        <div style={{ fontFamily: 'Barlow', fontSize: 11, color: 'rgba(255,255,255,0.5)', maxWidth: 280, lineHeight: 1.5 }}>
+          El link que seguiste puede haber cambiado o el producto ya no está disponible.
+        </div>
+        <button
+          type="button"
+          onClick={onBack}
+          style={{
+            all: 'unset', boxSizing: 'border-box', cursor: 'pointer', marginTop: 8,
+            background: '#8B30D6', color: '#fff',
+            fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 12, letterSpacing: 1,
+            padding: '11px 22px', borderRadius: 8,
+          }}
+        >
+          VER CATEGORÍAS
+        </button>
+      </div>
+    </div>
+  )
+}
+
 // ── App shell ──────────────────────────────────────────────────────────────
 
-type PageId = 'cover' | 'categories' | 'grid' | 'detail'
+type PageId = 'cover' | 'categories' | 'grid' | 'detail' | 'not-found'
 
 export default function App() {
   const w = useWidth()
   const mobile = w < 500
-  const [page, setPage] = useState<PageId>('cover')
-  const [catIndex, setCatIndex] = useState(0)
+  const [page, setPage] = useState<PageId>(() => computeInitialRoute().page)
+  const [catIndex, setCatIndex] = useState(() => computeInitialRoute().catIndex)
   // null hasta que el usuario elige un producto — así "DETALLE" no aparece
   // en la navegación como si fuera una sección propia sin contexto.
-  const [selected, setSelected] = useState<{ cat: number; product: number } | null>(null)
+  const [selected, setSelected] = useState<{ cat: number; product: number } | null>(() => computeInitialRoute().selected)
+
+  // Botón atrás/adelante del navegador — vuelve a resolver el estado desde
+  // la URL actual, igual que en la carga inicial.
+  useEffect(() => {
+    const onPopState = () => {
+      const match = matchProductPath(window.location.pathname)
+      if (match === 'not-found') {
+        setPage('not-found')
+        setSelected(null)
+        return
+      }
+      if (match) {
+        setCatIndex(match.cat)
+        setSelected(match)
+        setPage('detail')
+        return
+      }
+      setPage('cover')
+      setSelected(null)
+    }
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
 
   const NAV: { id: PageId; label: string }[] = [
-    { id: 'cover', label: 'PORTADA' },
+    { id: 'cover', label: 'INICIO' },
     { id: 'categories', label: 'CATEGORÍAS' },
     { id: 'grid', label: 'PRODUCTOS' },
     ...(selected ? [{ id: 'detail' as PageId, label: 'DETALLE' }] : []),
@@ -568,17 +658,26 @@ export default function App() {
   const goCategory = (i: number) => {
     setCatIndex(i)
     setPage('grid')
+    history.pushState(null, '', '/')
   }
 
   const goDetail = (pi: number) => {
     setSelected({ cat: catIndex, product: pi })
     setPage('detail')
+    history.pushState(null, '', productPath(categories[catIndex], categories[catIndex].products[pi]))
+  }
+
+  const goHome = () => {
+    setPage('categories')
+    setSelected(null)
+    history.pushState(null, '', '/')
   }
 
   const catalog = (
     page === 'cover'      ? <CoverPage /> :
     page === 'categories' ? <CategoriesPage onSelect={goCategory} /> :
     page === 'grid'       ? <ProductGridPage catIndex={catIndex} onDetail={goDetail} /> :
+    page === 'not-found'  ? <NotFoundPage onBack={goHome} /> :
     selected              ? <ProductDetailPage catIndex={selected.cat} productIndex={selected.product} /> :
                             <CategoriesPage onSelect={goCategory} />
   )
@@ -591,7 +690,14 @@ export default function App() {
           <button
             key={n.id}
             type="button"
-            onClick={() => setPage(n.id)}
+            onClick={() => {
+              setPage(n.id)
+              if (n.id === 'detail' && selected) {
+                history.pushState(null, '', productPath(categories[selected.cat], categories[selected.cat].products[selected.product]))
+              } else {
+                history.pushState(null, '', '/')
+              }
+            }}
             style={{
               fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: mobile ? 9 : 10, letterSpacing: 1,
               color: n.id === page ? '#fff' : 'rgba(255,255,255,0.35)',

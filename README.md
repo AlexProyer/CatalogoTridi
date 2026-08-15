@@ -6,6 +6,18 @@ Desde ahí podés agregar, editar o borrar categorías y productos, y subir foto
 directo desde el celular o la compu — no hace falta abrir ningún archivo de
 código.
 
+## Compartir el link de un producto
+
+Cada producto tiene su propia URL, por ejemplo:
+`catalogo-tridi.alexbuitrago156.workers.dev/producto/anime/goku`. Se genera
+sola a partir del nombre de la categoría y del producto — no hay que
+configurar nada, y funciona apenas publicás el producto desde `/admin/`.
+Sirve para pegar el link directo en Instagram, WhatsApp, etc.
+
+Si compartís un link y después le cambiás el nombre al producto (o lo
+borrás), ese link viejo deja de funcionar y muestra una página de "Producto
+no encontrado" con un botón para volver a Categorías — no rompe el sitio.
+
 ## Cómo agregar un producto nuevo
 
 1. Entrá a `/admin/` y hacé clic en **"Iniciar sesión con GitHub"**.
