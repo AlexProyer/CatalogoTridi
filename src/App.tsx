@@ -285,38 +285,45 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
 
 function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
   const w = useWidth()
+  const mobile = w < 500
   const cols = w < 420 ? 2 : 3
 
   return (
     <div style={{ background: '#fff', display: 'flex', flexDirection: 'column', height: '100%' }}>
       <CatalogHeader />
 
-      <div style={{ flex: 1, padding: `12px ${w < 500 ? 12 : 18}px`, overflow: 'auto' }}>
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: w < 500 ? 24 : 30, color: '#0B0D1A', letterSpacing: -0.5, marginBottom: 2 }}>CATEGORÍAS</div>
-        <div style={{ fontFamily: 'Barlow', fontSize: 10, color: '#999', marginBottom: 14 }}>Explora nuestra colección completa de figuras impresas en 3D.</div>
+      <div style={{
+        flex: 1, display: 'flex', flexDirection: 'column',
+        justifyContent: mobile ? 'flex-start' : 'center',
+        padding: `12px ${mobile ? 12 : 18}px`, overflow: 'auto',
+      }}>
+        <div style={{ maxWidth: 1200, width: '100%', margin: '0 auto' }}>
+          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: mobile ? 24 : 30, color: '#0B0D1A', letterSpacing: -0.5, marginBottom: 2 }}>CATEGORÍAS</div>
+          <div style={{ fontFamily: 'Barlow', fontSize: 10, color: '#999', marginBottom: 14 }}>Explora nuestra colección completa de figuras impresas en 3D.</div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 8 }}>
-          {categories.map((cat, i) => (
-            <button
-              key={cat.name}
-              type="button"
-              onClick={() => onSelect(i)}
-              style={{
-                all: 'unset', boxSizing: 'border-box', display: 'block', width: '100%',
-                background: '#0B0D1A', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', border: '1px solid rgba(139,48,214,0.2)', transition: 'transform 0.15s',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
-              onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-            >
-              <div style={{ height: w < 420 ? 72 : 90, overflow: 'hidden', position: 'relative' }}>
-                <img src={cat.img} alt={cat.name} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.65 }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(8,10,20,0.85))' }} />
-              </div>
-              <div style={{ padding: '7px 9px 9px', textAlign: 'left' }}>
-                <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 13, color: '#fff', letterSpacing: 0.5 }}>{cat.name}</div>
-              </div>
-            </button>
-          ))}
+          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 8 }}>
+            {categories.map((cat, i) => (
+              <button
+                key={cat.name}
+                type="button"
+                onClick={() => onSelect(i)}
+                style={{
+                  all: 'unset', boxSizing: 'border-box', display: 'block', width: '100%',
+                  background: '#0B0D1A', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', border: '1px solid rgba(139,48,214,0.2)', transition: 'transform 0.15s',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
+                onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+              >
+                <div style={{ paddingTop: '58%', overflow: 'hidden', position: 'relative' }}>
+                  <img src={cat.img} alt={cat.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.65 }} />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(8,10,20,0.85))' }} />
+                </div>
+                <div style={{ padding: '7px 9px 9px', textAlign: 'left' }}>
+                  <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 13, color: '#fff', letterSpacing: 0.5 }}>{cat.name}</div>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
