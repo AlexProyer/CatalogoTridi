@@ -227,9 +227,9 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
             {company.year}
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 16 }}>
             {['🖨️ Impresión 3D', '🎨 Diseño Personalizado', '⚙️ Modelado 3D'].map(f => (
-              <div key={f} style={{ background: 'rgba(139,48,214,0.15)', border: '1px solid rgba(139,48,214,0.35)', borderRadius: 4, padding: '3px 9px', fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.75)', letterSpacing: 1 }}>
+              <div key={f} style={{ background: 'rgba(139,48,214,0.15)', border: '1px solid rgba(139,48,214,0.35)', borderRadius: 4, padding: mobile ? '4px 10px' : '6px 12px', fontFamily: 'Barlow Condensed', fontSize: mobile ? 10 : 12, color: 'rgba(255,255,255,0.85)', letterSpacing: 0.5 }}>
                 {f}
               </div>
             ))}
@@ -260,10 +260,10 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
               alt="Figura impresa en 3D"
               style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }}
             />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,10,20,0.7) 0%, transparent 55%)' }} />
-            <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10 }}>
-              <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 10, color: '#8B30D6', letterSpacing: 2 }}>FIGURA PREMIUM</div>
-              <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: 'rgba(255,255,255,0.5)' }}>Impresión FLA · Alta calidad</div>
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,10,20,0.85) 0%, transparent 55%)' }} />
+            <div style={{ position: 'absolute', bottom: 14, left: 14, right: 14 }}>
+              <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 14, color: '#8B30D6', letterSpacing: 1.5 }}>FIGURA PREMIUM</div>
+              <div style={{ fontFamily: 'Barlow Condensed', fontSize: 11, color: 'rgba(255,255,255,0.8)', marginTop: 2 }}>Impresión FLA · Alta calidad</div>
             </div>
           </div>
         )}
