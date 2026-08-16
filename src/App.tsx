@@ -192,7 +192,7 @@ function CatalogHeader({ light = false }: { light?: boolean }) {
 
 // ── Page 1: Cover ─────────────────────────────────────────────────────────
 
-function CoverPage() {
+function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
   const w = useWidth()
   const mobile = w < 500
 
@@ -233,11 +233,27 @@ function CoverPage() {
               </div>
             ))}
           </div>
+
+          <button
+            type="button"
+            onClick={onViewCatalog}
+            style={{
+              all: 'unset', boxSizing: 'border-box', cursor: 'pointer', marginTop: mobile ? 18 : 24,
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: '#8B30D6', color: '#fff',
+              fontFamily: 'Barlow Condensed', fontWeight: 800, letterSpacing: 1,
+              fontSize: mobile ? 12 : 13,
+              padding: mobile ? '12px 20px' : '13px 24px',
+              borderRadius: 8, boxShadow: '0 6px 18px rgba(139,48,214,0.4)',
+            }}
+          >
+            VER CATÁLOGO <span aria-hidden="true">→</span>
+          </button>
         </div>
 
         {/* Hero image */}
         {!mobile && (
-          <div style={{ width: 200, height: 240, flexShrink: 0, borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(139,48,214,0.3)', position: 'relative' }}>
+          <div style={{ width: 'clamp(200px, 22vw, 320px)', height: 'clamp(240px, 46vh, 440px)', flexShrink: 0, borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(139,48,214,0.3)', position: 'relative' }}>
             <img
               src="https://images.unsplash.com/photo-1776426270359-0277f3595496?w=400&h=480&fit=crop&auto=format"
               alt="Figura impresa en 3D"
@@ -674,7 +690,7 @@ export default function App() {
   }
 
   const catalog = (
-    page === 'cover'      ? <CoverPage /> :
+    page === 'cover'      ? <CoverPage onViewCatalog={goHome} /> :
     page === 'categories' ? <CategoriesPage onSelect={goCategory} /> :
     page === 'grid'       ? <ProductGridPage catIndex={catIndex} onDetail={goDetail} /> :
     page === 'not-found'  ? <NotFoundPage onBack={goHome} /> :
