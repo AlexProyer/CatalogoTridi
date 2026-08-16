@@ -456,7 +456,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
   )
 
   const specsLeft = (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: mobile ? 7 : 11 }}>
       {[
         { icon: '📏', label: product.size, sub: 'Altura aproximada' },
         { icon: '⚖️', label: product.weight, sub: 'Peso estimado' },
@@ -464,11 +464,11 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
         { icon: '🎨', label: `${product.colors.length} color${product.colors.length === 1 ? '' : 'es'} disponible${product.colors.length === 1 ? '' : 's'}`, sub: '' },
         { icon: '🚚', label: company.delivery, sub: 'Tiempo de entrega' },
       ].map((s, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 24, height: 24, borderRadius: 6, background: 'rgba(139,48,214,0.15)', display: 'grid', placeItems: 'center', fontSize: 11, flexShrink: 0 }}>{s.icon}</div>
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: mobile ? 8 : 10 }}>
+          <div style={{ width: mobile ? 24 : 28, height: mobile ? 24 : 28, borderRadius: 6, background: 'rgba(139,48,214,0.15)', display: 'grid', placeItems: 'center', fontSize: mobile ? 11 : 13, flexShrink: 0 }}>{s.icon}</div>
           <div>
-            <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 600, fontSize: 11, color: '#fff' }}>{s.label}</div>
-            {s.sub && <div style={{ fontFamily: 'Barlow', fontSize: 8, color: 'rgba(255,255,255,0.38)' }}>{s.sub}</div>}
+            <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 600, fontSize: mobile ? 11 : 13, color: '#fff' }}>{s.label}</div>
+            {s.sub && <div style={{ fontFamily: 'Barlow', fontSize: mobile ? 8 : 10, color: 'rgba(255,255,255,0.42)' }}>{s.sub}</div>}
           </div>
         </div>
       ))}
@@ -478,8 +478,8 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
   const colorPicker = (swatchSize: number) => (
     product.colors.length > 0 && (
       <div>
-        <div style={{ fontFamily: 'Barlow Condensed', fontSize: mobile ? 9 : 8, color: 'rgba(255,255,255,0.35)', letterSpacing: 2, marginBottom: 6 }}>COLORES DISPONIBLES</div>
-        <div style={{ display: 'flex', gap: mobile ? 9 : 6, flexWrap: 'wrap' }}>
+        <div style={{ fontFamily: 'Barlow Condensed', fontSize: mobile ? 9 : 11, color: 'rgba(255,255,255,0.4)', letterSpacing: 2, marginBottom: 8 }}>COLORES DISPONIBLES</div>
+        <div style={{ display: 'flex', gap: mobile ? 9 : 8, flexWrap: 'wrap' }}>
           {product.colors.map((c, i) => (
             <button
               key={c.name}
@@ -497,7 +497,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
             />
           ))}
         </div>
-        <div style={{ fontFamily: 'Barlow', fontSize: 9, color: 'rgba(255,255,255,0.45)', marginTop: 6 }}>
+        <div style={{ fontFamily: 'Barlow', fontSize: mobile ? 9 : 11, color: 'rgba(255,255,255,0.5)', marginTop: 8 }}>
           Color seleccionado: <span style={{ color: '#fff', fontWeight: 600 }}>{product.colors[activeColor]?.name}</span>
         </div>
       </div>
@@ -555,22 +555,24 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
       <div style={{ width: '44%', background: '#0D0F22', display: 'flex', flexDirection: 'column', padding: '12px 16px', flexShrink: 0, overflow: 'auto' }}>
         <CatalogHeader light />
 
-        <div style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: '#8B30D6', letterSpacing: 2, marginTop: 8, marginBottom: 2 }}>{product.code}</div>
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 34, color: '#fff', lineHeight: 0.88, letterSpacing: -1 }}>{product.name}</div>
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 26, color: '#8B30D6', marginTop: 6 }}>{product.price}</div>
-        <div style={{ maxWidth: 210 }}>{interesaButton('sm')}</div>
-        <div style={{ fontFamily: 'Barlow', fontSize: 10, color: 'rgba(255,255,255,0.5)', marginTop: 7, lineHeight: 1.5, maxWidth: 210 }}>{product.desc}</div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: 0 }}>
+          <div style={{ fontFamily: 'Barlow Condensed', fontSize: 11, color: '#8B30D6', letterSpacing: 2, marginTop: 8, marginBottom: 2 }}>{product.code}</div>
+          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 34, color: '#fff', lineHeight: 0.88, letterSpacing: -1 }}>{product.name}</div>
+          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 26, color: '#8B30D6', marginTop: 6 }}>{product.price}</div>
+          <div style={{ maxWidth: 380, marginTop: 4 }}>{interesaButton('sm')}</div>
+          <div style={{ fontFamily: 'Barlow', fontSize: 13, color: 'rgba(255,255,255,0.55)', marginTop: 10, lineHeight: 1.6, maxWidth: 380 }}>{product.desc}</div>
 
-        <div style={{ marginTop: 12 }}>{specsLeft}</div>
+          <div style={{ marginTop: 20 }}>{specsLeft}</div>
 
-        <div style={{ marginTop: 12 }}>{colorPicker(18)}</div>
+          <div style={{ marginTop: 20 }}>{colorPicker(24)}</div>
 
-        {/* CTA */}
-        <div style={{ marginTop: 'auto', paddingTop: 12, borderTop: '1px solid rgba(139,48,214,0.18)' }}>
-          <div style={{ background: 'rgba(139,48,214,0.1)', border: '1px solid rgba(139,48,214,0.28)', borderRadius: 6, padding: '8px 10px' }}>
-            <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 10, color: '#8B30D6', letterSpacing: 1 }}>¿QUIERES ALGO PERSONALIZADO?</div>
-            <div style={{ fontFamily: 'Barlow', fontSize: 8, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>Pedidos a medida y colores especiales disponibles.</div>
-            <a href={telHref(company.phone)} style={{ display: 'block', fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 10, color: '#fff', marginTop: 4, textDecoration: 'none' }}>📞 {company.phone}</a>
+          {/* CTA */}
+          <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid rgba(139,48,214,0.18)' }}>
+            <div style={{ background: 'rgba(139,48,214,0.1)', border: '1px solid rgba(139,48,214,0.28)', borderRadius: 8, padding: '14px 16px', maxWidth: 380 }}>
+              <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 13, color: '#8B30D6', letterSpacing: 1 }}>¿QUIERES ALGO PERSONALIZADO?</div>
+              <div style={{ fontFamily: 'Barlow', fontSize: 11, color: 'rgba(255,255,255,0.5)', marginTop: 3 }}>Pedidos a medida y colores especiales disponibles.</div>
+              <a href={telHref(company.phone)} style={{ display: 'block', fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 13, color: '#fff', marginTop: 6, textDecoration: 'none' }}>📞 {company.phone}</a>
+            </div>
           </div>
         </div>
       </div>
