@@ -335,6 +335,11 @@ function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
 // ── Page 3: Product Grid ───────────────────────────────────────────────────
 
 function ProductCard({ p }: { p: typeof categories[number]['products'][number] }) {
+  const w = useWidth()
+  // Coincide con los cortes de columnas de ProductGridPage: con 4 columnas
+  // (w >= 600) las tarjetas quedan bastante más grandes, así que el texto
+  // interno puede crecer con ellas en vez de quedarse en el tamaño mínimo.
+  const compact = w < 600
   return (
     <div
       style={{ background: '#fff', border: '1px solid #EAEBF0', borderRadius: 8, overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'box-shadow 0.15s' }}
@@ -344,19 +349,19 @@ function ProductCard({ p }: { p: typeof categories[number]['products'][number] }
       <div style={{ paddingTop: '85%', position: 'relative', background: '#F5F5FA', overflow: 'hidden' }}>
         <img src={p.img} alt={p.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
       </div>
-      <div style={{ padding: '8px 9px 10px', flex: 1, display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 13, color: '#0B0D1A', letterSpacing: 0.3 }}>{p.name}</div>
-        <div style={{ fontFamily: 'Barlow', fontSize: 8, color: '#bbb' }}>{p.code}</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 2 }}>
-          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><rect x="1" y="4" width="7" height="1" fill="#8B30D6" /><rect x="4" y="1" width="1" height="7" fill="#8B30D6" /></svg>
-          <span style={{ fontFamily: 'Barlow', fontSize: 9, color: '#666' }}>{p.size}</span>
+      <div style={{ padding: compact ? '8px 9px 10px' : '12px 14px 14px', flex: 1, display: 'flex', flexDirection: 'column', gap: compact ? 3 : 5 }}>
+        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: compact ? 13 : 16, color: '#0B0D1A', letterSpacing: 0.3 }}>{p.name}</div>
+        <div style={{ fontFamily: 'Barlow', fontSize: compact ? 8 : 11, color: '#999' }}>{p.code}</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+          <svg width={compact ? 9 : 11} height={compact ? 9 : 11} viewBox="0 0 9 9" fill="none"><rect x="1" y="4" width="7" height="1" fill="#8B30D6" /><rect x="4" y="1" width="1" height="7" fill="#8B30D6" /></svg>
+          <span style={{ fontFamily: 'Barlow', fontSize: compact ? 9 : 12, color: '#666' }}>{p.size}</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2, marginTop: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 1 }}>
           <StarBadge />
-          <span style={{ fontFamily: 'Barlow', fontSize: 8, color: '#8B30D6', fontWeight: 600 }}>{p.material}</span>
+          <span style={{ fontFamily: 'Barlow', fontSize: compact ? 8 : 12, color: '#8B30D6', fontWeight: 600 }}>{p.material}</span>
         </div>
-        <div style={{ marginTop: 'auto', paddingTop: 6, borderTop: '1px solid #F0F0F5' }}>
-          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 15, color: '#0B0D1A' }}>{p.price}</div>
+        <div style={{ marginTop: 'auto', paddingTop: compact ? 6 : 10, borderTop: '1px solid #F0F0F5' }}>
+          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: compact ? 15 : 19, color: '#0B0D1A' }}>{p.price}</div>
         </div>
       </div>
     </div>
@@ -376,7 +381,7 @@ function ProductGridPage({ catIndex, onDetail }: { catIndex: number; onDetail: (
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 10, marginBottom: 12 }}>
           <div>
             <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: w < 500 ? 24 : 28, color: '#0B0D1A', letterSpacing: -0.5 }}>{cat.name}</div>
-            <div style={{ fontFamily: 'Barlow', fontSize: 10, color: '#999', maxWidth: 260 }}>Figuras impresas en 3D de alta calidad. Ideales para coleccionistas y fans.</div>
+            <div style={{ fontFamily: 'Barlow', fontSize: w < 500 ? 10 : 12, color: '#999', maxWidth: 320 }}>Figuras impresas en 3D de alta calidad. Ideales para coleccionistas y fans.</div>
           </div>
           <div style={{ marginLeft: 'auto', width: 36, height: 36, borderRadius: '50%', border: '3px solid #EAEBF0', background: 'linear-gradient(180deg,#fff 50%,#f0f0f5 50%)', flexShrink: 0 }} />
         </div>
