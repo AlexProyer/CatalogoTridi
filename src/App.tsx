@@ -210,9 +210,10 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
       {/* Main */}
       <div style={{
         flex: 1, display: 'flex', flexDirection: mobile ? 'column' : 'row',
-        alignItems: mobile ? 'flex-start' : 'center',
+        alignItems: mobile ? 'flex-start' : 'center', justifyContent: 'center',
         padding: `0 ${mobile ? 14 : 24}px ${mobile ? 10 : 0}px`,
-        position: 'relative', zIndex: 2, gap: mobile ? 12 : 16,
+        position: 'relative', zIndex: 2, gap: mobile ? 12 : 40,
+        maxWidth: 1100, width: '100%', margin: '0 auto',
       }}>
         {/* Text */}
         <div style={{ flex: 1, minWidth: 0 }}>
