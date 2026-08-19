@@ -12,3 +12,6 @@ logs/
 .claude-replay.*
 .tmp-*
 .claude/settings.local.json
+.agents/
+.claude/skills/
+skills-lock.json
