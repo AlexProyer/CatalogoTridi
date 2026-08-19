@@ -4,6 +4,9 @@
   "robots": {
     "index": false
   },
+  "icons": {
+    "icon": "/tridi-icon.png"
+  },
   "accessibility": {
     "addBypassLinks": false,
     "ignoreReducedMotion": false

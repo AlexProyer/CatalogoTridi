@@ -18,7 +18,11 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #4a2d8a; border-radius: 2px; }
 
+/* !important is required here: every interactive element in App.tsx uses
+   inline `style={{ all: 'unset' }}`, and an inline declaration always wins
+   over an external rule for the same property unless that rule is
+   !important — so without it this focus ring is silently discarded. */
 :focus-visible {
-  outline: 2px solid #8B30D6;
-  outline-offset: 2px;
+  outline: 2px solid #8B30D6 !important;
+  outline-offset: 2px !important;
 }

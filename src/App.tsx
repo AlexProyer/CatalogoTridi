@@ -90,15 +90,11 @@ function useWidth() {
 
 function TridiLogo({ light = false, small = false }: { light?: boolean; small?: boolean }) {
   const text = light ? '#fff' : '#0B0D1A'
-  const sub = light ? 'rgba(255,255,255,0.55)' : '#888'
+  const sub = light ? 'rgba(255,255,255,0.65)' : '#6b6b6b'
   const sz = small ? 24 : 32
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: small ? 6 : 8 }}>
-      <svg width={sz} height={sz} viewBox="0 0 32 32" fill="none">
-        <polygon points="16,2 30,28 2,28" fill="#8B30D6" />
-        <polygon points="16,10 24,26 8,26" fill="rgba(255,255,255,0.15)" />
-        <circle cx="16" cy="20" r="3" fill="#fff" />
-      </svg>
+      <img src="/tridi-icon.png" alt="" width={sz} height={sz} style={{ objectFit: 'contain', flexShrink: 0 }} />
       <div>
         <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: small ? 13 : 16, letterSpacing: 3, color: text, lineHeight: 1 }}>
           {company.name}
@@ -182,7 +178,7 @@ function CatalogHeader({ light = false }: { light?: boolean }) {
       borderBottom: light ? 'none' : '1px solid #eee',
       flexShrink: 0,
     }}>
-      <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: light ? 'rgba(255,255,255,0.3)' : '#bbb', letterSpacing: 2 }}>
+      <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: light ? 'rgba(255,255,255,0.5)' : '#767676', letterSpacing: 2 }}>
         CATÁLOGO TRIDI {company.year}
       </div>
       <TridiLogo light={light} small={small} />
@@ -204,7 +200,7 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: `12px ${mobile ? 14 : 22}px`, position: 'relative', zIndex: 2 }}>
         <TridiLogo light small={mobile} />
-        <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: 'rgba(255,255,255,0.3)', letterSpacing: 2 }}>CATÁLOGO {company.year}</div>
+        <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: 'rgba(255,255,255,0.5)', letterSpacing: 2 }}>CATÁLOGO {company.year}</div>
       </div>
 
       {/* Main */}
@@ -223,7 +219,7 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
           <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: mobile ? 'clamp(28px,10vw,44px)' : 'clamp(32px,5.5vw,52px)', color: '#8B30D6', lineHeight: 0.88, letterSpacing: -1, textTransform: 'uppercase' }}>
             DE PRODUCTOS
           </div>
-          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: mobile ? 22 : 36, color: 'rgba(255,255,255,0.4)', lineHeight: 1, letterSpacing: 6, marginTop: 4 }}>
+          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: mobile ? 22 : 36, color: 'rgba(255,255,255,0.6)', lineHeight: 1, letterSpacing: 6, marginTop: 4 }}>
             {company.year}
           </div>
 
@@ -272,10 +268,10 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
       {/* Social footer */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: `8px ${mobile ? 14 : 22}px`, background: 'rgba(139,48,214,0.08)', borderTop: '1px solid rgba(139,48,214,0.18)', position: 'relative', zIndex: 2, flexWrap: 'wrap', gap: 6 }}>
         <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-          <a href={instagramHref(company.instagram)} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.45)', letterSpacing: 1, textDecoration: 'none' }}>📷 {company.instagram}</a>
-          <a href={telHref(company.phone)} style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.45)', letterSpacing: 1, textDecoration: 'none' }}>📞 {company.phone}</a>
+          <a href={instagramHref(company.instagram)} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.6)', letterSpacing: 1, textDecoration: 'none' }}>📷 {company.instagram}</a>
+          <a href={telHref(company.phone)} style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.6)', letterSpacing: 1, textDecoration: 'none' }}>📞 {company.phone}</a>
         </div>
-        <a href={websiteHref(company.website)} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.3)', letterSpacing: 1, textDecoration: 'none' }}>🌐 {company.website}</a>
+        <a href={websiteHref(company.website)} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.6)', letterSpacing: 1, textDecoration: 'none' }}>🌐 {company.website}</a>
       </div>
     </div>
   )
@@ -299,7 +295,7 @@ function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
       }}>
         <div style={{ maxWidth: 1200, width: '100%', margin: '0 auto' }}>
           <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: mobile ? 24 : 30, color: '#0B0D1A', letterSpacing: -0.5, marginBottom: 2 }}>CATEGORÍAS</div>
-          <div style={{ fontFamily: 'Barlow', fontSize: 10, color: '#999', marginBottom: 14 }}>Explora nuestra colección completa de figuras impresas en 3D.</div>
+          <div style={{ fontFamily: 'Barlow', fontSize: 10, color: '#767676', marginBottom: 14 }}>Explora nuestra colección completa de figuras impresas en 3D.</div>
 
           <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 8 }}>
             {categories.map((cat, i) => (
@@ -309,7 +305,7 @@ function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
                 onClick={() => onSelect(i)}
                 style={{
                   all: 'unset', boxSizing: 'border-box', display: 'block', width: '100%',
-                  background: '#0B0D1A', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', border: '1px solid rgba(139,48,214,0.2)', transition: 'transform 0.15s',
+                  background: '#0B0D1A', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', border: `1px solid ${cat.accent}55`, transition: 'transform 0.15s',
                 }}
                 onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
                 onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
@@ -318,7 +314,7 @@ function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
                   <img src={cat.img} alt={cat.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.65 }} />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(8,10,20,0.85))' }} />
                 </div>
-                <div style={{ padding: '7px 9px 9px', textAlign: 'left' }}>
+                <div style={{ padding: '7px 9px 9px', textAlign: 'left', borderTop: `3px solid ${cat.accent}` }}>
                   <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 13, color: '#fff', letterSpacing: 0.5 }}>{cat.name}</div>
                 </div>
               </button>
@@ -351,7 +347,7 @@ function ProductCard({ p }: { p: typeof categories[number]['products'][number] }
       </div>
       <div style={{ padding: compact ? '8px 9px 10px' : '12px 14px 14px', flex: 1, display: 'flex', flexDirection: 'column', gap: compact ? 3 : 5 }}>
         <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: compact ? 13 : 16, color: '#0B0D1A', letterSpacing: 0.3 }}>{p.name}</div>
-        <div style={{ fontFamily: 'Barlow', fontSize: compact ? 8 : 11, color: '#999' }}>{p.code}</div>
+        <div style={{ fontFamily: 'Barlow', fontSize: compact ? 8 : 11, color: '#767676' }}>{p.code}</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
           <svg width={compact ? 9 : 11} height={compact ? 9 : 11} viewBox="0 0 9 9" fill="none"><rect x="1" y="4" width="7" height="1" fill="#8B30D6" /><rect x="4" y="1" width="1" height="7" fill="#8B30D6" /></svg>
           <span style={{ fontFamily: 'Barlow', fontSize: compact ? 9 : 12, color: '#666' }}>{p.size}</span>
@@ -381,13 +377,13 @@ function ProductGridPage({ catIndex, onDetail }: { catIndex: number; onDetail: (
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 10, marginBottom: 12 }}>
           <div>
             <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: w < 500 ? 24 : 28, color: '#0B0D1A', letterSpacing: -0.5 }}>{cat.name}</div>
-            <div style={{ fontFamily: 'Barlow', fontSize: w < 500 ? 10 : 12, color: '#999', maxWidth: 320 }}>Figuras impresas en 3D de alta calidad. Ideales para coleccionistas y fans.</div>
+            <div style={{ fontFamily: 'Barlow', fontSize: w < 500 ? 10 : 12, color: '#767676', maxWidth: 320 }}>Figuras impresas en 3D de alta calidad. Ideales para coleccionistas y fans.</div>
           </div>
           <div style={{ marginLeft: 'auto', width: 36, height: 36, borderRadius: '50%', border: '3px solid #EAEBF0', background: 'linear-gradient(180deg,#fff 50%,#f0f0f5 50%)', flexShrink: 0 }} />
         </div>
 
         {cat.products.length === 0 ? (
-          <div style={{ textAlign: 'center', paddingTop: 40, fontFamily: 'Barlow Condensed', color: '#bbb', fontSize: 14 }}>
+          <div style={{ textAlign: 'center', paddingTop: 40, fontFamily: 'Barlow Condensed', color: '#767676', fontSize: 14 }}>
             Próximamente. Estamos preparando nuevos productos para esta categoría.
           </div>
         ) : (
@@ -473,7 +469,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
           <div style={{ width: mobile ? 24 : 28, height: mobile ? 24 : 28, borderRadius: 6, background: 'rgba(139,48,214,0.15)', display: 'grid', placeItems: 'center', fontSize: mobile ? 11 : 13, flexShrink: 0 }}>{s.icon}</div>
           <div>
             <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 600, fontSize: mobile ? 11 : 13, color: '#fff' }}>{s.label}</div>
-            {s.sub && <div style={{ fontFamily: 'Barlow', fontSize: mobile ? 8 : 10, color: 'rgba(255,255,255,0.42)' }}>{s.sub}</div>}
+            {s.sub && <div style={{ fontFamily: 'Barlow', fontSize: mobile ? 8 : 10, color: 'rgba(255,255,255,0.6)' }}>{s.sub}</div>}
           </div>
         </div>
       ))}
@@ -483,7 +479,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
   const colorPicker = (swatchSize: number) => (
     product.colors.length > 0 && (
       <div>
-        <div style={{ fontFamily: 'Barlow Condensed', fontSize: mobile ? 9 : 11, color: 'rgba(255,255,255,0.4)', letterSpacing: 2, marginBottom: 8 }}>COLORES DISPONIBLES</div>
+        <div style={{ fontFamily: 'Barlow Condensed', fontSize: mobile ? 9 : 11, color: 'rgba(255,255,255,0.6)', letterSpacing: 2, marginBottom: 8 }}>COLORES DISPONIBLES</div>
         <div style={{ display: 'flex', gap: mobile ? 9 : 8, flexWrap: 'wrap' }}>
           {product.colors.map((c, i) => (
             <button
@@ -502,7 +498,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
             />
           ))}
         </div>
-        <div style={{ fontFamily: 'Barlow', fontSize: mobile ? 9 : 11, color: 'rgba(255,255,255,0.5)', marginTop: 8 }}>
+        <div style={{ fontFamily: 'Barlow', fontSize: mobile ? 9 : 11, color: 'rgba(255,255,255,0.65)', marginTop: 8 }}>
           Color seleccionado: <span style={{ color: '#fff', fontWeight: 600 }}>{product.colors[activeColor]?.name}</span>
         </div>
       </div>
@@ -524,8 +520,18 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
             <div style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: '#8B30D6', letterSpacing: 2 }}>{product.code}</div>
             <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 32, color: '#fff', lineHeight: 0.9 }}>{product.name}</div>
             <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 24, color: '#8B30D6', marginTop: 4 }}>{product.price}</div>
+          </div>
+
+          {/* Sticky: en mobile todo este bloque hace scroll dentro del
+              contenedor de la página — sin esto, "ME INTERESA" queda arriba
+              del todo y desaparece apenas el cliente baja a ver specs,
+              colores o miniaturas. */}
+          <div style={{ position: 'sticky', top: 0, zIndex: 5, background: '#0D0F22', margin: '0 -16px', padding: '8px 16px' }}>
             {interesaButton('lg')}
-            <div style={{ fontFamily: 'Barlow', fontSize: 10, color: 'rgba(255,255,255,0.5)', marginTop: 7, lineHeight: 1.5 }}>{product.desc}</div>
+          </div>
+
+          <div>
+            <div style={{ fontFamily: 'Barlow', fontSize: 10, color: 'rgba(255,255,255,0.65)', marginTop: 7, lineHeight: 1.5 }}>{product.desc}</div>
           </div>
 
           {specsLeft}
@@ -546,7 +552,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
           {/* CTA */}
           <div style={{ background: 'rgba(139,48,214,0.12)', border: '1px solid rgba(139,48,214,0.3)', borderRadius: 6, padding: '10px 12px' }}>
             <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 11, color: '#8B30D6', letterSpacing: 1 }}>¿QUIERES ALGO PERSONALIZADO?</div>
-            <div style={{ fontFamily: 'Barlow', fontSize: 9, color: 'rgba(255,255,255,0.45)', marginTop: 2 }}>Pedidos a medida y colores especiales disponibles.</div>
+            <div style={{ fontFamily: 'Barlow', fontSize: 9, color: 'rgba(255,255,255,0.6)', marginTop: 2 }}>Pedidos a medida y colores especiales disponibles.</div>
             <a href={telHref(company.phone)} style={{ display: 'block', fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 10, color: '#fff', marginTop: 4, textDecoration: 'none' }}>📞 {company.phone}</a>
           </div>
         </div>
@@ -565,7 +571,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
           <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 34, color: '#fff', lineHeight: 0.88, letterSpacing: -1 }}>{product.name}</div>
           <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 26, color: '#8B30D6', marginTop: 6 }}>{product.price}</div>
           <div style={{ maxWidth: 380, marginTop: 4 }}>{interesaButton('sm')}</div>
-          <div style={{ fontFamily: 'Barlow', fontSize: 13, color: 'rgba(255,255,255,0.55)', marginTop: 10, lineHeight: 1.6, maxWidth: 380 }}>{product.desc}</div>
+          <div style={{ fontFamily: 'Barlow', fontSize: 13, color: 'rgba(255,255,255,0.65)', marginTop: 10, lineHeight: 1.6, maxWidth: 380 }}>{product.desc}</div>
 
           <div style={{ marginTop: 20 }}>{specsLeft}</div>
 
@@ -575,7 +581,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
           <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid rgba(139,48,214,0.18)' }}>
             <div style={{ background: 'rgba(139,48,214,0.1)', border: '1px solid rgba(139,48,214,0.28)', borderRadius: 8, padding: '14px 16px', maxWidth: 380 }}>
               <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 13, color: '#8B30D6', letterSpacing: 1 }}>¿QUIERES ALGO PERSONALIZADO?</div>
-              <div style={{ fontFamily: 'Barlow', fontSize: 11, color: 'rgba(255,255,255,0.5)', marginTop: 3 }}>Pedidos a medida y colores especiales disponibles.</div>
+              <div style={{ fontFamily: 'Barlow', fontSize: 11, color: 'rgba(255,255,255,0.6)', marginTop: 3 }}>Pedidos a medida y colores especiales disponibles.</div>
               <a href={telHref(company.phone)} style={{ display: 'block', fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 13, color: '#fff', marginTop: 6, textDecoration: 'none' }}>📞 {company.phone}</a>
             </div>
           </div>
@@ -585,7 +591,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
       {/* Right — white */}
       <div style={{ flex: 1, background: '#fff', display: 'flex', flexDirection: 'column' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 14px', borderBottom: '1px solid #eee', flexShrink: 0 }}>
-          <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: '#bbb', letterSpacing: 2 }}>CATÁLOGO TRIDI {company.year}</div>
+          <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: '#767676', letterSpacing: 2 }}>CATÁLOGO TRIDI {company.year}</div>
         </div>
 
         <div style={{ flex: 1, padding: '10px 14px 8px', display: 'flex', flexDirection: 'column', gap: 8, overflow: 'hidden' }}>
@@ -605,7 +611,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 6, borderTop: '1px solid #F0F0F5' }}>
             {['🖨️ Impresión 3D', '🌈 Alta calidad', '⚡ Entrega rápida'].map(f => (
-              <span key={f} style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: '#aaa', letterSpacing: 0.5 }}>{f}</span>
+              <span key={f} style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: '#767676', letterSpacing: 0.5 }}>{f}</span>
             ))}
           </div>
         </div>
@@ -623,7 +629,7 @@ function NotFoundPage({ onBack }: { onBack: () => void }) {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, padding: 24, textAlign: 'center' }}>
         <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 64, color: '#8B30D6', lineHeight: 1 }}>404</div>
         <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 20, color: '#fff' }}>Producto no encontrado</div>
-        <div style={{ fontFamily: 'Barlow', fontSize: 11, color: 'rgba(255,255,255,0.5)', maxWidth: 280, lineHeight: 1.5 }}>
+        <div style={{ fontFamily: 'Barlow', fontSize: 11, color: 'rgba(255,255,255,0.65)', maxWidth: 280, lineHeight: 1.5 }}>
           El link que seguiste puede haber cambiado o el producto ya no está disponible.
         </div>
         <button
@@ -679,10 +685,14 @@ export default function App() {
     return () => window.removeEventListener('popstate', onPopState)
   }, [])
 
+  // "PRODUCTOS" siempre muestra categories[catIndex] (por defecto la
+  // primera), aunque el usuario nunca haya pasado por "CATEGORÍAS" — el
+  // nombre de la categoría en la etiqueta evita que parezca "todos los
+  // productos" cuando en realidad es solo una categoría puntual.
   const NAV: { id: PageId; label: string }[] = [
     { id: 'cover', label: 'INICIO' },
     { id: 'categories', label: 'CATEGORÍAS' },
-    { id: 'grid', label: 'PRODUCTOS' },
+    { id: 'grid', label: `PRODUCTOS · ${categories[catIndex].name.toUpperCase()}` },
     ...(selected ? [{ id: 'detail' as PageId, label: 'DETALLE' }] : []),
   ]
 
@@ -714,7 +724,7 @@ export default function App() {
   )
 
   return (
-    <div style={{ height: '100vh', background: '#080A14', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height: '100dvh', background: '#080A14', display: 'flex', flexDirection: 'column' }}>
       {/* Nav tabs */}
       <div style={{ display: 'flex', gap: 3, padding: mobile ? '8px 12px' : '10px 18px', background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(139,48,214,0.15)', flexWrap: 'wrap', justifyContent: 'center', flexShrink: 0 }}>
         {NAV.map(n => (
@@ -731,7 +741,7 @@ export default function App() {
             }}
             style={{
               fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: mobile ? 9 : 10, letterSpacing: 1,
-              color: n.id === page ? '#fff' : 'rgba(255,255,255,0.35)',
+              color: n.id === page ? '#fff' : 'rgba(255,255,255,0.55)',
               background: n.id === page ? '#8B30D6' : 'transparent',
               border: 'none', borderRadius: 5,
               padding: mobile ? '10px 12px' : '5px 13px',
