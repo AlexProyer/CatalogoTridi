@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { categories, company, type Product, type Category } from './data/products'
+import { MOBILE_BREAKPOINT, gridColumns } from './ui/tokens'
+import { Card } from './ui/primitives'
 
 // ── Contact link helpers ────────────────────────────────────────────────────
 
@@ -279,52 +281,63 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
 
 // ── Page 2: Categories ────────────────────────────────────────────────────
 
+// Página piloto: primera en usar la arquitectura visual compartida
+// (src/index.css + src/ui/*). Establece el estándar para el resto del
+// rediseño — el resto de las páginas todavía no está tocado a propósito.
 function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
   const w = useWidth()
-  const mobile = w < 500
-  const cols = w < 420 ? 2 : 3
+  const mobile = w < MOBILE_BREAKPOINT
+  const cols = gridColumns(w)
 
   return (
-    <div style={{ background: '#fff', display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <CatalogHeader />
+    <main style={{ background: 'var(--color-bg)', display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <CatalogHeader light />
 
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column',
         justifyContent: mobile ? 'flex-start' : 'center',
-        padding: `12px ${mobile ? 12 : 18}px`, overflow: 'auto',
+        padding: `var(--space-3) ${mobile ? 'var(--space-page-x)' : 'var(--space-page-x-desktop)'}`,
+        overflow: 'auto',
       }}>
-        <div style={{ maxWidth: 1200, width: '100%', margin: '0 auto' }}>
-          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: mobile ? 24 : 30, color: '#0B0D1A', letterSpacing: -0.5, marginBottom: 2 }}>CATEGORÍAS</div>
-          <div style={{ fontFamily: 'Barlow', fontSize: 10, color: '#767676', marginBottom: 14 }}>Explora nuestra colección completa de figuras impresas en 3D.</div>
+        <div style={{ maxWidth: 'var(--container-max)', width: '100%', margin: '0 auto' }}>
+          <h1 style={{
+            fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number,
+            fontSize: mobile ? 'var(--text-lg)' : 'var(--text-xl)',
+            color: 'var(--color-text)', letterSpacing: '-0.01em',
+            margin: '0 0 var(--space-1)', lineHeight: 1.1,
+          }}>
+            Categorías
+          </h1>
+          <p style={{
+            fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)',
+            color: 'var(--color-text-dim)', margin: '0 0 var(--space-4)',
+          }}>
+            Explora nuestra colección completa de figuras impresas en 3D.
+          </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 8 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 'var(--grid-gap)' }}>
             {categories.map((cat, i) => (
-              <button
-                key={cat.name}
-                type="button"
-                onClick={() => onSelect(i)}
-                style={{
-                  all: 'unset', boxSizing: 'border-box', display: 'block', width: '100%',
-                  background: '#0B0D1A', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', border: `1px solid ${cat.accent}55`, transition: 'transform 0.15s',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
-                onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-              >
-                <div style={{ paddingTop: '58%', overflow: 'hidden', position: 'relative' }}>
-                  <img src={cat.img} alt={cat.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.65 }} />
+              <Card key={cat.name} accentColor={cat.accent} onClick={() => onSelect(i)} aria-label={cat.name}>
+                <div style={{ aspectRatio: 'var(--ratio-cover)', overflow: 'hidden', position: 'relative' }}>
+                  {/* alt="" a propósito: el nombre ya lo anuncia el aria-label
+                      del Card — duplicarlo en la imagen sería ruido para
+                      lectores de pantalla. */}
+                  <img src={cat.img} alt="" loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.65 }} />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(8,10,20,0.85))' }} />
                 </div>
-                <div style={{ padding: '7px 9px 9px', textAlign: 'left', borderTop: `3px solid ${cat.accent}` }}>
-                  <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 13, color: '#fff', letterSpacing: 0.5 }}>{cat.name}</div>
+                <div style={{ padding: 'var(--space-2) var(--space-3) var(--space-3)', textAlign: 'left', borderTop: `3px solid ${cat.accent}` }}>
+                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: 'var(--text-sm)', color: 'var(--color-text)', letterSpacing: '0.01em' }}>
+                    {cat.name}
+                  </div>
                 </div>
-              </button>
+              </Card>
             ))}
           </div>
         </div>
       </div>
 
       <BottomBar />
-    </div>
+    </main>
   )
 }
 
