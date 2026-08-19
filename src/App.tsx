@@ -134,15 +134,21 @@ function BottomBar() {
   )
 }
 
-function WhatsappFloatButton() {
+function WhatsappFloatButton({ page }: { page: PageId }) {
   const w = useWidth()
+  const mobile = w < MOBILE_BREAKPOINT
+  // Categorías y Productos dibujan BottomBar (el footer) pegado abajo — sin
+  // este margen extra el botón queda flotando encima.
+  const hasBottomBar = page === 'categories' || page === 'grid'
   // En mobile, las 4 pantallas terminan con contenido pegado al borde
   // inferior (pie de portada, BottomBar, caja "¿personalizado?" del
   // detalle). Esa caja no se estira con el alto del viewport, así que en
   // teléfonos altos queda más lejos del borde — 180px cubre el caso real
   // medido (hasta ~159px en un viewport de 896px) con margen, sin tener
-  // que conocer el layout de cada página individualmente.
-  const base = w < MOBILE_BREAKPOINT ? 180 : 14
+  // que conocer el layout de cada página individualmente. En desktop esos
+  // elementos ocupan mucho menos (una sola línea), así que alcanza con
+  // despejar la altura real de BottomBar en vez del mismo margen grande.
+  const base = mobile ? 180 : hasBottomBar ? 76 : 14
   return (
     <a
       href={whatsappHref(company.whatsapp, WHATSAPP_GENERAL_MESSAGE)}
@@ -710,7 +716,7 @@ export default function App() {
         {catalog}
       </div>
 
-      <WhatsappFloatButton />
+      <WhatsappFloatButton page={page} />
     </div>
   )
 }
