@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { categories, company, type Product, type Category } from './data/products'
 import { MOBILE_BREAKPOINT, gridColumns } from './ui/tokens'
-import { Card } from './ui/primitives'
+import { Card, Eyebrow, Button, TextLink, FeatureChip, CtaBox, SwatchPicker, ThumbnailStrip, NavTabs, PageHeading } from './ui/primitives'
 
 // ── Contact link helpers ────────────────────────────────────────────────────
 
@@ -89,19 +89,20 @@ function useWidth() {
 }
 
 // ── Shared components ─────────────────────────────────────────────────────
+// Ahora que las 5 páginas comparten el mismo fondo oscuro, TridiLogo,
+// CatalogHeader y BottomBar ya no necesitan una variante clara — se
+// simplifican en vez de arrastrar una rama muerta.
 
-function TridiLogo({ light = false, small = false }: { light?: boolean; small?: boolean }) {
-  const text = light ? '#fff' : '#0B0D1A'
-  const sub = light ? 'rgba(255,255,255,0.65)' : '#6b6b6b'
+function TridiLogo({ small = false }: { small?: boolean }) {
   const sz = small ? 24 : 32
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: small ? 6 : 8 }}>
       <img src="/tridi-icon.png" alt="" width={sz} height={sz} style={{ objectFit: 'contain', flexShrink: 0 }} />
       <div>
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: small ? 13 : 16, letterSpacing: 3, color: text, lineHeight: 1 }}>
+        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: small ? 13 : 16, letterSpacing: 3, color: 'var(--color-text)', lineHeight: 1 }}>
           {company.name}
         </div>
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 400, fontSize: small ? 7 : 8, letterSpacing: 2, color: sub, lineHeight: 1 }}>
+        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 400 as unknown as number, fontSize: small ? 7 : 8, letterSpacing: 2, color: 'var(--color-text-dim)', lineHeight: 1 }}>
           {company.sub}
         </div>
       </div>
@@ -111,26 +112,22 @@ function TridiLogo({ light = false, small = false }: { light?: boolean; small?: 
 
 function StarBadge() {
   return (
-    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" style={{ display: 'inline', marginRight: 3, flexShrink: 0 }}>
-      <polygon points="7,1 8.6,5 13,5.4 9.8,8.1 10.9,12.5 7,10.1 3.1,12.5 4.2,8.1 1,5.4 5.4,5" fill="#8B30D6" />
+    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ display: 'inline', marginRight: 3, flexShrink: 0 }}>
+      <polygon points="7,1 8.6,5 13,5.4 9.8,8.1 10.9,12.5 7,10.1 3.1,12.5 4.2,8.1 1,5.4 5.4,5" style={{ fill: 'var(--color-accent)' }} />
     </svg>
   )
 }
 
-function BottomBar({ dark = false }: { dark?: boolean }) {
-  const bg = dark ? '#1A0A36' : '#8B30D6'
+function BottomBar() {
   return (
-    <div style={{ background: bg, display: 'flex', alignItems: 'center', padding: '7px 16px', flexShrink: 0 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+    <div style={{ background: 'var(--color-accent)', display: 'flex', alignItems: 'center', padding: 'var(--space-2) var(--space-4)', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', flexWrap: 'wrap' }}>
         {[
-          { icon: '🖨️', label: 'IMPRESIÓN 3D' },
-          { icon: '🌈', label: 'MATERIALES PREMIUM' },
-          { icon: '⚡', label: 'ENTREGA 3-5 DÍAS' },
+          { icon: '🖨️', label: 'Impresión 3D' },
+          { icon: '🌈', label: 'Materiales premium' },
+          { icon: '⚡', label: 'Entrega 3-5 días' },
         ].map(f => (
-          <div key={f.label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ fontSize: 11 }}>{f.icon}</span>
-            <span style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 9, color: '#fff', letterSpacing: 1 }}>{f.label}</span>
-          </div>
+          <FeatureChip key={f.label} tone="solid" icon={<span aria-hidden="true" style={{ fontSize: 11 }}>{f.icon}</span>} label={f.label} />
         ))}
       </div>
     </div>
@@ -145,7 +142,7 @@ function WhatsappFloatButton() {
   // teléfonos altos queda más lejos del borde — 180px cubre el caso real
   // medido (hasta ~159px en un viewport de 896px) con margen, sin tener
   // que conocer el layout de cada página individualmente.
-  const base = w < 500 ? 180 : 14
+  const base = w < MOBILE_BREAKPOINT ? 180 : 14
   return (
     <a
       href={whatsappHref(company.whatsapp, WHATSAPP_GENERAL_MESSAGE)}
@@ -159,10 +156,10 @@ function WhatsappFloatButton() {
         position: 'fixed',
         right: 'calc(14px + env(safe-area-inset-right))',
         bottom: `calc(${base}px + env(safe-area-inset-bottom))`,
-        width: 52, height: 52, borderRadius: '50%',
-        background: '#8B30D6', boxShadow: '0 6px 20px rgba(139,48,214,0.5)',
+        width: 52, height: 52, borderRadius: 'var(--radius-full)',
+        background: 'var(--color-accent)', boxShadow: 'var(--shadow-floating)',
         display: 'grid', placeItems: 'center',
-        textDecoration: 'none', zIndex: 1000,
+        textDecoration: 'none', zIndex: 'var(--z-floating)' as unknown as number,
       }}
     >
       <span style={{ fontSize: 24, lineHeight: 1 }} aria-hidden="true">💬</span>
@@ -170,121 +167,106 @@ function WhatsappFloatButton() {
   )
 }
 
-function CatalogHeader({ light = false }: { light?: boolean }) {
+function CatalogHeader() {
   const w = useWidth()
-  const small = w < 500
+  const small = w < MOBILE_BREAKPOINT
   return (
     <div style={{
-      background: light ? 'transparent' : '#fff',
       display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-      padding: `8px ${small ? 12 : 18}px`,
-      borderBottom: light ? 'none' : '1px solid #eee',
+      padding: `var(--space-2) ${small ? 'var(--space-3)' : 'var(--space-page-x-desktop)'}`,
       flexShrink: 0,
     }}>
-      <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: light ? 'rgba(255,255,255,0.5)' : '#767676', letterSpacing: 2 }}>
-        CATÁLOGO TRIDI {company.year}
-      </div>
-      <TridiLogo light={light} small={small} />
+      <Eyebrow tone="decorative">Catálogo Tridi {company.year}</Eyebrow>
+      <TridiLogo small={small} />
     </div>
   )
 }
 
 // ── Page 1: Cover ─────────────────────────────────────────────────────────
+// Propósito: primera impresión de marca y una única salida (ver catálogo).
+// A diferencia de las páginas de listado, tiene licencia para un momento
+// tipográfico grande (el hero) — es la única excepción documentada a la
+// escala tipográfica del sistema.
 
 function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
   const w = useWidth()
-  const mobile = w < 500
+  const mobile = w < MOBILE_BREAKPOINT
 
   return (
-    <div style={{ background: '#080A14', display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: '15%', right: '-5%', width: 280, height: 280, borderRadius: '50%', background: 'radial-gradient(circle, rgba(139,48,214,0.3) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: '5%', left: '-8%', width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(139,48,214,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
+    <main style={{ background: 'var(--color-bg)', display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: '15%', right: '-5%', width: 280, height: 280, borderRadius: 'var(--radius-full)', background: 'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 30%, transparent) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: '5%', left: '-8%', width: 200, height: 200, borderRadius: 'var(--radius-full)', background: 'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 15%, transparent) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: `12px ${mobile ? 14 : 22}px`, position: 'relative', zIndex: 2 }}>
-        <TridiLogo light small={mobile} />
-        <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: 'rgba(255,255,255,0.5)', letterSpacing: 2 }}>CATÁLOGO {company.year}</div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: `var(--space-3) ${mobile ? 'var(--space-3)' : 'var(--space-page-x-desktop)'}`, position: 'relative', zIndex: 'var(--z-raised)' as unknown as number }}>
+        <TridiLogo small={mobile} />
+        <Eyebrow tone="decorative">Catálogo {company.year}</Eyebrow>
       </div>
 
-      {/* Main */}
       <div style={{
         flex: 1, display: 'flex', flexDirection: mobile ? 'column' : 'row',
         alignItems: mobile ? 'flex-start' : 'center', justifyContent: 'center',
-        padding: `0 ${mobile ? 14 : 24}px ${mobile ? 10 : 0}px`,
-        position: 'relative', zIndex: 2, gap: mobile ? 12 : 40,
-        maxWidth: 1100, width: '100%', margin: '0 auto',
+        padding: `0 ${mobile ? 'var(--space-3)' : 'var(--space-page-x-desktop)'} ${mobile ? 'var(--space-3)' : '0'}`,
+        position: 'relative', zIndex: 'var(--z-raised)' as unknown as number, gap: mobile ? 'var(--space-3)' : 'var(--space-8)',
+        maxWidth: 'var(--container-max)', width: '100%', margin: '0 auto',
       }}>
         {/* Text */}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: mobile ? 'clamp(38px,14vw,60px)' : 'clamp(42px,7vw,68px)', color: '#fff', lineHeight: 0.88, letterSpacing: -1, textTransform: 'uppercase' }}>
-            CATÁLOGO
+          <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900 as unknown as number, fontSize: mobile ? 'clamp(38px,14vw,60px)' : 'clamp(42px,7vw,68px)', color: 'var(--color-text)', lineHeight: 0.88, letterSpacing: '-0.02em' }}>
+            Catálogo
+          </h1>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900 as unknown as number, fontSize: mobile ? 'clamp(28px,10vw,44px)' : 'clamp(32px,5.5vw,52px)', color: 'var(--color-accent)', lineHeight: 0.88, letterSpacing: '-0.02em' }}>
+            de productos
           </div>
-          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: mobile ? 'clamp(28px,10vw,44px)' : 'clamp(32px,5.5vw,52px)', color: '#8B30D6', lineHeight: 0.88, letterSpacing: -1, textTransform: 'uppercase' }}>
-            DE PRODUCTOS
-          </div>
-          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: mobile ? 22 : 36, color: 'rgba(255,255,255,0.6)', lineHeight: 1, letterSpacing: 6, marginTop: 4 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 'var(--weight-bold)' as unknown as number, fontSize: mobile ? 22 : 36, color: 'var(--color-text-dim)', lineHeight: 1, letterSpacing: 6, marginTop: 'var(--space-1)' }}>
             {company.year}
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 16 }}>
-            {['🖨️ Impresión 3D', '🎨 Diseño Personalizado', '⚙️ Modelado 3D'].map(f => (
-              <div key={f} style={{ background: 'rgba(139,48,214,0.15)', border: '1px solid rgba(139,48,214,0.35)', borderRadius: 4, padding: mobile ? '4px 10px' : '6px 12px', fontFamily: 'Barlow Condensed', fontSize: mobile ? 10 : 12, color: 'rgba(255,255,255,0.85)', letterSpacing: 0.5 }}>
-                {f}
-              </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)', marginTop: 'var(--space-4)' }}>
+            {['🖨️ Impresión 3D', '🎨 Diseño personalizado', '⚙️ Modelado 3D'].map(f => (
+              <FeatureChip key={f} label={f} tone="outline" />
             ))}
           </div>
 
-          <button
-            type="button"
-            onClick={onViewCatalog}
-            style={{
-              all: 'unset', boxSizing: 'border-box', cursor: 'pointer', marginTop: mobile ? 18 : 24,
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              background: '#8B30D6', color: '#fff',
-              fontFamily: 'Barlow Condensed', fontWeight: 800, letterSpacing: 1,
-              fontSize: mobile ? 12 : 13,
-              padding: mobile ? '12px 20px' : '13px 24px',
-              borderRadius: 8, boxShadow: '0 6px 18px rgba(139,48,214,0.4)',
-            }}
-          >
-            VER CATÁLOGO <span aria-hidden="true">→</span>
-          </button>
+          <div style={{ marginTop: mobile ? 'var(--space-4)' : 'var(--space-5)' }}>
+            <Button onClick={onViewCatalog} icon={<span aria-hidden="true">→</span>}>
+              Ver catálogo
+            </Button>
+          </div>
         </div>
 
         {/* Hero image */}
         {!mobile && (
-          <div style={{ width: 'clamp(200px, 22vw, 320px)', height: 'clamp(240px, 46vh, 440px)', flexShrink: 0, borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(139,48,214,0.3)', position: 'relative' }}>
+          <div style={{ width: 'clamp(200px, 22vw, 320px)', height: 'clamp(240px, 46vh, 440px)', flexShrink: 0, borderRadius: 'var(--radius)', overflow: 'hidden', border: '1px solid color-mix(in srgb, var(--color-accent) 30%, transparent)', position: 'relative' }}>
             <img
               src="https://images.unsplash.com/photo-1776426270359-0277f3595496?w=400&h=480&fit=crop&auto=format"
               alt="Figura impresa en 3D"
               style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }}
             />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,10,20,0.85) 0%, transparent 55%)' }} />
-            <div style={{ position: 'absolute', bottom: 14, left: 14, right: 14 }}>
-              <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 14, color: '#8B30D6', letterSpacing: 1.5 }}>FIGURA PREMIUM</div>
-              <div style={{ fontFamily: 'Barlow Condensed', fontSize: 11, color: 'rgba(255,255,255,0.8)', marginTop: 2 }}>Impresión FLA · Alta calidad</div>
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--color-bg) 0%, transparent 55%)' }} />
+            <div style={{ position: 'absolute', bottom: 'var(--space-3)', left: 'var(--space-3)', right: 'var(--space-3)' }}>
+              <Eyebrow style={{ color: 'var(--color-accent-text)' }}>Figura premium</Eyebrow>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-xs)', color: 'var(--color-text-dim)', marginTop: 2 }}>Impresión FLA · Alta calidad</div>
             </div>
           </div>
         )}
       </div>
 
       {/* Social footer */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: `8px ${mobile ? 14 : 22}px`, background: 'rgba(139,48,214,0.08)', borderTop: '1px solid rgba(139,48,214,0.18)', position: 'relative', zIndex: 2, flexWrap: 'wrap', gap: 6 }}>
-        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-          <a href={instagramHref(company.instagram)} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.6)', letterSpacing: 1, textDecoration: 'none' }}>📷 {company.instagram}</a>
-          <a href={telHref(company.phone)} style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.6)', letterSpacing: 1, textDecoration: 'none' }}>📞 {company.phone}</a>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: `var(--space-2) ${mobile ? 'var(--space-3)' : 'var(--space-page-x-desktop)'}`, background: 'var(--color-accent-soft)', borderTop: '1px solid color-mix(in srgb, var(--color-accent) 18%, transparent)', position: 'relative', zIndex: 'var(--z-raised)' as unknown as number, flexWrap: 'wrap', gap: 'var(--space-1)' }}>
+        <div style={{ display: 'flex', gap: 'var(--space-4)', flexWrap: 'wrap' }}>
+          <TextLink href={instagramHref(company.instagram)} external>📷 {company.instagram}</TextLink>
+          <TextLink href={telHref(company.phone)}>📞 {company.phone}</TextLink>
         </div>
-        <a href={websiteHref(company.website)} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: 'rgba(255,255,255,0.6)', letterSpacing: 1, textDecoration: 'none' }}>🌐 {company.website}</a>
+        <TextLink href={websiteHref(company.website)} external>🌐 {company.website}</TextLink>
       </div>
-    </div>
+    </main>
   )
 }
 
 // ── Page 2: Categories ────────────────────────────────────────────────────
+// Propósito: elegir una categoría. Página piloto — referencia visual del
+// resto del sitio.
 
-// Página piloto: primera en usar la arquitectura visual compartida
-// (src/index.css + src/ui/*). Establece el estándar para el resto del
-// rediseño — el resto de las páginas todavía no está tocado a propósito.
 function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
   const w = useWidth()
   const mobile = w < MOBILE_BREAKPOINT
@@ -292,7 +274,7 @@ function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
 
   return (
     <main style={{ background: 'var(--color-bg)', display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <CatalogHeader light />
+      <CatalogHeader />
 
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column',
@@ -301,20 +283,7 @@ function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
         overflow: 'auto',
       }}>
         <div style={{ maxWidth: 'var(--container-max)', width: '100%', margin: '0 auto' }}>
-          <h1 style={{
-            fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number,
-            fontSize: mobile ? 'var(--text-lg)' : 'var(--text-xl)',
-            color: 'var(--color-text)', letterSpacing: '-0.01em',
-            margin: '0 0 var(--space-1)', lineHeight: 1.1,
-          }}>
-            Categorías
-          </h1>
-          <p style={{
-            fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)',
-            color: 'var(--color-text-dim)', margin: '0 0 var(--space-4)',
-          }}>
-            Explora nuestra colección completa de figuras impresas en 3D.
-          </p>
+          <PageHeading title="Categorías" subtitle="Explora nuestra colección completa de figuras impresas en 3D." mobile={mobile} />
 
           <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 'var(--grid-gap)' }}>
             {categories.map((cat, i) => (
@@ -343,84 +312,88 @@ function CategoriesPage({ onSelect }: { onSelect: (i: number) => void }) {
 }
 
 // ── Page 3: Product Grid ───────────────────────────────────────────────────
+// Propósito: elegir un producto dentro de una categoría. Mismo patrón de
+// grilla que Categorías (es la composición correcta para "elegir una cosa
+// de una lista"), pero con contenido de tarjeta distinto — precio, material,
+// tamaño — y un estado vacío con salida real en vez de un texto muerto.
 
 function ProductCard({ p }: { p: typeof categories[number]['products'][number] }) {
   const w = useWidth()
   // Coincide con los cortes de columnas de ProductGridPage: con 4 columnas
-  // (w >= 600) las tarjetas quedan bastante más grandes, así que el texto
+  // (w >= 900) las tarjetas quedan bastante más grandes, así que el texto
   // interno puede crecer con ellas en vez de quedarse en el tamaño mínimo.
-  const compact = w < 600
+  const compact = w < 900
   return (
-    <div
-      className="card-legacy"
-      style={{ background: '#fff', border: '1px solid #EAEBF0', borderRadius: 8, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
-    >
-      <div style={{ paddingTop: '85%', position: 'relative', background: '#F5F5FA', overflow: 'hidden' }}>
-        <img src={p.img} alt={p.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+    <>
+      <div style={{ aspectRatio: 'var(--ratio-square)', position: 'relative', background: 'var(--color-surface-raised)', overflow: 'hidden' }}>
+        <img src={p.img} alt={p.name} loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
       </div>
-      <div style={{ padding: compact ? '8px 9px 10px' : '12px 14px 14px', flex: 1, display: 'flex', flexDirection: 'column', gap: compact ? 3 : 5 }}>
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: compact ? 13 : 16, color: '#0B0D1A', letterSpacing: 0.3 }}>{p.name}</div>
-        <div style={{ fontFamily: 'Barlow', fontSize: compact ? 8 : 11, color: '#767676' }}>{p.code}</div>
+      <div style={{ padding: compact ? 'var(--space-2) var(--space-2) var(--space-3)' : 'var(--space-3) var(--space-4) var(--space-4)', flex: 1, display: 'flex', flexDirection: 'column', gap: compact ? 3 : 5 }}>
+        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: compact ? 'var(--text-sm)' : 'var(--text-md)', color: 'var(--color-text)', letterSpacing: '0.01em' }}>{p.name}</div>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--color-text-faint)' }}>{p.code}</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-          <svg width={compact ? 9 : 11} height={compact ? 9 : 11} viewBox="0 0 9 9" fill="none"><rect x="1" y="4" width="7" height="1" fill="#8B30D6" /><rect x="4" y="1" width="1" height="7" fill="#8B30D6" /></svg>
-          <span style={{ fontFamily: 'Barlow', fontSize: compact ? 9 : 12, color: '#666' }}>{p.size}</span>
+          <svg width="11" height="11" viewBox="0 0 9 9" fill="none" aria-hidden="true"><rect x="1" y="4" width="7" height="1" style={{ fill: 'var(--color-accent)' }} /><rect x="4" y="1" width="1" height="7" style={{ fill: 'var(--color-accent)' }} /></svg>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--color-text-dim)' }}>{p.size}</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 1 }}>
           <StarBadge />
-          <span style={{ fontFamily: 'Barlow', fontSize: compact ? 8 : 12, color: '#8B30D6', fontWeight: 600 }}>{p.material}</span>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--color-accent-text)', fontWeight: 'var(--weight-medium)' as unknown as number }}>{p.material}</span>
         </div>
-        <div style={{ marginTop: 'auto', paddingTop: compact ? 6 : 10, borderTop: '1px solid #F0F0F5' }}>
-          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: compact ? 15 : 19, color: '#0B0D1A' }}>{p.price}</div>
+        <div style={{ marginTop: 'auto', paddingTop: compact ? 'var(--space-2)' : 'var(--space-3)', borderTop: 'var(--border-hairline)' }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: compact ? 'var(--text-md)' : 'var(--text-lg)', color: 'var(--color-text)' }}>{p.price}</div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
 function ProductGridPage({ catIndex, onDetail }: { catIndex: number; onDetail: (pi: number) => void }) {
   const w = useWidth()
+  const mobile = w < MOBILE_BREAKPOINT
   const cat = categories[catIndex]
-  const cols = w < 400 ? 2 : w < 600 ? 3 : 4
+  const cols = gridColumns(w)
+  const emptyHref = whatsappHref(company.whatsapp, `Hola, me interesa la categoría ${cat.name}. ¿Cuándo van a tener productos disponibles?`)
 
   return (
-    <div style={{ background: '#F8F8FC', display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <main style={{ background: 'var(--color-bg)', display: 'flex', flexDirection: 'column', height: '100%' }}>
       <CatalogHeader />
 
-      <div style={{ flex: 1, padding: `12px ${w < 500 ? 12 : 18}px`, overflow: 'auto' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 10, marginBottom: 12 }}>
-          <div>
-            <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: w < 500 ? 24 : 28, color: '#0B0D1A', letterSpacing: -0.5 }}>{cat.name}</div>
-            <div style={{ fontFamily: 'Barlow', fontSize: w < 500 ? 10 : 12, color: '#767676', maxWidth: 320 }}>Figuras impresas en 3D de alta calidad. Ideales para coleccionistas y fans.</div>
-          </div>
-          <div style={{ marginLeft: 'auto', width: 36, height: 36, borderRadius: '50%', border: '3px solid #EAEBF0', background: 'linear-gradient(180deg,#fff 50%,#f0f0f5 50%)', flexShrink: 0 }} />
-        </div>
+      <div style={{ flex: 1, padding: `var(--space-3) ${mobile ? 'var(--space-page-x)' : 'var(--space-page-x-desktop)'}`, overflow: 'auto' }}>
+        <div style={{ maxWidth: 'var(--container-max)', width: '100%', margin: '0 auto' }}>
+          <PageHeading title={cat.name} subtitle="Figuras impresas en 3D de alta calidad. Ideales para coleccionistas y fans." mobile={mobile} />
 
-        {cat.products.length === 0 ? (
-          <div style={{ textAlign: 'center', paddingTop: 40, fontFamily: 'Barlow Condensed', color: '#767676', fontSize: 14 }}>
-            Próximamente. Estamos preparando nuevos productos para esta categoría.
-          </div>
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 8 }}>
-            {cat.products.map((p, i) => (
-              <button
-                key={p.name}
-                type="button"
-                onClick={() => onDetail(i)}
-                style={{ all: 'unset', boxSizing: 'border-box', display: 'block', width: '100%', cursor: 'pointer' }}
-              >
-                <ProductCard p={p} />
-              </button>
-            ))}
-          </div>
-        )}
+          {cat.products.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: 'var(--space-9) var(--space-4)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-3)' }}>
+              <div style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-dim)', fontSize: 'var(--text-md)' }}>
+                Todavía no hay productos publicados en {cat.name}.
+              </div>
+              <Button href={emptyHref} target="_blank" rel="noopener noreferrer" variant="ghost" icon={<span aria-hidden="true">💬</span>}>
+                Avisame por WhatsApp
+              </Button>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 'var(--grid-gap)' }}>
+              {cat.products.map((p, i) => (
+                <Card key={p.name} onClick={() => onDetail(i)} aria-label={p.name} style={{ display: 'flex', flexDirection: 'column' }}>
+                  <ProductCard p={p} />
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <BottomBar />
-    </div>
+    </main>
   )
 }
 
 // ── Page 4: Product Detail ─────────────────────────────────────────────────
+// Propósito: convertir. Es la página donde se decide la compra, así que
+// conserva su propia composición de dos ramas (mobile apilado / desktop
+// split) en vez de forzar el layout de grilla de las otras páginas — acá
+// la función es distinta (un producto, no una lista) y la composición lo
+// refleja.
 
 function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; productIndex: number }) {
   const w = useWidth()
@@ -449,28 +422,22 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
   const trackInterested = () => trackEvent('cta_me_interesa_click', { code: product.code, color: selectedColorName })
 
   const interesaButton = (size: 'sm' | 'lg') => (
-    <a
+    <Button
       href={interestedHref}
       target="_blank"
       rel="noopener noreferrer"
       onClick={trackInterested}
       aria-label={`Me interesa ${product.name} — contactar por WhatsApp`}
-      style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-        background: '#8B30D6', color: '#fff', textDecoration: 'none',
-        fontFamily: 'Barlow Condensed', fontWeight: 800, letterSpacing: 1,
-        fontSize: size === 'lg' ? 14 : 12,
-        padding: size === 'lg' ? '13px 16px' : '10px 14px',
-        borderRadius: 8, marginTop: size === 'lg' ? 10 : 8,
-        boxShadow: '0 4px 14px rgba(139,48,214,0.35)',
-      }}
+      size={size}
+      fullWidth={size === 'lg'}
+      icon={<span aria-hidden="true">💬</span>}
     >
-      <span aria-hidden="true">💬</span> ME INTERESA
-    </a>
+      Me interesa
+    </Button>
   )
 
   const specsLeft = (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: mobile ? 7 : 11 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: mobile ? 'var(--space-2)' : 'var(--space-3)' }}>
       {[
         { icon: '📏', label: product.size, sub: 'Altura aproximada' },
         { icon: '⚖️', label: product.weight, sub: 'Peso estimado' },
@@ -478,11 +445,11 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
         { icon: '🎨', label: `${product.colors.length} color${product.colors.length === 1 ? '' : 'es'} disponible${product.colors.length === 1 ? '' : 's'}`, sub: '' },
         { icon: '🚚', label: company.delivery, sub: 'Tiempo de entrega' },
       ].map((s, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: mobile ? 8 : 10 }}>
-          <div style={{ width: mobile ? 24 : 28, height: mobile ? 24 : 28, borderRadius: 6, background: 'rgba(139,48,214,0.15)', display: 'grid', placeItems: 'center', fontSize: mobile ? 11 : 13, flexShrink: 0 }}>{s.icon}</div>
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: mobile ? 'var(--space-2)' : 'var(--space-3)' }}>
+          <div aria-hidden="true" style={{ width: mobile ? 24 : 28, height: mobile ? 24 : 28, borderRadius: 'var(--radius)', background: 'var(--color-accent-soft)', display: 'grid', placeItems: 'center', fontSize: mobile ? 11 : 13, flexShrink: 0 }}>{s.icon}</div>
           <div>
-            <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 600, fontSize: mobile ? 11 : 13, color: '#fff' }}>{s.label}</div>
-            {s.sub && <div style={{ fontFamily: 'Barlow', fontSize: mobile ? 8 : 10, color: 'rgba(255,255,255,0.6)' }}>{s.sub}</div>}
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 'var(--weight-medium)' as unknown as number, fontSize: mobile ? 'var(--text-xs)' : 'var(--text-sm)', color: 'var(--color-text)' }}>{s.label}</div>
+            {s.sub && <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--color-text-faint)' }}>{s.sub}</div>}
           </div>
         </div>
       ))}
@@ -492,174 +459,139 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
   const colorPicker = (swatchSize: number) => (
     product.colors.length > 0 && (
       <div>
-        <div style={{ fontFamily: 'Barlow Condensed', fontSize: mobile ? 9 : 11, color: 'rgba(255,255,255,0.6)', letterSpacing: 2, marginBottom: 8 }}>COLORES DISPONIBLES</div>
-        <div style={{ display: 'flex', gap: mobile ? 9 : 8, flexWrap: 'wrap' }}>
-          {product.colors.map((c, i) => (
-            <button
-              key={c.name}
-              type="button"
-              onClick={() => setActiveColor(i)}
-              aria-pressed={activeColor === i}
-              aria-label={c.name}
-              title={c.name}
-              style={{
-                all: 'unset', boxSizing: 'border-box', cursor: 'pointer',
-                width: swatchSize, height: swatchSize, borderRadius: '50%', background: c.hex,
-                border: activeColor === i ? '2px solid #fff' : '2px solid rgba(255,255,255,0.15)',
-                boxShadow: activeColor === i ? '0 0 0 2px #8B30D6' : 'none',
-                transition: 'border-color var(--motion-duration) var(--motion-ease), box-shadow var(--motion-duration) var(--motion-ease)',
-              }}
-            />
-          ))}
+        <Eyebrow>Colores disponibles</Eyebrow>
+        <div style={{ marginTop: 'var(--space-2)' }}>
+          <SwatchPicker colors={product.colors} activeIndex={activeColor} onChange={setActiveColor} swatchSize={swatchSize} />
         </div>
-        <div style={{ fontFamily: 'Barlow', fontSize: mobile ? 9 : 11, color: 'rgba(255,255,255,0.65)', marginTop: 8 }}>
-          Color seleccionado: <span style={{ color: '#fff', fontWeight: 600 }}>{product.colors[activeColor]?.name}</span>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--color-text-dim)', marginTop: 'var(--space-2)' }}>
+          Color seleccionado: <span style={{ color: 'var(--color-text)', fontWeight: 'var(--weight-medium)' as unknown as number }}>{product.colors[activeColor]?.name}</span>
         </div>
       </div>
     )
   )
 
+  const ctaBox = (size: 'sm' | 'lg') => (
+    <CtaBox
+      title="¿Quieres algo personalizado?"
+      description="Pedidos a medida y colores especiales disponibles."
+      phone={company.phone}
+      phoneHref={telHref(company.phone)}
+      size={size}
+    />
+  )
+
   if (mobile) {
     return (
-      <div style={{ background: '#0D0F22', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto' }}>
-        <CatalogHeader light />
+      <main style={{ background: 'var(--color-bg)', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto' }}>
+        <CatalogHeader />
 
         {/* Hero image */}
-        <div style={{ height: 200, overflow: 'hidden', flexShrink: 0 }}>
+        <div style={{ height: 200, overflow: 'hidden', flexShrink: 0, background: 'var(--color-surface)' }}>
           <img src={allImgs[activeImg]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }} />
         </div>
 
-        <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           <div>
-            <div style={{ fontFamily: 'Barlow Condensed', fontSize: 9, color: '#8B30D6', letterSpacing: 2 }}>{product.code}</div>
-            <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 32, color: '#fff', lineHeight: 0.9 }}>{product.name}</div>
-            <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 24, color: '#8B30D6', marginTop: 4 }}>{product.price}</div>
+            <Eyebrow mono>{product.code}</Eyebrow>
+            <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900 as unknown as number, fontSize: 'var(--text-2xl)', color: 'var(--color-text)', lineHeight: 0.95 }}>{product.name}</h1>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: 'var(--text-lg)', color: 'var(--color-accent-text)', marginTop: 'var(--space-1)' }}>{product.price}</div>
           </div>
 
           {/* Sticky: en mobile todo este bloque hace scroll dentro del
-              contenedor de la página — sin esto, "ME INTERESA" queda arriba
+              contenedor de la página — sin esto, "Me interesa" queda arriba
               del todo y desaparece apenas el cliente baja a ver specs,
               colores o miniaturas. */}
-          <div style={{ position: 'sticky', top: 0, zIndex: 5, background: '#0D0F22', margin: '0 -16px', padding: '8px 16px' }}>
+          <div style={{ position: 'sticky', top: 0, zIndex: 'var(--z-sticky)' as unknown as number, background: 'var(--color-bg)', margin: '0 calc(var(--space-4) * -1)', padding: 'var(--space-2) var(--space-4)' }}>
             {interesaButton('lg')}
           </div>
 
-          <div>
-            <div style={{ fontFamily: 'Barlow', fontSize: 10, color: 'rgba(255,255,255,0.65)', marginTop: 7, lineHeight: 1.5 }}>{product.desc}</div>
-          </div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--color-text-dim)', lineHeight: 1.5 }}>{product.desc}</div>
 
           {specsLeft}
 
           {colorPicker(30)}
 
-          {/* Thumbnails */}
           {allImgs.length > 1 && (
-            <div style={{ display: 'flex', gap: 6 }}>
-              {allImgs.map((img, i) => (
-                <button key={i} type="button" onClick={() => setActiveImg(i)} aria-pressed={i === activeImg} aria-label={`Foto ${i + 1} de ${product.name}`} style={{ flex: 1, height: 56, borderRadius: 6, overflow: 'hidden', border: i === activeImg ? '2px solid #8B30D6' : '2px solid transparent', cursor: 'pointer', padding: 0, background: '#1a1c30', transition: 'border-color var(--motion-duration) var(--motion-ease)' }}>
-                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </button>
-              ))}
-            </div>
+            <ThumbnailStrip images={allImgs} activeIndex={activeImg} onChange={setActiveImg} alt={product.name} height={56} />
           )}
 
-          {/* CTA */}
-          <div style={{ background: 'rgba(139,48,214,0.12)', border: '1px solid rgba(139,48,214,0.3)', borderRadius: 6, padding: '10px 12px' }}>
-            <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 11, color: '#8B30D6', letterSpacing: 1 }}>¿QUIERES ALGO PERSONALIZADO?</div>
-            <div style={{ fontFamily: 'Barlow', fontSize: 9, color: 'rgba(255,255,255,0.6)', marginTop: 2 }}>Pedidos a medida y colores especiales disponibles.</div>
-            <a href={telHref(company.phone)} style={{ display: 'block', fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 10, color: '#fff', marginTop: 4, textDecoration: 'none' }}>📞 {company.phone}</a>
-          </div>
+          {ctaBox('lg')}
         </div>
-      </div>
+      </main>
     )
   }
 
   return (
-    <div style={{ display: 'flex', height: '100%' }}>
-      {/* Left — dark */}
-      <div style={{ width: '44%', background: '#0D0F22', display: 'flex', flexDirection: 'column', padding: '12px 16px', flexShrink: 0, overflow: 'auto' }}>
-        <CatalogHeader light />
+    <main style={{ display: 'flex', height: '100%' }}>
+      {/* Left — specs y CTA */}
+      <div style={{ width: '44%', background: 'var(--color-bg)', display: 'flex', flexDirection: 'column', padding: 'var(--space-3) var(--space-4)', flexShrink: 0, overflow: 'auto' }}>
+        <CatalogHeader />
 
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: 0 }}>
-          <div style={{ fontFamily: 'Barlow Condensed', fontSize: 11, color: '#8B30D6', letterSpacing: 2, marginTop: 8, marginBottom: 2 }}>{product.code}</div>
-          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 34, color: '#fff', lineHeight: 0.88, letterSpacing: -1 }}>{product.name}</div>
-          <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 26, color: '#8B30D6', marginTop: 6 }}>{product.price}</div>
-          <div style={{ maxWidth: 380, marginTop: 4 }}>{interesaButton('sm')}</div>
-          <div style={{ fontFamily: 'Barlow', fontSize: 13, color: 'rgba(255,255,255,0.65)', marginTop: 10, lineHeight: 1.6, maxWidth: 380 }}>{product.desc}</div>
+          <Eyebrow mono style={{ marginTop: 'var(--space-2)', marginBottom: 'var(--space-1)' }}>{product.code}</Eyebrow>
+          <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900 as unknown as number, fontSize: 'var(--text-2xl)', color: 'var(--color-text)', lineHeight: 0.9, letterSpacing: '-0.01em' }}>{product.name}</h1>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: 'var(--text-xl)', color: 'var(--color-accent-text)', marginTop: 'var(--space-2)' }}>{product.price}</div>
+          <div style={{ maxWidth: 380, marginTop: 'var(--space-2)' }}>{interesaButton('sm')}</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-sm)', color: 'var(--color-text-dim)', marginTop: 'var(--space-3)', lineHeight: 1.6, maxWidth: 380 }}>{product.desc}</div>
 
-          <div style={{ marginTop: 20 }}>{specsLeft}</div>
+          <div style={{ marginTop: 'var(--space-6)' }}>{specsLeft}</div>
 
-          <div style={{ marginTop: 20 }}>{colorPicker(24)}</div>
+          <div style={{ marginTop: 'var(--space-6)' }}>{colorPicker(24)}</div>
 
-          {/* CTA */}
-          <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid rgba(139,48,214,0.18)' }}>
-            <div style={{ background: 'rgba(139,48,214,0.1)', border: '1px solid rgba(139,48,214,0.28)', borderRadius: 8, padding: '14px 16px', maxWidth: 380 }}>
-              <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 13, color: '#8B30D6', letterSpacing: 1 }}>¿QUIERES ALGO PERSONALIZADO?</div>
-              <div style={{ fontFamily: 'Barlow', fontSize: 11, color: 'rgba(255,255,255,0.6)', marginTop: 3 }}>Pedidos a medida y colores especiales disponibles.</div>
-              <a href={telHref(company.phone)} style={{ display: 'block', fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 13, color: '#fff', marginTop: 6, textDecoration: 'none' }}>📞 {company.phone}</a>
-            </div>
+          <div style={{ marginTop: 'var(--space-7)', paddingTop: 'var(--space-5)', borderTop: 'var(--border-hairline)', maxWidth: 380 }}>
+            {ctaBox('sm')}
           </div>
         </div>
       </div>
 
-      {/* Right — white */}
-      <div style={{ flex: 1, background: '#fff', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 14px', borderBottom: '1px solid #eee', flexShrink: 0 }}>
-          <div style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: '#767676', letterSpacing: 2 }}>CATÁLOGO TRIDI {company.year}</div>
+      {/* Right — galería, sobre una superficie más clara para que las fotos
+          se sientan sobre una mesa de luz, no perdidas en el mismo negro
+          del resto de la página. */}
+      <div style={{ flex: 1, background: 'var(--color-surface-raised)', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ padding: 'var(--space-2) var(--space-4)', flexShrink: 0 }}>
+          <Eyebrow tone="decorative">Catálogo Tridi {company.year}</Eyebrow>
         </div>
 
-        <div style={{ flex: 1, padding: '10px 14px 8px', display: 'flex', flexDirection: 'column', gap: 8, overflow: 'hidden' }}>
-          <div style={{ flex: 1, borderRadius: 10, overflow: 'hidden', background: '#F5F5FA', minHeight: 0 }}>
+        <div style={{ flex: 1, padding: '0 var(--space-4) var(--space-3)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', overflow: 'hidden' }}>
+          <div style={{ flex: 1, borderRadius: 'var(--radius)', overflow: 'hidden', background: 'var(--color-surface)', minHeight: 0 }}>
             <img src={allImgs[activeImg]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
 
           {allImgs.length > 1 && (
-            <div style={{ display: 'flex', gap: 6 }}>
-              {allImgs.map((img, i) => (
-                <button key={i} type="button" onClick={() => setActiveImg(i)} aria-pressed={i === activeImg} aria-label={`Foto ${i + 1} de ${product.name}`} style={{ flex: 1, height: 58, borderRadius: 6, overflow: 'hidden', border: i === activeImg ? '2px solid #8B30D6' : '2px solid transparent', cursor: 'pointer', padding: 0, background: '#F5F5FA', transition: 'border-color var(--motion-duration) var(--motion-ease)' }}>
-                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </button>
-              ))}
-            </div>
+            <ThumbnailStrip images={allImgs} activeIndex={activeImg} onChange={setActiveImg} alt={product.name} height={58} />
           )}
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 6, borderTop: '1px solid #F0F0F5' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', paddingTop: 'var(--space-2)', borderTop: 'var(--border-hairline)' }}>
             {['🖨️ Impresión 3D', '🌈 Alta calidad', '⚡ Entrega rápida'].map(f => (
-              <span key={f} style={{ fontFamily: 'Barlow Condensed', fontSize: 8, color: '#767676', letterSpacing: 0.5 }}>{f}</span>
+              <FeatureChip key={f} label={f} tone="plain" />
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 
 // ── Página 404 ───────────────────────────────────────────────────────────
+// Propósito: recuperar a alguien que llegó a un link roto, sin salir del
+// tono de marca. El número "404" es, como el hero de portada, un momento
+// tipográfico deliberado — no forma parte de la escala de las demás páginas.
 
 function NotFoundPage({ onBack }: { onBack: () => void }) {
   return (
-    <div style={{ background: '#0D0F22', display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <CatalogHeader light />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, padding: 24, textAlign: 'center' }}>
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 900, fontSize: 64, color: '#8B30D6', lineHeight: 1 }}>404</div>
-        <div style={{ fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 20, color: '#fff' }}>Producto no encontrado</div>
-        <div style={{ fontFamily: 'Barlow', fontSize: 11, color: 'rgba(255,255,255,0.65)', maxWidth: 280, lineHeight: 1.5 }}>
+    <main style={{ background: 'var(--color-bg)', display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <CatalogHeader />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-3)', padding: 'var(--space-6)', textAlign: 'center' }}>
+        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900 as unknown as number, fontSize: 'var(--text-3xl)', color: 'var(--color-accent)', lineHeight: 1 }}>404</div>
+        <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: 'var(--text-lg)', color: 'var(--color-text)' }}>Producto no encontrado</h1>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--color-text-dim)', maxWidth: 280, lineHeight: 1.5 }}>
           El link que seguiste puede haber cambiado o el producto ya no está disponible.
         </div>
-        <button
-          type="button"
-          onClick={onBack}
-          style={{
-            all: 'unset', boxSizing: 'border-box', cursor: 'pointer', marginTop: 8,
-            background: '#8B30D6', color: '#fff',
-            fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 12, letterSpacing: 1,
-            padding: '11px 22px', borderRadius: 8,
-          }}
-        >
-          VER CATEGORÍAS
-        </button>
+        <div style={{ marginTop: 'var(--space-2)' }}>
+          <Button onClick={onBack}>Ver categorías</Button>
+        </div>
       </div>
-    </div>
+    </main>
   )
 }
 
@@ -669,10 +601,10 @@ type PageId = 'cover' | 'categories' | 'grid' | 'detail' | 'not-found'
 
 export default function App() {
   const w = useWidth()
-  const mobile = w < 500
+  const mobile = w < MOBILE_BREAKPOINT
   const [page, setPage] = useState<PageId>(() => computeInitialRoute().page)
   const [catIndex, setCatIndex] = useState(() => computeInitialRoute().catIndex)
-  // null hasta que el usuario elige un producto — así "DETALLE" no aparece
+  // null hasta que el usuario elige un producto — así "Detalle" no aparece
   // en la navegación como si fuera una sección propia sin contexto.
   const [selected, setSelected] = useState<{ cat: number; product: number } | null>(() => computeInitialRoute().selected)
 
@@ -699,15 +631,15 @@ export default function App() {
     return () => window.removeEventListener('popstate', onPopState)
   }, [])
 
-  // "PRODUCTOS" siempre muestra categories[catIndex] (por defecto la
-  // primera), aunque el usuario nunca haya pasado por "CATEGORÍAS" — el
+  // "Productos" siempre muestra categories[catIndex] (por defecto la
+  // primera), aunque el usuario nunca haya pasado por "Categorías" — el
   // nombre de la categoría en la etiqueta evita que parezca "todos los
   // productos" cuando en realidad es solo una categoría puntual.
   const NAV: { id: PageId; label: string }[] = [
-    { id: 'cover', label: 'INICIO' },
-    { id: 'categories', label: 'CATEGORÍAS' },
-    { id: 'grid', label: `PRODUCTOS · ${categories[catIndex].name.toUpperCase()}` },
-    ...(selected ? [{ id: 'detail' as PageId, label: 'DETALLE' }] : []),
+    { id: 'cover', label: 'Inicio' },
+    { id: 'categories', label: 'Categorías' },
+    { id: 'grid', label: `Productos · ${categories[catIndex].name}` },
+    ...(selected ? [{ id: 'detail' as PageId, label: 'Detalle' }] : []),
   ]
 
   const goCategory = (i: number) => {
@@ -728,6 +660,16 @@ export default function App() {
     history.pushState(null, '', '/')
   }
 
+  const handleNavSelect = (id: string) => {
+    const navId = id as PageId
+    setPage(navId)
+    if (navId === 'detail' && selected) {
+      history.pushState(null, '', productPath(categories[selected.cat], categories[selected.cat].products[selected.product]))
+    } else {
+      history.pushState(null, '', '/')
+    }
+  }
+
   const catalog = (
     page === 'cover'      ? <CoverPage onViewCatalog={goHome} /> :
     page === 'categories' ? <CategoriesPage onSelect={goCategory} /> :
@@ -738,37 +680,15 @@ export default function App() {
   )
 
   return (
-    <div style={{ height: '100dvh', background: '#080A14', display: 'flex', flexDirection: 'column' }}>
-      {/* Nav tabs */}
-      <div style={{ display: 'flex', gap: 3, padding: mobile ? '8px 12px' : '10px 18px', background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(139,48,214,0.15)', flexWrap: 'wrap', justifyContent: 'center', flexShrink: 0 }}>
-        {NAV.map(n => (
-          <button
-            key={n.id}
-            type="button"
-            className="nav-tab"
-            onClick={() => {
-              setPage(n.id)
-              if (n.id === 'detail' && selected) {
-                history.pushState(null, '', productPath(categories[selected.cat], categories[selected.cat].products[selected.product]))
-              } else {
-                history.pushState(null, '', '/')
-              }
-            }}
-            style={{
-              fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: mobile ? 9 : 10, letterSpacing: 1,
-              color: n.id === page ? '#fff' : 'rgba(255,255,255,0.55)',
-              background: n.id === page ? '#8B30D6' : 'transparent',
-              border: 'none', borderRadius: 5,
-              padding: mobile ? '10px 12px' : '5px 13px',
-              cursor: 'pointer',
-            }}
-          >
-            {n.label}
-          </button>
-        ))}
+    <div style={{ height: '100dvh', background: 'var(--color-bg)', display: 'flex', flexDirection: 'column' }}>
+      <div style={{
+        display: 'flex', justifyContent: 'center',
+        padding: mobile ? 'var(--space-2) var(--space-3)' : 'var(--space-3) var(--space-page-x-desktop)',
+        background: 'var(--color-surface)', borderBottom: 'var(--border-hairline)', flexShrink: 0,
+      }}>
+        <NavTabs items={NAV} activeId={page} onSelect={handleNavSelect} />
       </div>
 
-      {/* Catalog content */}
       <div style={{ flex: 1, minHeight: 0 }}>
         {catalog}
       </div>

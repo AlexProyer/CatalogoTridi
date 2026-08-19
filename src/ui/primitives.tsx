@@ -11,9 +11,6 @@
 // falta resetear, dejando que el navegador y la regla global de
 // :focus-visible sigan haciendo su trabajo.
 //
-// Todavía no están conectados a App.tsx — son la base para el rediseño
-// página por página que viene después.
-
 import type { CSSProperties, ReactNode } from 'react'
 
 const buttonReset: CSSProperties = {
@@ -57,6 +54,44 @@ export function Eyebrow({
       }}
     >
       {children}
+    </div>
+  )
+}
+
+// ── PageHeading ──────────────────────────────────────────────────────────
+// Título + subtítulo de página. Antes se escribía a mano en cada página
+// (Categorías ya lo tenía, Productos iba a necesitar el mismo patrón) —
+// se extrae acá para que agregar una tercera página no lo vuelva a duplicar.
+
+export function PageHeading({
+  title,
+  subtitle,
+  mobile = false,
+}: {
+  title: string
+  subtitle?: string
+  mobile?: boolean
+}) {
+  return (
+    <div style={{ marginBottom: 'var(--space-4)' }}>
+      <h1
+        style={{
+          margin: '0 0 var(--space-1)',
+          fontFamily: 'var(--font-display)',
+          fontWeight: 800 as unknown as number,
+          fontSize: mobile ? 'var(--text-lg)' : 'var(--text-xl)',
+          color: 'var(--color-text)',
+          letterSpacing: '-0.01em',
+          lineHeight: 1.1,
+        }}
+      >
+        {title}
+      </h1>
+      {subtitle && (
+        <p style={{ margin: 0, fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--color-text-dim)', maxWidth: '52ch' }}>
+          {subtitle}
+        </p>
+      )}
     </div>
   )
 }
@@ -237,6 +272,7 @@ export function FeatureChip({
     fontWeight: 'var(--weight-bold)' as unknown as number,
     fontSize: 'var(--text-xs)',
     letterSpacing: '0.02em',
+    textTransform: 'uppercase',
     borderRadius: 'var(--radius)',
     color: tone === 'plain' ? 'var(--color-text-faint)' : 'var(--color-text)',
   }
@@ -428,6 +464,7 @@ export function NavTabs({
             fontWeight: 'var(--weight-bold)' as unknown as number,
             fontSize: 'var(--text-xs)',
             letterSpacing: '0.04em',
+            textTransform: 'uppercase',
             color: item.id === activeId ? 'var(--color-text)' : 'var(--color-text-dim)',
           }}
         >

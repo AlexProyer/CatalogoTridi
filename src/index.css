@@ -233,14 +233,6 @@ body {
 .fab:hover { transform: scale(1.06); }
 .fab:active { transform: scale(0.94); }
 
-/* Puente temporal: ProductCard todavía no está migrado al design system
-   (vive en una página blanca sin tocar). Mismo valor de sombra que ya
-   tenía, solo pasado de mutación directa del DOM (onMouseEnter/Leave) a
-   una clase real, para que respete prefers-reduced-motion como todo lo
-   demás. Se retira cuando ProductGridPage se rediseñe. */
-.card-legacy { transition: box-shadow var(--motion-duration) var(--motion-ease); }
-.card-legacy:hover { box-shadow: 0 4px 18px rgba(139, 48, 214, 0.13); }
-
 .swatch {
   transition: transform var(--motion-duration) var(--motion-ease),
               border-color var(--motion-duration) var(--motion-ease);
