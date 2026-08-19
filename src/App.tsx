@@ -64,9 +64,12 @@ function matchProductPath(pathname: string): RouteMatch {
 
 function computeInitialRoute() {
   const match = matchProductPath(window.location.pathname)
-  if (match === 'not-found') return { page: 'not-found' as PageId, catIndex: 0, selected: null }
-  if (match) return { page: 'detail' as PageId, catIndex: match.cat, selected: match }
-  return { page: 'cover' as PageId, catIndex: 0, selected: null }
+  // catIndex es null salvo que la URL ya apunte a un producto puntual —
+  // "ninguna categoría elegida todavía" es un estado real, no la categoría
+  // 0 disfrazada.
+  if (match === 'not-found') return { page: 'not-found' as PageId, catIndex: null as number | null, selected: null }
+  if (match) return { page: 'detail' as PageId, catIndex: match.cat as number | null, selected: match }
+  return { page: 'cover' as PageId, catIndex: null as number | null, selected: null }
 }
 
 // ── Analytics (sin proveedor todavía) ───────────────────────────────────────
@@ -612,7 +615,10 @@ export default function App() {
   const w = useWidth()
   const mobile = w < MOBILE_BREAKPOINT
   const [page, setPage] = useState<PageId>(() => computeInitialRoute().page)
-  const [catIndex, setCatIndex] = useState(() => computeInitialRoute().catIndex)
+  // null hasta que el usuario elige una categoría — así "Productos" no
+  // muestra una categoría fantasma que nadie eligió (por ej. "Marvel" por
+  // defecto solo porque es la primera del arreglo).
+  const [catIndex, setCatIndex] = useState<number | null>(() => computeInitialRoute().catIndex)
   // null hasta que el usuario elige un producto — así "Detalle" no aparece
   // en la navegación como si fuera una sección propia sin contexto.
   const [selected, setSelected] = useState<{ cat: number; product: number } | null>(() => computeInitialRoute().selected)
@@ -624,6 +630,7 @@ export default function App() {
       const match = matchProductPath(window.location.pathname)
       if (match === 'not-found') {
         setPage('not-found')
+        setCatIndex(null)
         setSelected(null)
         return
       }
@@ -634,20 +641,19 @@ export default function App() {
         return
       }
       setPage('cover')
+      setCatIndex(null)
       setSelected(null)
     }
     window.addEventListener('popstate', onPopState)
     return () => window.removeEventListener('popstate', onPopState)
   }, [])
 
-  // "Productos" siempre muestra categories[catIndex] (por defecto la
-  // primera), aunque el usuario nunca haya pasado por "Categorías" — el
-  // nombre de la categoría en la etiqueta evita que parezca "todos los
-  // productos" cuando en realidad es solo una categoría puntual.
+  // "Productos" solo aparece una vez que el usuario eligió una categoría —
+  // antes de eso no hay nada real que mostrar ahí.
   const NAV: { id: PageId; label: string }[] = [
     { id: 'cover', label: 'Inicio' },
     { id: 'categories', label: 'Categorías' },
-    { id: 'grid', label: `Productos · ${categories[catIndex].name}` },
+    ...(catIndex !== null ? [{ id: 'grid' as PageId, label: `Productos · ${categories[catIndex].name}` }] : []),
     ...(selected ? [{ id: 'detail' as PageId, label: 'Detalle' }] : []),
   ]
 
@@ -658,6 +664,7 @@ export default function App() {
   }
 
   const goDetail = (pi: number) => {
+    if (catIndex === null) return
     setSelected({ cat: catIndex, product: pi })
     setPage('detail')
     history.pushState(null, '', productPath(categories[catIndex], categories[catIndex].products[pi]))
@@ -665,12 +672,20 @@ export default function App() {
 
   const goHome = () => {
     setPage('categories')
+    setCatIndex(null)
     setSelected(null)
     history.pushState(null, '', '/')
   }
 
   const handleNavSelect = (id: string) => {
     const navId = id as PageId
+    // Volver a Inicio o a Categorías deja atrás cualquier categoría/producto
+    // elegido — si no, "Productos" seguiría mostrando la última categoría
+    // visitada aunque el usuario ya volvió al punto de partida.
+    if (navId === 'cover' || navId === 'categories') {
+      setCatIndex(null)
+      setSelected(null)
+    }
     setPage(navId)
     if (navId === 'detail' && selected) {
       history.pushState(null, '', productPath(categories[selected.cat], categories[selected.cat].products[selected.product]))
@@ -682,7 +697,7 @@ export default function App() {
   const catalog = (
     page === 'cover'      ? <CoverPage onViewCatalog={goHome} /> :
     page === 'categories' ? <CategoriesPage onSelect={goCategory} /> :
-    page === 'grid'       ? <ProductGridPage catIndex={catIndex} onDetail={goDetail} /> :
+    page === 'grid' && catIndex !== null ? <ProductGridPage catIndex={catIndex} onDetail={goDetail} /> :
     page === 'not-found'  ? <NotFoundPage onBack={goHome} /> :
     selected              ? <ProductDetailPage catIndex={selected.cat} productIndex={selected.product} /> :
                             <CategoriesPage onSelect={goCategory} />
