@@ -154,6 +154,7 @@ function WhatsappFloatButton() {
       onClick={() => trackEvent('whatsapp_float_click')}
       aria-label="Contactar por WhatsApp"
       title="Contactar por WhatsApp"
+      className="fab"
       style={{
         position: 'fixed',
         right: 'calc(14px + env(safe-area-inset-right))',
@@ -351,9 +352,8 @@ function ProductCard({ p }: { p: typeof categories[number]['products'][number] }
   const compact = w < 600
   return (
     <div
-      style={{ background: '#fff', border: '1px solid #EAEBF0', borderRadius: 8, overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'box-shadow 0.15s' }}
-      onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 18px rgba(139,48,214,0.13)')}
-      onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
+      className="card-legacy"
+      style={{ background: '#fff', border: '1px solid #EAEBF0', borderRadius: 8, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
     >
       <div style={{ paddingTop: '85%', position: 'relative', background: '#F5F5FA', overflow: 'hidden' }}>
         <img src={p.img} alt={p.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -507,6 +507,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
                 width: swatchSize, height: swatchSize, borderRadius: '50%', background: c.hex,
                 border: activeColor === i ? '2px solid #fff' : '2px solid rgba(255,255,255,0.15)',
                 boxShadow: activeColor === i ? '0 0 0 2px #8B30D6' : 'none',
+                transition: 'border-color var(--motion-duration) var(--motion-ease), box-shadow var(--motion-duration) var(--motion-ease)',
               }}
             />
           ))}
@@ -555,7 +556,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
           {allImgs.length > 1 && (
             <div style={{ display: 'flex', gap: 6 }}>
               {allImgs.map((img, i) => (
-                <button key={i} type="button" onClick={() => setActiveImg(i)} aria-pressed={i === activeImg} aria-label={`Foto ${i + 1} de ${product.name}`} style={{ flex: 1, height: 56, borderRadius: 6, overflow: 'hidden', border: i === activeImg ? '2px solid #8B30D6' : '2px solid transparent', cursor: 'pointer', padding: 0, background: '#1a1c30' }}>
+                <button key={i} type="button" onClick={() => setActiveImg(i)} aria-pressed={i === activeImg} aria-label={`Foto ${i + 1} de ${product.name}`} style={{ flex: 1, height: 56, borderRadius: 6, overflow: 'hidden', border: i === activeImg ? '2px solid #8B30D6' : '2px solid transparent', cursor: 'pointer', padding: 0, background: '#1a1c30', transition: 'border-color var(--motion-duration) var(--motion-ease)' }}>
                   <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </button>
               ))}
@@ -615,7 +616,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
           {allImgs.length > 1 && (
             <div style={{ display: 'flex', gap: 6 }}>
               {allImgs.map((img, i) => (
-                <button key={i} type="button" onClick={() => setActiveImg(i)} aria-pressed={i === activeImg} aria-label={`Foto ${i + 1} de ${product.name}`} style={{ flex: 1, height: 58, borderRadius: 6, overflow: 'hidden', border: i === activeImg ? '2px solid #8B30D6' : '2px solid transparent', cursor: 'pointer', padding: 0, background: '#F5F5FA' }}>
+                <button key={i} type="button" onClick={() => setActiveImg(i)} aria-pressed={i === activeImg} aria-label={`Foto ${i + 1} de ${product.name}`} style={{ flex: 1, height: 58, borderRadius: 6, overflow: 'hidden', border: i === activeImg ? '2px solid #8B30D6' : '2px solid transparent', cursor: 'pointer', padding: 0, background: '#F5F5FA', transition: 'border-color var(--motion-duration) var(--motion-ease)' }}>
                   <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </button>
               ))}
@@ -744,6 +745,7 @@ export default function App() {
           <button
             key={n.id}
             type="button"
+            className="nav-tab"
             onClick={() => {
               setPage(n.id)
               if (n.id === 'detail' && selected) {
@@ -758,7 +760,7 @@ export default function App() {
               background: n.id === page ? '#8B30D6' : 'transparent',
               border: 'none', borderRadius: 5,
               padding: mobile ? '10px 12px' : '5px 13px',
-              cursor: 'pointer', transition: 'all 0.15s',
+              cursor: 'pointer',
             }}
           >
             {n.label}
