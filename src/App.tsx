@@ -123,14 +123,14 @@ function StarBadge() {
 
 function BottomBar() {
   return (
-    <div className="bottom-bar" style={{ background: 'var(--color-accent)', display: 'flex', alignItems: 'center', padding: 'var(--space-4) var(--space-4)', flexShrink: 0 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-6)', flexWrap: 'wrap' }}>
+    <div className="bottom-bar" style={{ background: 'var(--color-accent)', display: 'flex', alignItems: 'center', padding: 'var(--space-3) var(--space-4)', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)', flexWrap: 'wrap' }}>
         {[
           { icon: '🖨️', label: 'Impresión 3D' },
           { icon: '🌈', label: 'Materiales premium' },
           { icon: '⚡', label: 'Entrega 3-5 días' },
         ].map(f => (
-          <FeatureChip key={f.label} tone="solid" size="md" icon={<span aria-hidden="true" style={{ fontSize: 18 }}>{f.icon}</span>} label={f.label} />
+          <FeatureChip key={f.label} tone="solid" size="sm" icon={<span aria-hidden="true" style={{ fontSize: 14 }}>{f.icon}</span>} label={f.label} />
         ))}
       </div>
     </div>
@@ -279,13 +279,14 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
         )}
       </div>
 
-      {/* Social footer */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: `var(--space-2) ${mobile ? 'var(--space-3)' : 'var(--space-page-x-desktop)'}`, background: 'var(--color-accent-soft)', borderTop: '1px solid color-mix(in srgb, var(--color-accent) 18%, transparent)', position: 'relative', zIndex: 'var(--z-raised)' as unknown as number, flexWrap: 'wrap', gap: 'var(--space-1)' }}>
-        <div style={{ display: 'flex', gap: 'var(--space-4)', flexWrap: 'wrap' }}>
-          <TextLink href={instagramHref(company.instagram)} external>📷 {company.instagram}</TextLink>
-          <TextLink href={telHref(company.phone)}>📞 {company.phone}</TextLink>
+      {/* Social footer — mismo tamaño de texto que BottomBar (var(--text-sm))
+          para que los dos "footers" del sitio queden estandarizados. */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: `var(--space-3) ${mobile ? 'var(--space-3)' : 'var(--space-page-x-desktop)'}`, background: 'var(--color-accent-soft)', borderTop: '1px solid color-mix(in srgb, var(--color-accent) 18%, transparent)', position: 'relative', zIndex: 'var(--z-raised)' as unknown as number, flexWrap: 'wrap', gap: 'var(--space-2)' }}>
+        <div style={{ display: 'flex', gap: 'var(--space-5)', flexWrap: 'wrap' }}>
+          <TextLink href={instagramHref(company.instagram)} external style={{ fontSize: 'var(--text-sm)' }}>📷 {company.instagram}</TextLink>
+          <TextLink href={telHref(company.phone)} style={{ fontSize: 'var(--text-sm)' }}>📞 {company.phone}</TextLink>
         </div>
-        <TextLink href={websiteHref(company.website)} external>🌐 {company.website}</TextLink>
+        <TextLink href={websiteHref(company.website)} external style={{ fontSize: 'var(--text-sm)' }}>🌐 {company.website}</TextLink>
       </div>
     </main>
   )
