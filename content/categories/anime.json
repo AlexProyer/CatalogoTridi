@@ -5,35 +5,62 @@
   "order": 2,
   "products": [
     {
-      "code": "#AN001 #100001",
-      "name": "GOKU",
-      "size": "20 cm",
-      "price": "$42,000",
-      "weight": "180 g",
-      "material": "PLA Premium",
-      "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=280&h=280&fit=crop&auto=format",
       "extraImgs": [],
+      "size": "20 cm",
+      "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=280&h=280&fit=crop&auto=format",
+      "material": "PLA Premium",
+      "price": "$42,000",
+      "name": "GOKU",
+      "code": "#AN001 #100001",
       "colors": [
-        { "name": "Naranja", "hex": "#E05252" },
-        { "name": "Azul", "hex": "#2C5BE8" },
-        { "name": "Negro", "hex": "#1A1A1A" }
+        {
+          "name": "Naranja",
+          "hex": "#E05252"
+        },
+        {
+          "name": "Azul",
+          "hex": "#2C5BE8"
+        },
+        {
+          "name": "Negro",
+          "hex": "#1A1A1A"
+        }
       ],
-      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado.",
+      "weight": "180 g"
     },
     {
-      "code": "#AN001 #100002",
-      "name": "NARUTO",
-      "size": "18 cm",
-      "price": "$38,000",
-      "weight": "150 g",
-      "material": "PLA Premium",
-      "img": "https://images.unsplash.com/photo-1776426270359-0277f3595496?w=280&h=280&fit=crop&auto=format",
       "extraImgs": [],
+      "size": "18 cm",
+      "img": "https://images.unsplash.com/photo-1776426270359-0277f3595496?w=280&h=280&fit=crop&auto=format",
+      "material": "PLA Premium",
+      "price": "$38,000",
+      "name": "NARUTO",
+      "code": "#AN001 #100002",
       "colors": [
-        { "name": "Naranja", "hex": "#E05252" },
-        { "name": "Azul", "hex": "#2C5BE8" }
+        {
+          "name": "Naranja",
+          "hex": "#E05252"
+        },
+        {
+          "name": "Azul",
+          "hex": "#2C5BE8"
+        }
       ],
-      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado."
+      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado.",
+      "weight": "150 g"
+    },
+    {
+      "code": "001",
+      "name": "🗡️Lámpara de pared Zoro One Piece",
+      "size": "12*15 cm",
+      "material": "bioplástico PLA",
+      "extraImgs": [
+        "/images/uploads/zoro2.jpeg"
+      ],
+      "img": "/images/uploads/zoro1.jpeg",
+      "desc": "Esta lámpara se volvió viral por una razón muy simple: cuando está apagada, parece una recompensa de Zoro decorando la pared. Pero al encenderla, la sombra proyecta su silueta completa en pose de combate con sus tres espadas. ⚔️\n\nNo necesita efectos exagerados ni pantallas. Solo luz, sombra y una presencia brutal que transforma cualquier espacio.\n\nNo es un póster ni un sticker: la lámpara crea todo el efecto por sí sola.\n\nPerfecta para:\n🎮 Setup gamer\n🏴‍☠️ Colecciones de anime\n🛋️ Habitaciones o salas\n✨ Decoración geek que realmente llama la atención\n\nLa iluminación genera un efecto limpio, elegante y muy distinto a las típicas luces LED genéricas. Casi todo el que la ve pregunta dónde conseguirla.\n\nIdeal para fans de One Piece y especialmente de Zoro.\n",
+      "price": "80000"
     }
   ]
 }
