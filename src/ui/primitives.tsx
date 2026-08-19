@@ -264,17 +264,18 @@ export function FeatureChip({
   icon?: ReactNode
   label: string
   tone?: 'outline' | 'solid' | 'plain'
-  /** 'sm' es un escalón más grande que el default — para usos donde el
-      chip necesita más presencia (ej. la tira de features de BottomBar). */
-  size?: 'xs' | 'sm'
+  /** Escalones por encima del default ('xs') — para usos donde el chip
+      necesita más presencia (ej. la tira de features de BottomBar). */
+  size?: 'xs' | 'sm' | 'md'
 }) {
+  const fontSize = size === 'md' ? 'var(--text-md)' : size === 'sm' ? 'var(--text-sm)' : 'var(--text-xs)'
   const base: CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: 'var(--space-1)',
+    gap: 'var(--space-2)',
     fontFamily: 'var(--font-display)',
     fontWeight: 'var(--weight-bold)' as unknown as number,
-    fontSize: size === 'sm' ? 'var(--text-sm)' : 'var(--text-xs)',
+    fontSize,
     letterSpacing: '0.02em',
     textTransform: 'uppercase',
     borderRadius: 'var(--radius)',

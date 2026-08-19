@@ -123,14 +123,14 @@ function StarBadge() {
 
 function BottomBar() {
   return (
-    <div style={{ background: 'var(--color-accent)', display: 'flex', alignItems: 'center', padding: 'var(--space-3) var(--space-4)', flexShrink: 0 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)', flexWrap: 'wrap' }}>
+    <div className="bottom-bar" style={{ background: 'var(--color-accent)', display: 'flex', alignItems: 'center', padding: 'var(--space-4) var(--space-4)', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-6)', flexWrap: 'wrap' }}>
         {[
           { icon: '🖨️', label: 'Impresión 3D' },
           { icon: '🌈', label: 'Materiales premium' },
           { icon: '⚡', label: 'Entrega 3-5 días' },
         ].map(f => (
-          <FeatureChip key={f.label} tone="solid" size="sm" icon={<span aria-hidden="true" style={{ fontSize: 14 }}>{f.icon}</span>} label={f.label} />
+          <FeatureChip key={f.label} tone="solid" size="md" icon={<span aria-hidden="true" style={{ fontSize: 18 }}>{f.icon}</span>} label={f.label} />
         ))}
       </div>
     </div>
@@ -140,18 +140,34 @@ function BottomBar() {
 function WhatsappFloatButton({ page }: { page: PageId }) {
   const w = useWidth()
   const mobile = w < MOBILE_BREAKPOINT
-  // Categorías y Productos dibujan BottomBar (el footer) pegado abajo — sin
-  // este margen extra el botón queda flotando encima.
-  const hasBottomBar = page === 'categories' || page === 'grid'
-  // En mobile, las 4 pantallas terminan con contenido pegado al borde
-  // inferior (pie de portada, BottomBar, caja "¿personalizado?" del
-  // detalle). Esa caja no se estira con el alto del viewport, así que en
-  // teléfonos altos queda más lejos del borde — 180px cubre el caso real
-  // medido (hasta ~159px en un viewport de 896px) con margen, sin tener
-  // que conocer el layout de cada página individualmente. En desktop esos
-  // elementos ocupan mucho menos (una sola línea), así que alcanza con
-  // despejar la altura real de BottomBar en vez del mismo margen grande.
-  const base = mobile ? 180 : hasBottomBar ? 76 : 14
+
+  // Se mide la altura real de BottomBar (si está montado) en vez de
+  // adivinar un número fijo — un número fijo ya se desincronizó una vez
+  // apenas el footer cambió de tamaño, y va a volver a pasar cada vez que
+  // cambie texto, padding o si algún día envuelve a dos líneas en una
+  // pantalla angosta. ResizeObserver lo mantiene correcto siempre.
+  const [bottomBarHeight, setBottomBarHeight] = useState(0)
+  useEffect(() => {
+    const el = document.querySelector<HTMLElement>('.bottom-bar')
+    if (!el) {
+      setBottomBarHeight(0)
+      return
+    }
+    const observer = new ResizeObserver(entries => {
+      setBottomBarHeight(entries[0].contentRect.height)
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [page])
+
+  // Otro contenido pegado al borde inferior en mobile (pie social de
+  // portada, caja "¿personalizado?" del detalle) no es un componente único
+  // reutilizado, así que no se puede medir igual — para esos casos se
+  // mantiene un margen fijo generoso, calibrado sobre el caso más alto.
+  const OTHER_MOBILE_BOTTOM_CONTENT = 180
+  const base = bottomBarHeight > 0
+    ? bottomBarHeight + 20
+    : mobile ? OTHER_MOBILE_BOTTOM_CONTENT : 14
   return (
     <a
       href={whatsappHref(company.whatsapp, WHATSAPP_GENERAL_MESSAGE)}
