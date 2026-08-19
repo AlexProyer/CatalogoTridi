@@ -120,14 +120,14 @@ function StarBadge() {
 
 function BottomBar() {
   return (
-    <div style={{ background: 'var(--color-accent)', display: 'flex', alignItems: 'center', padding: 'var(--space-2) var(--space-4)', flexShrink: 0 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', flexWrap: 'wrap' }}>
+    <div style={{ background: 'var(--color-accent)', display: 'flex', alignItems: 'center', padding: 'var(--space-3) var(--space-4)', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)', flexWrap: 'wrap' }}>
         {[
           { icon: '🖨️', label: 'Impresión 3D' },
           { icon: '🌈', label: 'Materiales premium' },
           { icon: '⚡', label: 'Entrega 3-5 días' },
         ].map(f => (
-          <FeatureChip key={f.label} tone="solid" icon={<span aria-hidden="true" style={{ fontSize: 11 }}>{f.icon}</span>} label={f.label} />
+          <FeatureChip key={f.label} tone="solid" size="sm" icon={<span aria-hidden="true" style={{ fontSize: 14 }}>{f.icon}</span>} label={f.label} />
         ))}
       </div>
     </div>
@@ -167,17 +167,19 @@ function WhatsappFloatButton() {
   )
 }
 
+// El logo ya no vive acá — vive una sola vez en la barra superior
+// compartida (App()), fijo en una esquina, para que no "salte" de lugar
+// entre páginas. Este header solo aporta el eyebrow de contexto.
 function CatalogHeader() {
   const w = useWidth()
   const small = w < MOBILE_BREAKPOINT
   return (
     <div style={{
-      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      display: 'flex', alignItems: 'center',
       padding: `var(--space-2) ${small ? 'var(--space-3)' : 'var(--space-page-x-desktop)'}`,
       flexShrink: 0,
     }}>
       <Eyebrow tone="decorative">Catálogo Tridi {company.year}</Eyebrow>
-      <TridiLogo small={small} />
     </div>
   )
 }
@@ -197,8 +199,9 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
       <div style={{ position: 'absolute', top: '15%', right: '-5%', width: 280, height: 280, borderRadius: 'var(--radius-full)', background: 'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 30%, transparent) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: '5%', left: '-8%', width: 200, height: 200, borderRadius: 'var(--radius-full)', background: 'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 15%, transparent) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: `var(--space-3) ${mobile ? 'var(--space-3)' : 'var(--space-page-x-desktop)'}`, position: 'relative', zIndex: 'var(--z-raised)' as unknown as number }}>
-        <TridiLogo small={mobile} />
+      {/* El logo ya no va acá — vive fijo en la barra superior compartida
+          (ver App()), así no salta de lado entre esta página y las demás. */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: `var(--space-3) ${mobile ? 'var(--space-3)' : 'var(--space-page-x-desktop)'}`, position: 'relative', zIndex: 'var(--z-raised)' as unknown as number }}>
         <Eyebrow tone="decorative">Catálogo {company.year}</Eyebrow>
       </div>
 
@@ -681,12 +684,26 @@ export default function App() {
 
   return (
     <div style={{ height: '100dvh', background: 'var(--color-bg)', display: 'flex', flexDirection: 'column' }}>
+      {/* Logo fijo a la izquierda + tabs — se renderiza acá una sola vez
+          para las 5 páginas, así no cambia de posición al navegar (antes
+          cada página lo dibujaba por su cuenta, en un lado distinto). */}
       <div style={{
-        display: 'flex', justifyContent: 'center',
+        display: 'flex', alignItems: 'center', gap: 'var(--space-3)',
         padding: mobile ? 'var(--space-2) var(--space-3)' : 'var(--space-3) var(--space-page-x-desktop)',
         background: 'var(--color-surface)', borderBottom: 'var(--border-hairline)', flexShrink: 0,
       }}>
-        <NavTabs items={NAV} activeId={page} onSelect={handleNavSelect} />
+        <button
+          type="button"
+          onClick={() => handleNavSelect('cover')}
+          aria-label="Ir al inicio"
+          className="logo-link"
+          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', flexShrink: 0 }}
+        >
+          <TridiLogo small={mobile} />
+        </button>
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', justifyContent: 'center' }}>
+          <NavTabs items={NAV} activeId={page} onSelect={handleNavSelect} />
+        </div>
       </div>
 
       <div style={{ flex: 1, minHeight: 0 }}>

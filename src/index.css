@@ -224,6 +224,12 @@ body {
   border-bottom-color: var(--color-accent);
 }
 
+/* Logo fijo de la barra superior — único en las 5 páginas, clickeable a
+   Inicio. */
+.logo-link { transition: opacity var(--motion-duration) var(--motion-ease); }
+.logo-link:hover { opacity: 0.8; }
+.logo-link:active { opacity: 0.6; }
+
 /* Botón flotante de WhatsApp: visible en las 4 pantallas y sin ningún
    feedback de interacción hasta ahora. */
 .fab {

@@ -259,10 +259,14 @@ export function FeatureChip({
   icon,
   label,
   tone = 'outline',
+  size = 'xs',
 }: {
   icon?: ReactNode
   label: string
   tone?: 'outline' | 'solid' | 'plain'
+  /** 'sm' es un escalón más grande que el default — para usos donde el
+      chip necesita más presencia (ej. la tira de features de BottomBar). */
+  size?: 'xs' | 'sm'
 }) {
   const base: CSSProperties = {
     display: 'inline-flex',
@@ -270,7 +274,7 @@ export function FeatureChip({
     gap: 'var(--space-1)',
     fontFamily: 'var(--font-display)',
     fontWeight: 'var(--weight-bold)' as unknown as number,
-    fontSize: 'var(--text-xs)',
+    fontSize: size === 'sm' ? 'var(--text-sm)' : 'var(--text-xs)',
     letterSpacing: '0.02em',
     textTransform: 'uppercase',
     borderRadius: 'var(--radius)',
