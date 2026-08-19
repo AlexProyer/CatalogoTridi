@@ -6,11 +6,156 @@
   --font-body: 'Barlow', sans-serif;
 }
 
+/* ============================================================================
+   TALLER NOCTURNO — design tokens
+   ----------------------------------------------------------------------------
+   Dirección visual 1, definida para admitir modo claro más adelante sin
+   reescribir componentes: todo color es un token semántico (rol, no valor),
+   los valores de :root son hoy los de modo oscuro (único tema que se envía),
+   y el bloque [data-theme="light"] al final documenta a qué se traduciría
+   cada token en modo claro — queda inerte hasta que exista un mecanismo de
+   toggle, pero la arquitectura ya está lista para ese día.
+
+   DESIGN_VARIANCE: 3 · MOTION_INTENSITY: 3 · VISUAL_DENSITY: 5
+   ========================================================================= */
+:root {
+  /* — Color: superficie y texto — */
+  --color-bg: #0A0C16;             /* fondo de página — reemplaza los 3 negros previos */
+  --color-surface: #12152A;        /* tarjetas, paneles */
+  --color-surface-raised: #171A33; /* superficie hover/activa, fondos de miniatura */
+  --color-border: #2A2D45;         /* borde por defecto */
+  --color-text: #F4F3F8;           /* texto primario */
+  --color-text-dim: #A6A2BA;       /* texto secundario — pasa AA sobre --color-bg */
+  --color-text-faint: #716D82;     /* solo chrome decorativo (eyebrows, marcas de agua) */
+
+  /* — Color: acento de marca —
+     Un solo acento fijo por sitio (Color Consistency Lock). El accent por
+     categoría (cat.accent, ya conectado al CMS) es la única segunda capa de
+     color permitida y se aplica vía estilo inline por ser dato, no token. */
+  --color-accent: #8B30D6;
+  --color-accent-soft: rgba(139, 48, 214, 0.15);
+  --color-accent-text: #C9A6F0;    /* violeta claro — el único seguro para texto chico
+                                       sobre fondo oscuro (la auditoría encontró que
+                                       #8B30D6 a <18px falla WCAG AA sobre --color-bg) */
+  --color-on-accent: #FFFFFF;      /* texto sobre superficie de acento sólida */
+
+  /* — Tipografía — */
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas, monospace;
+
+  /* — Font weights — */
+  --weight-body: 500;
+  --weight-medium: 600;
+  --weight-bold: 700;
+  --weight-display: 800;
+  --weight-display-heavy: 900;   /* solo para el titular único de portada */
+
+  /* — Type scale — ratio 1.25, base 13px.
+     El hero de portada usa clamp() fuera de esta escala a propósito: es el
+     único lugar del sitio con licencia para un momento tipográfico grande. */
+  --text-xs: 13px;   /* eyebrows, código SKU, captions */
+  --text-sm: 16px;   /* cuerpo secundario */
+  --text-md: 20px;   /* título de tarjeta, énfasis de cuerpo */
+  --text-lg: 25px;   /* encabezado de sección */
+  --text-xl: 31px;   /* encabezado de página */
+  --text-2xl: 39px;  /* línea secundaria del hero */
+  --text-3xl: 49px;  /* línea primaria del hero */
+
+  /* — Spacing scale — */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 72px;
+
+  /* — Section / page rhythm — */
+  --space-page-x: var(--space-3);      /* padding horizontal mobile */
+  --space-page-x-desktop: var(--space-5);
+  --space-section-y: var(--space-7);   /* separación entre regiones, mobile */
+  --space-section-y-desktop: var(--space-9);
+
+  /* — Container — */
+  --container-max: 1160px;   /* unifica los 1100/1200 que convivían sin razón */
+
+  /* — Grid — */
+  --grid-gap: var(--space-2);
+
+  /* — Border radius —
+     Shape Consistency Lock: un solo radio para toda la UI rectangular.
+     --radius-full es la única excepción documentada, reservada a controles
+     circulares (swatches de color, botón flotante de WhatsApp) — es una
+     categoría de forma distinta (círculo/pill), no una segunda escala. */
+  --radius: 4px;
+  --radius-full: 999px;
+
+  /* — Borders — */
+  --border-width: 1px;
+  --border-hairline: var(--border-width) solid var(--color-border);
+
+  /* — Shadows —
+     Sin sombra de elevación en reposo (la jerarquía viene de brillo/borde,
+     no de "estar levantado"). Dos usos permitidos: el glow de hover/focus
+     y la sombra de elementos realmente flotantes sobre contenido (CTA
+     sticky, botón flotante). */
+  --shadow-glow: 0 0 0 1px var(--color-accent), 0 0 20px rgba(139, 48, 214, 0.35);
+  --shadow-floating: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  /* — Image ratios — */
+  --ratio-cover: 16 / 9;     /* portada de categoría */
+  --ratio-square: 1 / 1;     /* foto de producto */
+  --ratio-portrait: 3 / 4;   /* figura hero de portada */
+
+  /* — Motion —
+     MOTION_INTENSITY: 3 → un solo par duración/curva para todo el sitio.
+     Lineal a propósito: confirma un estado ("se encendió"), no entretiene. */
+  --motion-duration: 120ms;
+  --motion-ease: linear;
+
+  /* — Focus — */
+  --focus-outline-width: 2px;
+  --focus-outline-offset: 2px;
+
+  /* — Z-index scale — reemplaza los valores sueltos (2, 5, 1000) que
+     convivían sin escala en el código. */
+  --z-raised: 2;
+  --z-sticky: 5;
+  --z-floating: 20;
+  --z-overlay: 100;
+}
+
+/* Reserva de modo claro — inerte hasta que exista un toggle de tema.
+   Mismo lenguaje ("Taller Nocturno" con la luz encendida"), no un rebrand:
+   se traduce cada rol, no se improvisa una paleta nueva. */
+:root[data-theme="light"] {
+  --color-bg: #F2F1F5;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #F7F6FA;
+  --color-border: #E2E0EA;
+  --color-text: #14121C;
+  --color-text-dim: #5A5668;
+  --color-text-faint: #8B87A0;
+
+  --color-accent: #7A28BE;
+  --color-accent-soft: rgba(122, 40, 190, 0.1);
+  --color-accent-text: #6B1FAE;
+  --color-on-accent: #FFFFFF;
+
+  --shadow-glow: 0 0 0 1px var(--color-accent), 0 0 16px rgba(122, 40, 190, 0.22);
+  --shadow-floating: 0 8px 24px rgba(20, 18, 28, 0.16);
+}
+
 * { box-sizing: border-box; }
 
 body {
-  font-family: 'Barlow', sans-serif;
-  background: #080A14;
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
   margin: 0;
 }
 
@@ -18,11 +163,74 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #4a2d8a; border-radius: 2px; }
 
-/* !important is required here: every interactive element in App.tsx uses
-   inline `style={{ all: 'unset' }}`, and an inline declaration always wins
-   over an external rule for the same property unless that rule is
-   !important — so without it this focus ring is silently discarded. */
+/* !important es necesario acá: los elementos interactivos usan
+   `style={{ all: 'unset' }}` inline, y una declaración inline siempre le
+   gana a una regla externa para la misma propiedad salvo que sea
+   !important — sin esto el anillo de foco queda descartado en silencio. */
 :focus-visible {
-  outline: 2px solid #8B30D6 !important;
-  outline-offset: 2px !important;
+  outline: var(--focus-outline-width) solid var(--color-accent) !important;
+  outline-offset: var(--focus-outline-offset) !important;
+}
+
+/* ============================================================================
+   Componentes base — clases de interacción (:hover / :active / :focus-visible)
+   ----------------------------------------------------------------------------
+   Los tokens de arriba se consumen desde estilos inline en los componentes
+   de src/ui/primitives.tsx para color/spacing/layout. Los ESTADOS de
+   interacción viven acá como clases reales, porque una pseudo-clase no se
+   puede expresar en un objeto style de React — es la misma razón por la que
+   el anillo de foco global necesitó !important más arriba.
+   ========================================================================= */
+
+.btn {
+  transition: box-shadow var(--motion-duration) var(--motion-ease),
+              transform var(--motion-duration) var(--motion-ease);
+}
+.btn:hover { box-shadow: var(--shadow-glow); }
+.btn:active { transform: scale(0.98); }
+
+.btn--ghost {
+  background: transparent !important;
+  color: var(--color-accent-text) !important;
+  border: var(--border-hairline);
+}
+.btn--ghost:hover { box-shadow: var(--shadow-glow); border-color: var(--color-accent); }
+
+.link {
+  text-decoration: none;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color var(--motion-duration) var(--motion-ease);
+}
+.link:hover, .link:focus-visible {
+  text-decoration: underline;
+  color: var(--color-text);
+}
+
+.card { transition: box-shadow var(--motion-duration) var(--motion-ease); }
+.card--interactive:hover { box-shadow: var(--shadow-glow); }
+
+.nav-tab {
+  transition: color var(--motion-duration) var(--motion-ease),
+              border-color var(--motion-duration) var(--motion-ease);
+  border-bottom: 2px solid transparent;
+}
+.nav-tab:hover { color: var(--color-text); }
+.nav-tab[data-active="true"] {
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
+}
+
+.swatch {
+  transition: transform var(--motion-duration) var(--motion-ease),
+              border-color var(--motion-duration) var(--motion-ease);
+}
+.swatch:hover { transform: scale(1.05); }
+.swatch[aria-pressed="true"] { border-color: var(--color-text) !important; }
+
+.thumb { transition: border-color var(--motion-duration) var(--motion-ease); }
+.thumb:hover { border-color: var(--color-accent-text); }
+
+.chip {
+  transition: background var(--motion-duration) var(--motion-ease);
 }
