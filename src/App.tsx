@@ -153,8 +153,13 @@ function WhatsappFloatButton({ page }: { page: PageId }) {
       setBottomBarHeight(0)
       return
     }
-    const observer = new ResizeObserver(entries => {
-      setBottomBarHeight(entries[0].contentRect.height)
+    // ResizeObserver.contentRect excluye el padding — BottomBar tiene
+    // padding vertical real (var(--space-3) arriba y abajo), así que medir
+    // contentRect subestimaba la altura visible y el botón terminaba
+    // metiéndose unos px adentro del footer. offsetHeight sí incluye
+    // padding y coincide con lo que se ve en pantalla.
+    const observer = new ResizeObserver(() => {
+      setBottomBarHeight(el.offsetHeight)
     })
     observer.observe(el)
     return () => observer.disconnect()
@@ -237,8 +242,13 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
         position: 'relative', zIndex: 'var(--z-raised)' as unknown as number, gap: mobile ? 'var(--space-3)' : 'var(--space-8)',
         maxWidth: 'var(--container-max)', width: '100%', margin: '0 auto',
       }}>
-        {/* Text */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+        {/* Text — flex:1 en desktop reparte el ancho con la imagen hero (row).
+            En mobile esa misma regla hacía crecer este bloque hasta llenar
+            todo el alto disponible (column), y como su contenido queda
+            arriba por defecto, el resultado era "todo pegado arriba, la
+            mitad de abajo vacía" en vez de centrado — por eso acá no crece,
+            deja que justifyContent:center del contenedor haga el centrado. */}
+        <div style={{ flex: mobile ? '0 1 auto' : 1, minWidth: 0 }}>
           <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900 as unknown as number, fontSize: mobile ? 'clamp(38px,14vw,60px)' : 'clamp(42px,7vw,68px)', color: 'var(--color-text)', lineHeight: 0.88, letterSpacing: '-0.02em' }}>
             Catálogo
           </h1>
