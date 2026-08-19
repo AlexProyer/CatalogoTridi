@@ -123,7 +123,7 @@ function StarBadge() {
 
 function BottomBar() {
   return (
-    <div className="bottom-bar" style={{ background: 'var(--color-accent)', display: 'flex', alignItems: 'center', padding: 'var(--space-3) var(--space-4)', flexShrink: 0 }}>
+    <div className="pinned-footer" style={{ background: 'var(--color-accent)', display: 'flex', alignItems: 'center', padding: 'var(--space-3) var(--space-4)', flexShrink: 0 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-5)', flexWrap: 'wrap' }}>
         {[
           { icon: '🖨️', label: 'Impresión 3D' },
@@ -138,41 +138,32 @@ function BottomBar() {
 }
 
 function WhatsappFloatButton({ page }: { page: PageId }) {
-  const w = useWidth()
-  const mobile = w < MOBILE_BREAKPOINT
-
-  // Se mide la altura real de BottomBar (si está montado) en vez de
-  // adivinar un número fijo — un número fijo ya se desincronizó una vez
-  // apenas el footer cambió de tamaño, y va a volver a pasar cada vez que
-  // cambie texto, padding o si algún día envuelve a dos líneas en una
-  // pantalla angosta. ResizeObserver lo mantiene correcto siempre.
-  const [bottomBarHeight, setBottomBarHeight] = useState(0)
+  // Se mide la altura real de lo que esté pegado al borde inferior de la
+  // página actual (BottomBar en Categorías/Productos, o el pie social en
+  // Inicio — ambos marcados con .pinned-footer) en vez de adivinar un
+  // número fijo. Un número fijo ya se desincronizó dos veces: primero con
+  // contentRect (que excluye el padding) y después porque el pie de Inicio
+  // ni siquiera se estaba midiendo, así que en Inicio el botón quedaba
+  // flotando muy por encima en mobile y encima del link del sitio en
+  // desktop. Detalle y 404 no tienen nada fijo al borde inferior (lo que
+  // haya ahí se desplaza con el scroll), así que no necesitan medición.
+  const [pinnedFooterHeight, setPinnedFooterHeight] = useState(0)
   useEffect(() => {
-    const el = document.querySelector<HTMLElement>('.bottom-bar')
+    const el = document.querySelector<HTMLElement>('.pinned-footer')
     if (!el) {
-      setBottomBarHeight(0)
+      setPinnedFooterHeight(0)
       return
     }
-    // ResizeObserver.contentRect excluye el padding — BottomBar tiene
-    // padding vertical real (var(--space-3) arriba y abajo), así que medir
-    // contentRect subestimaba la altura visible y el botón terminaba
-    // metiéndose unos px adentro del footer. offsetHeight sí incluye
-    // padding y coincide con lo que se ve en pantalla.
     const observer = new ResizeObserver(() => {
-      setBottomBarHeight(el.offsetHeight)
+      // offsetHeight (no contentRect) porque sí incluye el padding —
+      // contentRect lo excluye y subestima la altura real visible.
+      setPinnedFooterHeight(el.offsetHeight)
     })
     observer.observe(el)
     return () => observer.disconnect()
   }, [page])
 
-  // Otro contenido pegado al borde inferior en mobile (pie social de
-  // portada, caja "¿personalizado?" del detalle) no es un componente único
-  // reutilizado, así que no se puede medir igual — para esos casos se
-  // mantiene un margen fijo generoso, calibrado sobre el caso más alto.
-  const OTHER_MOBILE_BOTTOM_CONTENT = 180
-  const base = bottomBarHeight > 0
-    ? bottomBarHeight + 20
-    : mobile ? OTHER_MOBILE_BOTTOM_CONTENT : 14
+  const base = pinnedFooterHeight > 0 ? pinnedFooterHeight + 20 : 14
   return (
     <a
       href={whatsappHref(company.whatsapp, WHATSAPP_GENERAL_MESSAGE)}
@@ -290,8 +281,10 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
       </div>
 
       {/* Social footer — mismo tamaño de texto que BottomBar (var(--text-sm))
-          para que los dos "footers" del sitio queden estandarizados. */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: `var(--space-3) ${mobile ? 'var(--space-3)' : 'var(--space-page-x-desktop)'}`, background: 'var(--color-accent-soft)', borderTop: '1px solid color-mix(in srgb, var(--color-accent) 18%, transparent)', position: 'relative', zIndex: 'var(--z-raised)' as unknown as number, flexWrap: 'wrap', gap: 'var(--space-2)' }}>
+          para que los dos "footers" del sitio queden estandarizados, y la
+          misma clase .pinned-footer para que WhatsappFloatButton lo mida y
+          no se superponga. */}
+      <div className="pinned-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: `var(--space-3) ${mobile ? 'var(--space-3)' : 'var(--space-page-x-desktop)'}`, background: 'var(--color-accent-soft)', borderTop: '1px solid color-mix(in srgb, var(--color-accent) 18%, transparent)', position: 'relative', zIndex: 'var(--z-raised)' as unknown as number, flexWrap: 'wrap', gap: 'var(--space-2)' }}>
         <div style={{ display: 'flex', gap: 'var(--space-5)', flexWrap: 'wrap' }}>
           <TextLink href={instagramHref(company.instagram)} external style={{ fontSize: 'var(--text-sm)' }}>📷 {company.instagram}</TextLink>
           <TextLink href={telHref(company.phone)} style={{ fontSize: 'var(--text-sm)' }}>📞 {company.phone}</TextLink>
