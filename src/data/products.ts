@@ -43,8 +43,23 @@ interface CompanySettings {
 const categoryModules = import.meta.glob<{ default: Category }>('/content/categories/*.json', { eager: true })
 const companySettings = import.meta.glob<{ default: CompanySettings }>('/content/settings/company.json', { eager: true })
 
+// El panel (Decap CMS) omite por completo una clave de tipo lista (colors,
+// extraImgs) cuando queda vacía, en vez de guardar `[]` — así que un
+// producto nuevo sin colores o sin fotos adicionales llega acá con esos
+// campos en `undefined`. Sin este saneo, `product.colors.length` o el
+// spread de `extraImgs` explotan al renderizar el detalle.
 export const categories: Category[] = Object.values(categoryModules)
   .map(m => m.default)
   .sort((a, b) => a.order - b.order)
+  .map(cat => ({
+    ...cat,
+    products: cat.products.map(p => ({
+      ...p,
+      extraImgs: p.extraImgs ?? [],
+      colors: p.colors ?? [],
+      weight: p.weight ?? '',
+      desc: p.desc ?? '',
+    })),
+  }))
 
 export const company: CompanySettings = Object.values(companySettings)[0].default

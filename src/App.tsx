@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Component, type ReactNode } from 'react'
 import { categories, company, type Product, type Category } from './data/products'
 import { MOBILE_BREAKPOINT, gridColumns } from './ui/tokens'
 import { Card, Eyebrow, Button, TextLink, FeatureChip, CtaBox, SwatchPicker, ThumbnailStrip, NavTabs, PageHeading } from './ui/primitives'
@@ -604,6 +604,36 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
   )
 }
 
+// ── Red de seguridad ante errores de render ─────────────────────────────
+// Un producto con un dato inesperado (ej. un campo que el panel dejó sin
+// guardar) puede tirar una excepción al renderizar el detalle. Sin esto,
+// React desmonta toda la app y queda en negro hasta recargar a mano —
+// incluso el botón "atrás" del navegador deja de servir, porque ya no hay
+// nada montado que reaccione a los cambios de estado.
+class CatalogErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: ReactNode }) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <main style={{ background: 'var(--color-bg)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-3)', height: '100%', padding: 'var(--space-6)', textAlign: 'center' }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: 'var(--text-lg)', color: 'var(--color-text)' }}>Algo salió mal</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--color-text-dim)', maxWidth: 280, lineHeight: 1.5 }}>
+            Hubo un problema mostrando esta página. Volvé al inicio e intentá de nuevo.
+          </div>
+          <Button onClick={() => { window.location.href = '/' }}>Volver al inicio</Button>
+        </main>
+      )
+    }
+    return this.props.children
+  }
+}
+
 // ── Página 404 ───────────────────────────────────────────────────────────
 // Propósito: recuperar a alguien que llegó a un link roto, sin salir del
 // tono de marca. El número "404" es, como el hero de portada, un momento
@@ -748,7 +778,13 @@ export default function App() {
       </div>
 
       <div style={{ flex: 1, minHeight: 0 }}>
-        {catalog}
+        {/* key por página/selección: si un producto puntual rompe el render,
+            navegar a otro lado debe montar un CatalogErrorBoundary nuevo
+            (con hasError en false) en vez de seguir mostrando la pantalla
+            de error para siempre. */}
+        <CatalogErrorBoundary key={`${page}-${selected?.cat ?? ''}-${selected?.product ?? ''}`}>
+          {catalog}
+        </CatalogErrorBoundary>
       </div>
 
       <WhatsappFloatButton page={page} />
