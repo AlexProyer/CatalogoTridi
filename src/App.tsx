@@ -559,7 +559,13 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
       <div style={{ width: '44%', background: 'var(--color-bg)', display: 'flex', flexDirection: 'column', padding: 'var(--space-3) var(--space-4)', flexShrink: 0, overflow: 'auto' }}>
         <CatalogHeader />
 
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: 0 }}>
+        {/* margin:'auto 0' en vez de flex:1+justifyContent:'center': con una
+            descripción corta reparte el espacio libre arriba/abajo (mismo
+            resultado visual que centrar), pero si el contenido no entra
+            (descripción larga) los márgenes colapsan a 0 en vez de repartir
+            el desborde mitad arriba/mitad abajo — que dejaba el nombre del
+            producto arriba del scroll, inalcanzable, y el CTA cortado abajo. */}
+        <div style={{ margin: 'auto 0' }}>
           <Eyebrow mono style={{ marginTop: 'var(--space-2)', marginBottom: 'var(--space-1)' }}>{product.code}</Eyebrow>
           <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900 as unknown as number, fontSize: 'var(--text-2xl)', color: 'var(--color-text)', lineHeight: 0.9, letterSpacing: '-0.01em' }}>{product.name}</h1>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: 'var(--text-xl)', color: 'var(--color-accent-text)', marginTop: 'var(--space-2)' }}>{product.price}</div>
