@@ -1,6 +1,6 @@
 {
   "name": "Anime",
-  "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=200&h=160&fit=crop&auto=format",
+  "img": "/images/uploads/zoro2.jpeg",
   "accent": "#E05252",
   "order": 2,
   "products": [
@@ -17,6 +17,25 @@
       "colors": [],
       "desc": "Esta lámpara se volvió viral por una razón muy simple: cuando está apagada, parece una recompensa de Zoro decorando la pared. Pero al encenderla, la sombra proyecta su silueta completa en pose de combate con sus tres espadas. ⚔️\n\nNo necesita efectos exagerados ni pantallas. Solo luz, sombra y una presencia brutal que transforma cualquier espacio.\n\nNo es un póster ni un sticker: la lámpara crea todo el efecto por sí sola.\n\nPerfecta para:\n🎮 Setup gamer\n🏴‍☠️ Colecciones de anime\n🛋️ Habitaciones o salas\n✨ Decoración geek que realmente llama la atención\n\nLa iluminación genera un efecto limpio, elegante y muy distinto a las típicas luces LED genéricas. Casi todo el que la ve pregunta dónde conseguirla.\n\nIdeal para fans de One Piece y especialmente de Zoro.\n",
       "weight": "120"
+    },
+    {
+      "name": "Blastoise",
+      "size": "13",
+      "price": "65000",
+      "weight": "120",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-20-at-8.51.06-pm.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-20-at-8.51.07-pm-1-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-20-at-8.51.07-pm.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-20-at-8.51.07-pm-2-.jpeg"
+      ],
+      "colors": [
+        {
+          "name": "Azul",
+          "hex": "#001fff"
+        }
+      ]
     }
   ]
 }
