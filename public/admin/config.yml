@@ -37,7 +37,7 @@ collections:
           - { label: Código, name: code, widget: string, required: false }
           - { label: Nombre, name: name, widget: string }
           - { label: 'Tamaño (ej: "15 cm")', name: size, widget: string }
-          - { label: 'Precio (ej: "$35,000")', name: price, widget: string }
+          - { label: 'Precio en pesos (solo números, sin $ ni puntos — ej: 35000)', name: price, widget: number, value_type: int, min: 0 }
           - { label: 'Peso (ej: "120 g")', name: weight, widget: string }
           - { label: Material, name: material, widget: string }
           - { label: Foto principal, name: img, widget: image }

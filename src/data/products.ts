@@ -12,13 +12,22 @@ export interface Product {
   code: string          // Código SKU del producto
   name: string           // Nombre del producto
   size: string            // Tamaño (ej: "15 cm")
-  price: string            // Precio (ej: "$35,000")
+  price: number            // Precio en pesos, solo el número (ej: 35000) — se formatea con formatPrice() al mostrarlo
   weight: string            // Peso estimado (ej: "120 g")
   material: string           // Material de impresión (ej: "PLA Premium")
   img: string                 // URL de la imagen principal
   extraImgs: string[]          // URLs de fotos adicionales (puede ir vacío)
   colors: ProductColor[]        // Colores disponibles para este producto
   desc: string                   // Descripción corta del producto
+}
+
+// Único punto donde se le da forma de precio en pesos colombianos al número
+// crudo que guarda el panel — así el editor solo escribe dígitos (el widget
+// `number` del CMS ya le impide escribir texto) y nunca puede quedar un
+// precio "plano" o con un formato distinto al del resto del catálogo.
+const priceFormatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 })
+export function formatPrice(value: number): string {
+  return priceFormatter.format(value)
 }
 
 export interface Category {
@@ -55,10 +64,15 @@ export const categories: Category[] = Object.values(categoryModules)
     ...cat,
     products: cat.products.map(p => ({
       ...p,
+      code: p.code ?? '',
       extraImgs: p.extraImgs ?? [],
       colors: p.colors ?? [],
       weight: p.weight ?? '',
       desc: p.desc ?? '',
+      // Number(...) por si queda algún precio viejo guardado como texto
+      // (ej. "$35,000" de antes de que el campo fuera numérico) — así no
+      // se rompe con NaN, se ve $0 y es evidente que hay que corregirlo.
+      price: typeof p.price === 'number' ? p.price : Number(String(p.price).replace(/[^0-9.-]/g, '')) || 0,
     })),
   }))
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, Component, type ReactNode } from 'react'
-import { categories, company, type Product, type Category } from './data/products'
+import { categories, company, formatPrice, type Product, type Category } from './data/products'
 import { MOBILE_BREAKPOINT, gridColumns } from './ui/tokens'
 import { Card, Eyebrow, Button, TextLink, FeatureChip, CtaBox, SwatchPicker, ThumbnailStrip, NavTabs, PageHeading } from './ui/primitives'
 
@@ -24,9 +24,9 @@ function whatsappHref(phoneDigits: string, message: string) {
 const WHATSAPP_GENERAL_MESSAGE = 'Hola, quisiera obtener información sobre sus productos.'
 
 function whatsappProductMessage(product: Product, selectedColorName: string | null) {
-  const lines = [`Hola, me interesa el producto ${product.name} (Código: ${product.code}).`]
+  const lines = [`Hola, me interesa el producto ${product.name}${product.code ? ` (Código: ${product.code})` : ''}.`]
   if (selectedColorName) lines.push(`Color: ${selectedColorName}.`)
-  lines.push(`Precio: ${product.price}.`)
+  lines.push(`Precio: ${formatPrice(product.price)}.`)
   lines.push('¿Me pueden confirmar disponibilidad y cómo realizar la compra?')
   return lines.join('\n')
 }
@@ -372,7 +372,7 @@ function ProductCard({ p }: { p: typeof categories[number]['products'][number] }
           <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--color-accent-text)', fontWeight: 'var(--weight-medium)' as unknown as number }}>{p.material}</span>
         </div>
         <div style={{ marginTop: 'auto', paddingTop: compact ? 'var(--space-2)' : 'var(--space-3)', borderTop: 'var(--border-hairline)' }}>
-          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: compact ? 'var(--text-md)' : 'var(--text-lg)', color: 'var(--color-text)' }}>{p.price}</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: compact ? 'var(--text-md)' : 'var(--text-lg)', color: 'var(--color-text)' }}>{formatPrice(p.price)}</div>
         </div>
       </div>
     </>
@@ -526,7 +526,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
           <div>
             <Eyebrow mono>{product.code}</Eyebrow>
             <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900 as unknown as number, fontSize: 'var(--text-2xl)', color: 'var(--color-text)', lineHeight: 0.95 }}>{product.name}</h1>
-            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: 'var(--text-lg)', color: 'var(--color-accent-text)', marginTop: 'var(--space-1)' }}>{product.price}</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: 'var(--text-lg)', color: 'var(--color-accent-text)', marginTop: 'var(--space-1)' }}>{formatPrice(product.price)}</div>
           </div>
 
           {/* Sticky: en mobile todo este bloque hace scroll dentro del
@@ -568,7 +568,7 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
         <div style={{ margin: 'auto 0' }}>
           <Eyebrow mono style={{ marginTop: 'var(--space-2)', marginBottom: 'var(--space-1)' }}>{product.code}</Eyebrow>
           <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900 as unknown as number, fontSize: 'var(--text-2xl)', color: 'var(--color-text)', lineHeight: 0.9, letterSpacing: '-0.01em' }}>{product.name}</h1>
-          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: 'var(--text-xl)', color: 'var(--color-accent-text)', marginTop: 'var(--space-2)' }}>{product.price}</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800 as unknown as number, fontSize: 'var(--text-xl)', color: 'var(--color-accent-text)', marginTop: 'var(--space-2)' }}>{formatPrice(product.price)}</div>
           <div style={{ maxWidth: 380, marginTop: 'var(--space-2)' }}>{interesaButton('sm')}</div>
           <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-sm)', color: 'var(--color-text-dim)', marginTop: 'var(--space-3)', lineHeight: 1.6, maxWidth: 380 }}>{product.desc}</div>
 

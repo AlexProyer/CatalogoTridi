@@ -11,7 +11,7 @@
       "size": "12*15 cm",
       "img": "/images/uploads/zoro1.jpeg",
       "material": "bioplástico PLA",
-      "price": "$80,000",
+      "price": 80000,
       "name": "🗡️Lámpara de pared Zoro One Piece",
       "code": "001",
       "colors": [],
@@ -21,7 +21,7 @@
     {
       "name": "Blastoise",
       "size": "13",
-      "price": "65000",
+      "price": 65000,
       "weight": "120",
       "material": "PLA",
       "img": "/images/uploads/whatsapp-image-2026-08-20-at-8.51.06-pm.jpeg",
