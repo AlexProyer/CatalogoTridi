@@ -11,7 +11,7 @@
 // falta resetear, dejando que el navegador y la regla global de
 // :focus-visible sigan haciendo su trabajo.
 //
-import type { CSSProperties, ReactNode } from 'react'
+import { useRef, type CSSProperties, type PointerEvent, type ReactNode } from 'react'
 
 const buttonReset: CSSProperties = {
   background: 'none',
@@ -389,6 +389,114 @@ export function SwatchPicker({
       ))}
     </div>
   )
+}
+
+// ── ImageCarousel ────────────────────────────────────────────────────────
+// Foto principal navegable sin tener que bajar hasta las miniaturas: flechas
+// (clic, mobile y desktop) + arrastre/swipe con Pointer Events, que a
+// diferencia de Touch Events cubre dedo y mouse con el mismo código. La
+// franja de miniaturas (ThumbnailStrip) sigue debajo — esto es un atajo
+// encima de la foto, no la reemplaza.
+
+export function ImageCarousel({
+  images,
+  activeIndex,
+  onChange,
+  alt,
+  style,
+  imgStyle,
+}: {
+  images: string[]
+  activeIndex: number
+  onChange: (index: number) => void
+  alt: string
+  style?: CSSProperties
+  imgStyle?: CSSProperties
+}) {
+  const dragStartX = useRef<number | null>(null)
+  const hasMultiple = images.length > 1
+
+  const goTo = (i: number) => onChange((i + images.length) % images.length)
+  const prev = () => goTo(activeIndex - 1)
+  const next = () => goTo(activeIndex + 1)
+
+  // Pointer Events (no Touch Events) para que el mismo código sirva de
+  // arrastre con mouse en desktop y de swipe táctil en mobile.
+  function onPointerDown(e: PointerEvent<HTMLDivElement>) {
+    dragStartX.current = e.clientX
+  }
+  function onPointerUp(e: PointerEvent<HTMLDivElement>) {
+    if (dragStartX.current === null) return
+    const dx = e.clientX - dragStartX.current
+    dragStartX.current = null
+    const SWIPE_THRESHOLD = 40
+    if (dx > SWIPE_THRESHOLD) prev()
+    else if (dx < -SWIPE_THRESHOLD) next()
+  }
+
+  return (
+    <div
+      style={{ position: 'relative', touchAction: 'pan-y', ...style }}
+      onPointerDown={hasMultiple ? onPointerDown : undefined}
+      onPointerUp={hasMultiple ? onPointerUp : undefined}
+      onKeyDown={hasMultiple ? (e) => { if (e.key === 'ArrowLeft') prev(); if (e.key === 'ArrowRight') next() } : undefined}
+      tabIndex={hasMultiple ? 0 : undefined}
+      role={hasMultiple ? 'group' : undefined}
+      aria-label={hasMultiple ? `Galería de fotos de ${alt}` : undefined}
+      aria-roledescription={hasMultiple ? 'carrusel' : undefined}
+    >
+      <img
+        src={images[activeIndex]}
+        alt={alt}
+        draggable={false}
+        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none', ...imgStyle }}
+      />
+      {hasMultiple && (
+        <>
+          <button type="button" onClick={prev} aria-label="Foto anterior" className="carousel-arrow" style={{ ...buttonReset, ...carouselArrowStyle, left: 'var(--space-2)' }}>
+            <span aria-hidden="true">‹</span>
+          </button>
+          <button type="button" onClick={next} aria-label="Foto siguiente" className="carousel-arrow" style={{ ...buttonReset, ...carouselArrowStyle, right: 'var(--space-2)' }}>
+            <span aria-hidden="true">›</span>
+          </button>
+          <div style={{ position: 'absolute', bottom: 'var(--space-2)', left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 6 }}>
+            {images.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => goTo(i)}
+                aria-label={`Ir a foto ${i + 1}`}
+                aria-pressed={i === activeIndex}
+                className="carousel-dot"
+                style={{
+                  ...buttonReset,
+                  width: i === activeIndex ? 16 : 6,
+                  height: 6,
+                  borderRadius: 'var(--radius-full)',
+                  background: i === activeIndex ? 'var(--color-accent)' : 'rgba(255,255,255,0.5)',
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+const carouselArrowStyle: CSSProperties = {
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  width: 36,
+  height: 36,
+  borderRadius: 'var(--radius-full)',
+  background: 'rgba(10,10,20,0.55)',
+  display: 'grid',
+  placeItems: 'center',
+  fontSize: 20,
+  lineHeight: 1,
+  color: '#fff',
 }
 
 // ── ThumbnailStrip ───────────────────────────────────────────────────────

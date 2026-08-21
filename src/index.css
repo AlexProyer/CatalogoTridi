@@ -249,6 +249,12 @@ body {
 .thumb { transition: border-color var(--motion-duration) var(--motion-ease); }
 .thumb:hover { border-color: var(--color-accent-text); }
 
+.carousel-arrow { transition: background var(--motion-duration) var(--motion-ease), transform var(--motion-duration) var(--motion-ease); }
+.carousel-arrow:hover { background: rgba(10,10,20,0.75); }
+.carousel-arrow:active { transform: translateY(-50%) scale(0.92); }
+
+.carousel-dot { transition: width var(--motion-duration) var(--motion-ease), background var(--motion-duration) var(--motion-ease); }
+
 .chip {
   transition: background var(--motion-duration) var(--motion-ease);
 }
@@ -267,5 +273,11 @@ body {
   }
   .swatch:hover, .btn:active, .nav-tab:active, .fab:hover, .fab:active {
     transform: none !important;
+  }
+  /* Sin translateY(-50%) se descentraría verticalmente — a diferencia de
+     .fab/.swatch/.nav-tab, acá el transform de reposo no es un efecto de
+     motion, es el centrado vertical del botón. */
+  .carousel-arrow:active {
+    transform: translateY(-50%) !important;
   }
 }

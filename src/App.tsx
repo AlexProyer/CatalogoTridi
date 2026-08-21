@@ -1,7 +1,7 @@
 import { useState, useEffect, Component, type ReactNode } from 'react'
 import { categories, company, formatPrice, type Product, type Category } from './data/products'
 import { MOBILE_BREAKPOINT, gridColumns } from './ui/tokens'
-import { Card, Eyebrow, Button, TextLink, FeatureChip, CtaBox, SwatchPicker, ThumbnailStrip, NavTabs, PageHeading } from './ui/primitives'
+import { Card, Eyebrow, Button, TextLink, FeatureChip, CtaBox, SwatchPicker, ImageCarousel, ThumbnailStrip, NavTabs, PageHeading } from './ui/primitives'
 
 // ── Contact link helpers ────────────────────────────────────────────────────
 
@@ -518,9 +518,14 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
         <CatalogHeader />
 
         {/* Hero image */}
-        <div style={{ height: 200, overflow: 'hidden', flexShrink: 0, background: 'var(--color-surface)' }}>
-          <img src={allImgs[activeImg]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }} />
-        </div>
+        <ImageCarousel
+          images={allImgs}
+          activeIndex={activeImg}
+          onChange={setActiveImg}
+          alt={product.name}
+          style={{ height: 200, overflow: 'hidden', flexShrink: 0, background: 'var(--color-surface)' }}
+          imgStyle={{ opacity: 0.85 }}
+        />
 
         <div style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           <div>
@@ -591,9 +596,13 @@ function ProductDetailPage({ catIndex, productIndex }: { catIndex: number; produ
         </div>
 
         <div style={{ flex: 1, padding: '0 var(--space-4) var(--space-3)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', overflow: 'hidden' }}>
-          <div style={{ flex: 1, borderRadius: 'var(--radius)', overflow: 'hidden', background: 'var(--color-surface)', minHeight: 0 }}>
-            <img src={allImgs[activeImg]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          </div>
+          <ImageCarousel
+            images={allImgs}
+            activeIndex={activeImg}
+            onChange={setActiveImg}
+            alt={product.name}
+            style={{ flex: 1, borderRadius: 'var(--radius)', overflow: 'hidden', background: 'var(--color-surface)', minHeight: 0 }}
+          />
 
           {allImgs.length > 1 && (
             <ThumbnailStrip images={allImgs} activeIndex={activeImg} onChange={setActiveImg} alt={product.name} height={58} />
