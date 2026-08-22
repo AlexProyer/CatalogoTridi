@@ -61,6 +61,19 @@
         "/images/uploads/23.png",
         "/images/uploads/21.png"
       ]
+    },
+    {
+      "name": "Winnie the Pooh",
+      "size": "15cm",
+      "price": 50000,
+      "weight": "100",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-22-at-00.18.55.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.53-1-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.53-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.53.jpeg"
+      ]
     }
   ]
 }
