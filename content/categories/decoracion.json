@@ -29,6 +29,19 @@
         "/images/uploads/whatsapp-image-2026-08-21-at-23.55.55-2-.jpeg",
         "/images/uploads/whatsapp-image-2026-08-21-at-23.55.56.jpeg"
       ]
+    },
+    {
+      "code": "",
+      "name": "Furia Luminosa",
+      "size": "10cm",
+      "price": 34998,
+      "weight": "90",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-21-at-23.55.57-1-.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.57-3-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.57-3-.jpeg"
+      ]
     }
   ]
 }
