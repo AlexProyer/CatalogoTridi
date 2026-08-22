@@ -17,6 +17,18 @@
         "/images/uploads/whatsapp-image-2026-08-14-at-17.24.01.jpeg",
         "/images/uploads/whatsapp-image-2026-08-14-at-17.24.00.jpeg"
       ]
+    },
+    {
+      "name": "Chimuelo",
+      "size": "10cm",
+      "price": 35000,
+      "weight": "90",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-21-at-23.55.54-1-.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.55-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.56.jpeg"
+      ]
     }
   ]
 }
