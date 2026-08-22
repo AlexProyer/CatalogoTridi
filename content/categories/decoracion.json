@@ -42,6 +42,18 @@
         "/images/uploads/whatsapp-image-2026-08-21-at-23.55.57-3-.jpeg",
         "/images/uploads/whatsapp-image-2026-08-21-at-23.55.57-3-.jpeg"
       ]
+    },
+    {
+      "name": "Soporte Atlético Nacional",
+      "size": "15",
+      "price": 15000,
+      "weight": "20",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-22-at-00.19.01.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.19.01-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.19.01-1-.jpeg"
+      ]
     }
   ]
 }
