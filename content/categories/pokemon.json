@@ -1,7 +1,7 @@
 {
   "name": "Pokémon",
   "img": "/images/uploads/whatsapp-image-2026-08-20-at-8.51.06-pm.jpeg",
-  "accent": "#fe9100",
+  "accent": "#72e5a5",
   "order": 1,
   "products": [
     {
@@ -82,9 +82,13 @@
       "weight": "70 g"
     },
     {
-      "extraImgs": [],
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-16-at-23.09.06-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-16-at-23.09.06-1-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-16-at-23.09.06-3-.jpeg"
+      ],
       "size": "10 cm",
-      "img": "https://images.unsplash.com/photo-1693786229415-8c4b2260a925?w=280&h=280&fit=crop&auto=format",
+      "img": "/images/uploads/whatsapp-image-2026-08-16-at-23.09.06.jpeg",
       "material": "PLA Premium",
       "price": 26000,
       "name": "BULBASAUR",
