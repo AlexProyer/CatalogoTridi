@@ -1,7 +1,7 @@
 {
   "name": "Pokémon",
   "img": "/images/uploads/whatsapp-image-2026-08-20-at-8.51.06-pm.jpeg",
-  "accent": "#72e5a5",
+  "accent": "#2bbefa",
   "order": 1,
   "products": [
     {
@@ -61,9 +61,13 @@
       "weight": "90 g"
     },
     {
-      "extraImgs": [],
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.58.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.58-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.58-1-.jpeg"
+      ],
       "size": "10 cm",
-      "img": "https://images.unsplash.com/photo-1780997533310-3c6ccae69f8f?w=280&h=280&fit=crop&auto=format",
+      "img": "/images/uploads/whatsapp-image-2026-08-21-at-23.55.58-3-.jpeg",
       "material": "PLA Premium",
       "price": 30000,
       "name": "SQUIRTLE",
