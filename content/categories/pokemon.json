@@ -170,9 +170,13 @@
       "weight": "190 g"
     },
     {
-      "extraImgs": [],
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.51.03.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.51.03-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.51.03-1-.jpeg"
+      ],
       "size": "12 cm",
-      "img": "https://images.unsplash.com/photo-1776426284678-5f0ac0dd2112?w=280&h=280&fit=crop&auto=format",
+      "img": "/images/uploads/whatsapp-image-2026-08-14-at-17.51.03-3-.jpeg",
       "material": "PLA Premium",
       "price": 28000,
       "name": "MEW",
