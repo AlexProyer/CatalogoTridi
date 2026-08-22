@@ -54,6 +54,19 @@
         "/images/uploads/whatsapp-image-2026-08-22-at-00.19.01-2-.jpeg",
         "/images/uploads/whatsapp-image-2026-08-22-at-00.19.01-1-.jpeg"
       ]
+    },
+    {
+      "name": "Michael Jackson",
+      "size": "17",
+      "price": 50000,
+      "weight": "90",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-22-at-00.18.57-1-.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.56-1-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.58-1-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.57.jpeg"
+      ]
     }
   ]
 }
