@@ -1,7 +1,7 @@
 {
   "name": "Anime",
   "img": "/images/uploads/zoro2.jpeg",
-  "accent": "#E05252",
+  "accent": "#0b0b0b",
   "order": 2,
   "products": [
     {
@@ -35,6 +35,19 @@
           "name": "Azul",
           "hex": "#001fff"
         }
+      ]
+    },
+    {
+      "name": "TOTORO",
+      "size": "10cm",
+      "price": 50000,
+      "weight": "115",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-14-at-17.23.58.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.23.57-1-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.23.57-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.23.58-2-.jpeg"
       ]
     }
   ]
