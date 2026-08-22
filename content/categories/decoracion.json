@@ -80,6 +80,19 @@
         "/images/uploads/whatsapp-image-2026-08-22-at-00.18.55-1-.jpeg",
         "/images/uploads/whatsapp-image-2026-08-22-at-00.18.55-2-.jpeg"
       ]
+    },
+    {
+      "name": "Mono Trasnochado",
+      "size": "15cm",
+      "price": 50000,
+      "weight": "100",
+      "material": "PLA",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.59.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.58.jpeg"
+      ],
+      "colors": [],
+      "img": "/images/uploads/whatsapp-image-2026-08-22-at-00.19.00-1-.jpeg"
     }
   ]
 }
