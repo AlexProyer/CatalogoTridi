@@ -5,20 +5,6 @@
   "order": 2,
   "products": [
     {
-      "extraImgs": [
-        "/images/uploads/zoro2.jpeg"
-      ],
-      "size": "12*15 cm",
-      "img": "/images/uploads/zoro1.jpeg",
-      "material": "bioplástico PLA",
-      "price": 80000,
-      "name": "🗡️Lámpara de pared Zoro One Piece",
-      "code": "001",
-      "colors": [],
-      "desc": "Esta lámpara se volvió viral por una razón muy simple: cuando está apagada, parece una recompensa de Zoro decorando la pared. Pero al encenderla, la sombra proyecta su silueta completa en pose de combate con sus tres espadas. ⚔️\n\nNo necesita efectos exagerados ni pantallas. Solo luz, sombra y una presencia brutal que transforma cualquier espacio.\n\nNo es un póster ni un sticker: la lámpara crea todo el efecto por sí sola.\n\nPerfecta para:\n🎮 Setup gamer\n🏴‍☠️ Colecciones de anime\n🛋️ Habitaciones o salas\n✨ Decoración geek que realmente llama la atención\n\nLa iluminación genera un efecto limpio, elegante y muy distinto a las típicas luces LED genéricas. Casi todo el que la ve pregunta dónde conseguirla.\n\nIdeal para fans de One Piece y especialmente de Zoro.\n",
-      "weight": "120"
-    },
-    {
       "name": "Blastoise",
       "size": "13",
       "price": 65000,
@@ -48,6 +34,32 @@
         "/images/uploads/whatsapp-image-2026-08-14-at-17.23.57-1-.jpeg",
         "/images/uploads/whatsapp-image-2026-08-14-at-17.23.57-2-.jpeg",
         "/images/uploads/whatsapp-image-2026-08-14-at-17.23.58-2-.jpeg"
+      ]
+    },
+    {
+      "extraImgs": [
+        "/images/uploads/zoro2.jpeg"
+      ],
+      "size": "12*15 cm",
+      "img": "/images/uploads/zoro1.jpeg",
+      "material": "bioplástico PLA",
+      "price": 80000,
+      "name": "🗡️Lámpara de pared Zoro One Piece",
+      "code": "001",
+      "colors": [],
+      "desc": "Esta lámpara se volvió viral por una razón muy simple: cuando está apagada, parece una recompensa de Zoro decorando la pared. Pero al encenderla, la sombra proyecta su silueta completa en pose de combate con sus tres espadas. ⚔️\n\nNo necesita efectos exagerados ni pantallas. Solo luz, sombra y una presencia brutal que transforma cualquier espacio.\n\nNo es un póster ni un sticker: la lámpara crea todo el efecto por sí sola.\n\nPerfecta para:\n🎮 Setup gamer\n🏴‍☠️ Colecciones de anime\n🛋️ Habitaciones o salas\n✨ Decoración geek que realmente llama la atención\n\nLa iluminación genera un efecto limpio, elegante y muy distinto a las típicas luces LED genéricas. Casi todo el que la ve pregunta dónde conseguirla.\n\nIdeal para fans de One Piece y especialmente de Zoro.\n",
+      "weight": "120"
+    },
+    {
+      "name": "Castillo Vagabundo para Pintar",
+      "size": "20cm",
+      "price": 300000,
+      "weight": "500",
+      "material": "PLA",
+      "img": "/images/uploads/22.png",
+      "extraImgs": [
+        "/images/uploads/23.png",
+        "/images/uploads/21.png"
       ]
     }
   ]
