@@ -128,9 +128,13 @@
       "weight": "150 g"
     },
     {
-      "extraImgs": [],
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-16-at-23.09.06-6-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-16-at-23.09.06-4-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-16-at-23.09.06-5-.jpeg"
+      ],
       "size": "12 cm",
-      "img": "https://images.unsplash.com/photo-1772121034472-de4d2977bdbb?w=280&h=280&fit=crop&auto=format",
+      "img": "/images/uploads/whatsapp-image-2026-08-16-at-23.09.07.jpeg",
       "material": "PLA Premium",
       "price": 30000,
       "name": "EEVEE",
