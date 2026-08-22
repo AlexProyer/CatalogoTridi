@@ -3,5 +3,20 @@
   "img": "https://images.unsplash.com/photo-1693786229415-8c4b2260a925?w=200&h=160&fit=crop&auto=format",
   "accent": "#27AE60",
   "order": 4,
-  "products": []
+  "products": [
+    {
+      "code": "",
+      "name": "LAMPARA JAPONESA",
+      "size": "15CM",
+      "price": 50000,
+      "weight": "120",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-14-at-17.24.02.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.24.02-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.24.01.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.24.00.jpeg"
+      ]
+    }
+  ]
 }
