@@ -74,6 +74,18 @@
         "/images/uploads/whatsapp-image-2026-08-22-at-00.18.53-2-.jpeg",
         "/images/uploads/whatsapp-image-2026-08-22-at-00.18.53.jpeg"
       ]
+    },
+    {
+      "name": "Igor",
+      "size": "12cm",
+      "price": 54998,
+      "weight": "110",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-22-at-00.18.54-1-.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.54-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.54.jpeg"
+      ]
     }
   ]
 }
