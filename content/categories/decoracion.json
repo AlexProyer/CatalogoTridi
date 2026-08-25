@@ -1,7 +1,98 @@
 {
   "name": "Decoración",
-  "img": "https://images.unsplash.com/photo-1693786229415-8c4b2260a925?w=200&h=160&fit=crop&auto=format",
-  "accent": "#27AE60",
+  "img": "/images/uploads/whatsapp-image-2026-08-14-at-17.24.02.jpeg",
+  "accent": "#dfc700",
   "order": 4,
-  "products": []
+  "products": [
+    {
+      "code": "",
+      "name": "LAMPARA JAPONESA",
+      "size": "15CM",
+      "price": 50000,
+      "weight": "120",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-14-at-17.24.02.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.24.02-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.24.01.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-14-at-17.24.00.jpeg"
+      ]
+    },
+    {
+      "name": "Chimuelo",
+      "size": "10cm",
+      "price": 35000,
+      "weight": "90",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-21-at-23.55.54-1-.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.55-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.56.jpeg"
+      ]
+    },
+    {
+      "code": "",
+      "name": "Furia Luminosa",
+      "size": "10cm",
+      "price": 34998,
+      "weight": "90",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-21-at-23.55.57-1-.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.57-3-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.57-3-.jpeg"
+      ]
+    },
+    {
+      "name": "Soporte Atlético Nacional",
+      "size": "15",
+      "price": 15000,
+      "weight": "20",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-22-at-00.19.01.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.19.01-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.19.01-1-.jpeg"
+      ]
+    },
+    {
+      "name": "Michael Jackson",
+      "size": "17",
+      "price": 50000,
+      "weight": "90",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-22-at-00.18.57-1-.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.56-1-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.58-1-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.57.jpeg"
+      ]
+    },
+    {
+      "code": "",
+      "name": "Tu perro Personalizado",
+      "size": "10cm",
+      "price": 120000,
+      "weight": "120",
+      "material": "PLA",
+      "img": "/images/uploads/whatsapp-image-2026-08-22-at-00.18.56.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.55-1-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.55-2-.jpeg"
+      ]
+    },
+    {
+      "name": "Mono Trasnochado",
+      "size": "15cm",
+      "price": 50000,
+      "weight": "100",
+      "material": "PLA",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.59.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-22-at-00.18.58.jpeg"
+      ],
+      "colors": [],
+      "img": "/images/uploads/whatsapp-image-2026-08-22-at-00.19.00-1-.jpeg"
+    }
+  ]
 }

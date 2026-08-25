@@ -1,0 +1,21 @@
+{
+  "name": "Videojuegos",
+  "img": "/images/uploads/whatsapp-image-2026-08-21-at-23.55.59-3-.jpeg",
+  "accent": "#1207ff",
+  "order": 0,
+  "products": [
+    {
+      "name": "HORNET",
+      "size": "15cm",
+      "price": 55000,
+      "material": "PLA",
+      "weight": "120",
+      "img": "/images/uploads/whatsapp-image-2026-08-21-at-23.55.59-3-.jpeg",
+      "extraImgs": [
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.55.59-5-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.56.00-2-.jpeg",
+        "/images/uploads/whatsapp-image-2026-08-21-at-23.56.00.jpeg"
+      ]
+    }
+  ]
+}
