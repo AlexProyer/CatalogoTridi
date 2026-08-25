@@ -117,6 +117,15 @@
   --motion-duration: 120ms;
   --motion-ease: linear;
 
+  /* Excepción puntual a MOTION_INTENSITY: 3, documentada a propósito. El
+     lightbox de fotos no es feedback de control (confirmar que un botón
+     "se encendió") — es una transición espacial entre dos estados de vista
+     (la foto en su lugar ↔ pantalla completa), y ahí sí vale una curva con
+     más carácter. Un solo uso en todo el sitio: no reemplaza el par de
+     arriba, lo complementa para este caso puntual. */
+  --lightbox-duration: 420ms;
+  --lightbox-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
   /* — Focus — */
   --focus-outline-width: 2px;
   --focus-outline-offset: 2px;
@@ -255,6 +264,10 @@ body {
 
 .carousel-dot { transition: width var(--motion-duration) var(--motion-ease), background var(--motion-duration) var(--motion-ease); }
 
+.lightbox-close { transition: background var(--motion-duration) var(--motion-ease), transform var(--motion-duration) var(--motion-ease); }
+.lightbox-close:hover { background: rgba(10,10,20,0.75); }
+.lightbox-close:active { transform: scale(0.92); }
+
 .chip {
   transition: background var(--motion-duration) var(--motion-ease);
 }
@@ -271,7 +284,7 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
-  .swatch:hover, .btn:active, .nav-tab:active, .fab:hover, .fab:active {
+  .swatch:hover, .btn:active, .nav-tab:active, .fab:hover, .fab:active, .lightbox-close:active {
     transform: none !important;
   }
   /* Sin translateY(-50%) se descentraría verticalmente — a diferencia de

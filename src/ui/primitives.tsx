@@ -11,7 +11,8 @@
 // falta resetear, dejando que el navegador y la regla global de
 // :focus-visible sigan haciendo su trabajo.
 //
-import { useRef, type CSSProperties, type PointerEvent, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 
 const buttonReset: CSSProperties = {
   background: 'none',
@@ -414,6 +415,13 @@ export function ImageCarousel({
   imgStyle?: CSSProperties
 }) {
   const dragStartX = useRef<number | null>(null)
+  // Si el pointerup que precede al click ya movió la foto (swipe), ese
+  // mismo click no debe además abrir el lightbox — sin esto, cada swipe
+  // en mobile abriría la pantalla completa por accidente.
+  const wasDragRef = useRef(false)
+  const imgRef = useRef<HTMLImageElement>(null)
+  const openerRef = useRef<HTMLElement | null>(null)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
   const hasMultiple = images.length > 1
 
   const goTo = (i: number) => onChange((i + images.length) % images.length)
@@ -430,8 +438,29 @@ export function ImageCarousel({
     const dx = e.clientX - dragStartX.current
     dragStartX.current = null
     const SWIPE_THRESHOLD = 40
+    wasDragRef.current = Math.abs(dx) > SWIPE_THRESHOLD
     if (dx > SWIPE_THRESHOLD) prev()
     else if (dx < -SWIPE_THRESHOLD) next()
+  }
+
+  // Punto de partida (y de llegada, al cerrar) de la animación del
+  // lightbox: la geometría exacta de la foto tal cual está en pantalla en
+  // este momento, más su tamaño real (para no recortarla al mostrarla
+  // completa).
+  function getSourceGeometry() {
+    const el = imgRef.current
+    if (!el) return null
+    return { rect: el.getBoundingClientRect(), naturalWidth: el.naturalWidth || el.width, naturalHeight: el.naturalHeight || el.height }
+  }
+
+  function openLightbox() {
+    if (wasDragRef.current) { wasDragRef.current = false; return }
+    openerRef.current = document.activeElement as HTMLElement | null
+    setLightboxOpen(true)
+  }
+  function closeLightbox() {
+    setLightboxOpen(false)
+    openerRef.current?.focus?.()
   }
 
   return (
@@ -439,18 +468,34 @@ export function ImageCarousel({
       style={{ position: 'relative', touchAction: 'pan-y', ...style }}
       onPointerDown={hasMultiple ? onPointerDown : undefined}
       onPointerUp={hasMultiple ? onPointerUp : undefined}
-      onKeyDown={hasMultiple ? (e) => { if (e.key === 'ArrowLeft') prev(); if (e.key === 'ArrowRight') next() } : undefined}
-      tabIndex={hasMultiple ? 0 : undefined}
-      role={hasMultiple ? 'group' : undefined}
-      aria-label={hasMultiple ? `Galería de fotos de ${alt}` : undefined}
+      onKeyDown={(e) => {
+        if (hasMultiple && e.key === 'ArrowLeft') prev()
+        else if (hasMultiple && e.key === 'ArrowRight') next()
+        else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox() }
+      }}
+      tabIndex={0}
+      role={hasMultiple ? 'group' : 'button'}
+      aria-label={hasMultiple ? `Galería de fotos de ${alt}` : `Ampliar foto de ${alt}`}
       aria-roledescription={hasMultiple ? 'carrusel' : undefined}
     >
       <img
+        ref={imgRef}
         src={images[activeIndex]}
         alt={alt}
         draggable={false}
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none', ...imgStyle }}
+        onClick={openLightbox}
+        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none', cursor: 'zoom-in', ...imgStyle }}
       />
+      {lightboxOpen && (
+        <Lightbox
+          images={images}
+          activeIndex={activeIndex}
+          onChange={onChange}
+          alt={alt}
+          onClose={closeLightbox}
+          getSourceGeometry={getSourceGeometry}
+        />
+      )}
       {hasMultiple && (
         <>
           <button type="button" onClick={prev} aria-label="Foto anterior" className="carousel-arrow" style={{ ...buttonReset, ...carouselArrowStyle, left: 'var(--space-2)' }}>
@@ -495,6 +540,225 @@ const carouselArrowStyle: CSSProperties = {
   display: 'grid',
   placeItems: 'center',
   fontSize: 20,
+  lineHeight: 1,
+  color: '#fff',
+}
+
+// ── Lightbox ─────────────────────────────────────────────────────────────
+// Pantalla completa para ver la foto sin recortar. La animación es FLIP
+// (First-Last-Invert-Play): en vez de un fade genérico, el marco de la foto
+// literalmente crece desde el rectángulo exacto donde estaba en la página
+// hasta su tamaño final — y al cerrar hace el camino inverso, hacia la foto
+// que quedó activa (puede no ser la misma con la que se abrió, si el
+// usuario navegó adentro del lightbox). El tamaño final respeta la
+// proporción real de la foto (naturalWidth/naturalHeight) para no
+// recortarla ni dejarla estirada.
+//
+// Se anima con manipulación directa del DOM (no state de React) a
+// propósito: el primer frame ("la foto ya está encogida, sin transición")
+// tiene que pintarse antes que el segundo ("ahora sí anima a su tamaño
+// final"), y esa secuencia de dos pasos es más confiable con refs que
+// esperando a que React decida cuándo re-renderiza.
+
+function computeLightboxRect(naturalWidth: number, naturalHeight: number) {
+  const vw = window.innerWidth
+  const vh = window.innerHeight
+  const padX = vw < 640 ? 16 : 56
+  const padY = vw < 640 ? 88 : 64
+  const availW = Math.max(1, vw - padX * 2)
+  const availH = Math.max(1, vh - padY * 2)
+  const imgRatio = naturalWidth / naturalHeight || 1
+  const availRatio = availW / availH
+  const width = imgRatio > availRatio ? availW : availH * imgRatio
+  const height = imgRatio > availRatio ? availW / imgRatio : availH
+  return { left: (vw - width) / 2, top: (vh - height) / 2, width, height }
+}
+
+function Lightbox({
+  images,
+  activeIndex,
+  onChange,
+  alt,
+  onClose,
+  getSourceGeometry,
+}: {
+  images: string[]
+  activeIndex: number
+  onChange: (index: number) => void
+  alt: string
+  onClose: () => void
+  getSourceGeometry: () => { rect: DOMRect; naturalWidth: number; naturalHeight: number } | null
+}) {
+  const boxRef = useRef<HTMLDivElement>(null)
+  const closeBtnRef = useRef<HTMLButtonElement>(null)
+  const dragStartX = useRef<number | null>(null)
+  const restRectRef = useRef<{ left: number; top: number; width: number; height: number } | null>(null)
+  const closingRef = useRef(false)
+  const [backdropVisible, setBackdropVisible] = useState(false)
+  const hasMultiple = images.length > 1
+
+  const goTo = (i: number) => onChange((i + images.length) % images.length)
+  const prev = () => goTo(activeIndex - 1)
+  const next = () => goTo(activeIndex + 1)
+
+  function beginClose() {
+    if (closingRef.current) return
+    closingRef.current = true
+    setBackdropVisible(false)
+    const box = boxRef.current
+    const rest = restRectRef.current
+    const geo = getSourceGeometry()
+    if (box && rest && geo) {
+      const sx = geo.rect.width / rest.width
+      const sy = geo.rect.height / rest.height
+      const tx = geo.rect.left + geo.rect.width / 2 - (rest.left + rest.width / 2)
+      const ty = geo.rect.top + geo.rect.height / 2 - (rest.top + rest.height / 2)
+      box.style.transition = 'transform var(--lightbox-duration) var(--lightbox-ease)'
+      box.style.transform = `translate(${tx}px, ${ty}px) scale(${sx}, ${sy})`
+      let done = false
+      const finish = () => { if (done) return; done = true; onClose() }
+      box.addEventListener('transitionend', finish, { once: true })
+      setTimeout(finish, 650)
+    } else {
+      setTimeout(onClose, 260)
+    }
+  }
+
+  // Apertura: encoger el marco al tamaño/posición exactos de la foto en la
+  // página (sin transición), forzar reflow, y recién ahí animar a su
+  // tamaño final — ese orden es lo que hace que se sienta como que la
+  // misma foto crece, no como una foto nueva apareciendo encima.
+  useEffect(() => {
+    const box = boxRef.current
+    if (!box) return
+    const geo = getSourceGeometry()
+    const rest = computeLightboxRect(geo?.naturalWidth ?? 1, geo?.naturalHeight ?? 1)
+    restRectRef.current = rest
+    box.style.left = `${rest.left}px`
+    box.style.top = `${rest.top}px`
+    box.style.width = `${rest.width}px`
+    box.style.height = `${rest.height}px`
+    if (geo) {
+      const sx = geo.rect.width / rest.width
+      const sy = geo.rect.height / rest.height
+      const tx = geo.rect.left + geo.rect.width / 2 - (rest.left + rest.width / 2)
+      const ty = geo.rect.top + geo.rect.height / 2 - (rest.top + rest.height / 2)
+      box.style.transition = 'none'
+      box.style.transform = `translate(${tx}px, ${ty}px) scale(${sx}, ${sy})`
+      void box.offsetWidth // fuerza el reflow para que el navegador registre el punto de partida
+    }
+    const raf = requestAnimationFrame(() => {
+      box.style.transition = 'transform var(--lightbox-duration) var(--lightbox-ease)'
+      box.style.transform = 'translate(0px, 0px) scale(1, 1)'
+      setBackdropVisible(true)
+    })
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    closeBtnRef.current?.focus()
+    return () => {
+      cancelAnimationFrame(raf)
+      document.body.style.overflow = prevOverflow
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') beginClose()
+      else if (e.key === 'ArrowLeft' && hasMultiple) prev()
+      else if (e.key === 'ArrowRight' && hasMultiple) next()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex, hasMultiple])
+
+  function onPointerDown(e: PointerEvent<HTMLDivElement>) {
+    dragStartX.current = e.clientX
+  }
+  function onPointerUp(e: PointerEvent<HTMLDivElement>) {
+    if (dragStartX.current === null) return
+    const dx = e.clientX - dragStartX.current
+    dragStartX.current = null
+    const SWIPE_THRESHOLD = 50
+    if (dx > SWIPE_THRESHOLD) prev()
+    else if (dx < -SWIPE_THRESHOLD) next()
+  }
+
+  return createPortal(
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Foto de ${alt} en pantalla completa`}
+      onClick={beginClose}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 'var(--z-overlay)' as unknown as number,
+        background: 'rgba(6,6,10,0.92)', opacity: backdropVisible ? 1 : 0,
+        transition: 'opacity var(--lightbox-duration) var(--lightbox-ease)',
+        touchAction: 'none',
+      }}
+    >
+      <div
+        ref={boxRef}
+        onClick={(e) => e.stopPropagation()}
+        onPointerDown={hasMultiple ? onPointerDown : undefined}
+        onPointerUp={hasMultiple ? onPointerUp : undefined}
+        style={{ position: 'fixed', transformOrigin: 'center center' }}
+      >
+        <img
+          src={images[activeIndex]}
+          alt={alt}
+          draggable={false}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', userSelect: 'none' }}
+        />
+      </div>
+
+      <button ref={closeBtnRef} type="button" onClick={beginClose} aria-label="Cerrar" className="lightbox-close" style={{ ...buttonReset, position: 'fixed', top: 'var(--space-3)', right: 'var(--space-3)', ...lightboxIconStyle }}>
+        <span aria-hidden="true">✕</span>
+      </button>
+
+      {hasMultiple && (
+        <>
+          <button type="button" onClick={(e) => { e.stopPropagation(); prev() }} aria-label="Foto anterior" className="carousel-arrow" style={{ ...buttonReset, ...carouselArrowStyle, left: 'var(--space-3)' }}>
+            <span aria-hidden="true">‹</span>
+          </button>
+          <button type="button" onClick={(e) => { e.stopPropagation(); next() }} aria-label="Foto siguiente" className="carousel-arrow" style={{ ...buttonReset, ...carouselArrowStyle, right: 'var(--space-3)' }}>
+            <span aria-hidden="true">›</span>
+          </button>
+          <div style={{ position: 'fixed', bottom: 'var(--space-3)', left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 6 }}>
+            {images.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={(e) => { e.stopPropagation(); goTo(i) }}
+                aria-label={`Ir a foto ${i + 1}`}
+                aria-pressed={i === activeIndex}
+                className="carousel-dot"
+                style={{
+                  ...buttonReset,
+                  width: i === activeIndex ? 16 : 6,
+                  height: 6,
+                  borderRadius: 'var(--radius-full)',
+                  background: i === activeIndex ? 'var(--color-accent)' : 'rgba(255,255,255,0.5)',
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>,
+    document.body,
+  )
+}
+
+const lightboxIconStyle: CSSProperties = {
+  width: 36,
+  height: 36,
+  borderRadius: 'var(--radius-full)',
+  background: 'rgba(10,10,20,0.55)',
+  display: 'grid',
+  placeItems: 'center',
+  fontSize: 16,
   lineHeight: 1,
   color: '#fff',
 }
