@@ -111,27 +111,6 @@
       "weight": "70 g"
     },
     {
-      "extraImgs": [],
-      "size": "18 cm",
-      "img": "https://images.unsplash.com/photo-1776426270359-0277f3595496?w=280&h=280&fit=crop&auto=format",
-      "material": "PLA Premium",
-      "price": 40000,
-      "name": "GENGAR",
-      "code": "#3C4E7B #342789",
-      "colors": [
-        {
-          "name": "Morado",
-          "hex": "#8B30D6"
-        },
-        {
-          "name": "Negro",
-          "hex": "#1A1A1A"
-        }
-      ],
-      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado.",
-      "weight": "150 g"
-    },
-    {
       "extraImgs": [
         "/images/uploads/whatsapp-image-2026-08-16-at-23.09.06-6-.jpeg",
         "/images/uploads/whatsapp-image-2026-08-16-at-23.09.06-4-.jpeg",
@@ -155,27 +134,6 @@
       ],
       "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado.",
       "weight": "90 g"
-    },
-    {
-      "extraImgs": [],
-      "size": "20 cm",
-      "img": "https://images.unsplash.com/photo-1610081574260-e61e93e6e1aa?w=280&h=280&fit=crop&auto=format",
-      "material": "PLA Premium",
-      "price": 45000,
-      "name": "SNORLAX",
-      "code": "#3C4E7B #342791",
-      "colors": [
-        {
-          "name": "Azul",
-          "hex": "#2C5BE8"
-        },
-        {
-          "name": "Blanco",
-          "hex": "#F5F5FA"
-        }
-      ],
-      "desc": "Figura impresa en 3D con un excelente nivel de detalle y acabado.",
-      "weight": "190 g"
     },
     {
       "extraImgs": [
