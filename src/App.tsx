@@ -267,14 +267,14 @@ function CoverPage({ onViewCatalog }: { onViewCatalog: () => void }) {
         {!mobile && (
           <div style={{ width: 'clamp(200px, 22vw, 320px)', height: 'clamp(240px, 46vh, 440px)', flexShrink: 0, borderRadius: 'var(--radius)', overflow: 'hidden', border: '1px solid color-mix(in srgb, var(--color-accent) 30%, transparent)', position: 'relative' }}>
             <img
-              src="https://images.unsplash.com/photo-1776426270359-0277f3595496?w=400&h=480&fit=crop&auto=format"
-              alt="Figura impresa en 3D"
+              src="/home-hero.jpg"
+              alt="Piezas impresas en 3D entregadas a clientes de Tridi"
               style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }}
             />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--color-bg) 0%, transparent 55%)' }} />
             <div style={{ position: 'absolute', bottom: 'var(--space-3)', left: 'var(--space-3)', right: 'var(--space-3)' }}>
-              <Eyebrow style={{ color: 'var(--color-accent-text)' }}>Figura premium</Eyebrow>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-xs)', color: 'var(--color-text-dim)', marginTop: 2 }}>Impresión FLA · Alta calidad</div>
+              <Eyebrow style={{ color: 'var(--color-accent-text)' }}>Trabajos entregados</Eyebrow>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-xs)', color: 'var(--color-text-dim)', marginTop: 2 }}>Piezas reales, clientes reales</div>
             </div>
           </div>
         )}
