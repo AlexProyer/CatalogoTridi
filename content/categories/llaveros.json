@@ -1,7 +1,29 @@
 {
   "name": "Llaveros",
-  "img": "https://images.unsplash.com/photo-1776426270359-0277f3595496?w=200&h=160&fit=crop&auto=format",
+  "img": "/images/uploads/personalizable.png",
   "accent": "#8B30D6",
   "order": 5,
-  "products": []
+  "products": [
+    {
+      "extraImgs": [
+        "/images/uploads/raiders_guard_1.jpg",
+        "/images/uploads/raiders_guard_2.jpg",
+        "/images/uploads/lacampana.jpg",
+        "/images/uploads/politico.jpg"
+      ],
+      "size": "5 CM",
+      "img": "/images/uploads/personalizable.png",
+      "material": "Polímero PLA/PETG",
+      "price": 5000,
+      "name": "Llaveros personalizables",
+      "colors": [
+        {
+          "name": "Según diseño",
+          "hex": "#00ff9e"
+        }
+      ],
+      "desc": "Una tarjeta de presentación dura lo que tarda en llegar a la basura. Las llaves, en cambio, salen con la persona todos los días. De eso se trata este llavero. Lo diseñamos desde cero con tu logo, un nombre o la forma que tengas en mente, y al reverso le ponemos tu contacto o un QR que lleve a tu WhatsApp, tu web o tus redes. ¿Quieres que sorprenda? Le integramos un chip NFC: acercan el celular y se abre tu enlace, sin descargar nada. Es el regalo que una empresa entrega a sus clientes y que meses después sigue colgado de sus llaves.",
+      "weight": "10 G"
+    }
+  ]
 }
